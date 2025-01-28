@@ -1,26 +1,24 @@
-<!--Template for login, to be changed later-->
-<h1>Login</h1>
-<br /><br />
-
-<form action="" method="POST">
-    {% csrf_token %} 
-    {% if messages %} {% for message in messages %}
-    <p style="color: red">{{ message }}</p>
-    {% endfor %} {% endif %}
-    <div class="mb-3">
-        <label for="exampleInputEmail1" class="form-label">Username</label>
-        <input
-            type="text"
-            class="form-control"
-            name="username"
-            aria-describedby="emailHelp"
-        />
-        <div class="mb-3">
-            <label for="exampleInputPassword1" class="form-label"
-                >Password</label
-            >
-            <input type="password" class="form-control" name="password" />
-        </div>
-        <input type="submit" value="Submit" class="button" />
-    </div>
-</form>
+<head>
+    <title>Login</title>
+</head>
+<body>
+    <h1>Login</h1>
+    {% if messages %}
+        {% for message in messages %}
+            <p style="color: red;">{{ message }}</p>
+        {% endfor %}
+    {% endif %}
+    <form method="POST">
+        {% csrf_token %}
+        
+        <label for="username">Username:</label>
+        <input type="text" name="username" required><br>
+        
+        <label for="password">Password:</label>
+        <input type="password" name="password" required><br>
+        
+        <button type="submit">Submit</button>
+    </form>
+    <a href="{% url 'signup' %}">Don't have an account? Sign up here.</a>
+</body>
+</html>

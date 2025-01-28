@@ -39,7 +39,7 @@ def signup_user(request):
         user = User.objects.create_user(username=username, email=email, password=password1)
         user.save()
         login(request, user)
-        messages.success("User added successfully")
+        messages.success(request, "User added successfully")
         return redirect("/admin/")
     else:
         return render(request, 'authentication/signup.html', {})

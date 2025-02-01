@@ -1,0 +1,25 @@
+:root{
+    --blue: #1E3A5F;
+    --yellow: #DFBC00;
+    --white:#fff;
+    --light-blue: #708090;
+}
+
+
+*{
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+
+body{
+    background-image: url("../login/images/signupbackground.jpeg");
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+
+.create-title{
+    color: var(--yellow);
+    
+}

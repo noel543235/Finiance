@@ -1,15 +1,19 @@
+.circle1{
+    border-radius: 50%;
+    width: 400px;
+    height: 400px;
+    background-color: #DFBC00;
+}
+.circle2{
+    border-radius: 50%;
+    width: 500px;
+    height: 500px;
+    background-color: #DFBC00;
+}
 body{
     font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
 }
-.mainimg{
-    width: 400px;
-    height: 300px;
-}
 
-.savingsimg{
-    width: 400px;
-    height: 300px;
-}
 nav{
     position:fixed;
     background-color: white;
@@ -32,7 +36,6 @@ nav ul li {
     text-decoration: none;
     color:gray;
 }
-
 .section1{
     margin-top:3%;
     background-color: #1E3A5F;
@@ -40,11 +43,19 @@ nav ul li {
     
     
 }
-
-
-.heading{
-    color: #DFBC00;
+ol {
+    font-size: x-large;
+    list-style: none;
+   color: white;
 }
-.textblue{
-    color: #F8F8F8;
+.hello{
+    margin-top: 100px;
 }
+.section2{
+    padding: 5%;
+}
+.line{
+    width: 500px;
+    height: 500px;
+}
+

@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="en-US">
+  <head>
+    <meta charset="utf-8" />
+    <title>My test page</title>
+    {% load static %}
+    {% load bootstrap5 %}
+    {% bootstrap_css %}
+    {% bootstrap_javascript %}
+    <link rel="stylesheet" href="{% static 'savings/style.css' %}">
+  </head>
+  <nav>
+    <div>
+        
+        <ul>
+            <li><p>Finiance</p></li>
+            <li class="link"><a href="http://127.0.0.1:8000/">Home</a></li>
+            <li class="link"><a href="http://127.0.0.1:8000/savings">Savings</a></li>
+            <li class="link"><a href="http://127.0.0.1:8000/expenses">Expenses</a></li>
+            <li class="link"><a href="http://127.0.0.1:8000/subscriptions">Subscriptions</a></li>
+            <li class="link"><a href="http://127.0.0.1:8000/accountinfo">Account Info</a></li>
+            <li class="link"><a href="http://127.0.0.1:8000/login/login">Log In</a></li>
+        </ul>
+    </div>
+</nav>
+  <body>
+    <div class="section1 row">
+      <div class="col">
+        <div class="circle1"></div>
+      </div>
+      <div class="col hello">
+        <ul>
+          <ol>Subscriptions</ol>
+          <ol>Mortgage/Rent</ol>
+          <ol>Utilities</ol>
+          <ol>Loans</ol>
+          <ol>Grocery</ol>
+          <ol>One time charge</ol>
+        </ul>
+      </div>
+    </div>
+    <div class="mt-3 section2 row">
+      <div class="col">
+          <h3>Savings for month</h3>
+          <div class="line bg-secondary">Line chart</div>
+      </div>
+      <div class="col">
+          <h3>Budgeting</h3>
+          <div class="circle2"></div>
+      </div>
+    </div>
+
+    <div class="section1 row">
+      <div class="col">
+        <form class="text-white">
+          <label class="mb-5">Number of Periods</label>
+          <input type="number" value="10"/>
+          <br/>
+          <label class="mb-5">Starting Amount</label>
+          <input type="number" value="1000"/>
+          <br/>
+          <label class="mb-5">Interest Rate</label>
+          <input type="number" value="6"/>
+          <br/>
+          <label class="mb-5">Periodic Deposit</label>
+          <input type="number" value="100"/>
+          <br/>
+          <p>Time when you want to make it</p>
+          <label class="mb-5">Beginning</label>
+          <input type="radio"/>
+          <br/>
+          <label class="mb-5">End</label>
+          <input type="radio"/>
+          <br/>
+          <button>Calculate</button>
+        </form>
+      </div>
+      <div class="col">
+        <div class="line bg-secondary p-3">
+          <h4>Results: Please Put in a Calculation</h4>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

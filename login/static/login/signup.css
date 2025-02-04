@@ -13,13 +13,13 @@
 }
 
 
-body{
-    background-image: url("../login/images/signupbackground.jpeg");
-    background-size: cover;
-    background-repeat: no-repeat;
-}
-
 .create-title{
-    color: var(--yellow);
-    
+    padding-top: 20px;
+    text-transform: uppercase;
+    color: var(--blue);
+    font-weight: bold;
+
+}
+body{
+    background-color: var(--white);
 }

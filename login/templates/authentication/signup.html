@@ -7,7 +7,7 @@
     <link rel="stylesheet" href="{% static 'login/signup.css' %}">
 </head>
 <body>
-    <div class="container-fluid bg-secondary text-dark py-3 text-center mb-5" >
+    <div class="container text-dark pt-3 text-center mb-5 " >
         <h1 class="create-title">Create an Account</h1>
         {% if messages %}
             {% for message in messages %}
@@ -16,7 +16,7 @@
         {% endif %}
     </div>
     <br>
-   <section class="container my-3 pb-4 bg-light w-50 text-dark text-center border border-dark rounded-3">
+   <section class="container my-3 pb-4 bg-light w-50 text-dark text-center border border-dark border-1 rounded-3">
     <form method="POST" class="row g-3 mt-2">
         {% csrf_token %}
         <div class="col-md-6 text-start">
@@ -36,7 +36,7 @@
             <input type="password" name="password2" class="form-control" required><br>
         </div>
         <div class="col-12 text-center mb-3">
-            <button type="submit" class="btn btn-warning">Sign Up</button>
+            <button type="submit" class="btn btn-warning fw-bold">Sign Up</button>
         </div>
     </form>
     <a href="{% url 'login' %}" class="text-decoration-none">Already have an account? Login here.</a>

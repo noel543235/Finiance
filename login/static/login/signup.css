@@ -23,3 +23,26 @@
 body{
     background-color: var(--white);
 }
+
+nav{
+    position:fixed;
+    background-color: white;
+   top:0%;
+   width:100%;
+}
+nav p{
+    display: inline;
+   
+}
+nav ul {
+    display: flex;
+}
+nav ul li {
+    font-size: larger;
+    list-style: none;
+    margin-right: 50px;
+}
+.link a {
+    text-decoration: none;
+    color:gray;
+}

@@ -1,5 +1,9 @@
 from django.http import HttpResponse
+from django.template import loader
+
 
 
 def index(request):
-    return HttpResponse("Hello, world. You're at the account info index.")
+    template = loader.get_template("accountinfo/index.html")
+ 
+    return HttpResponse(template.render())

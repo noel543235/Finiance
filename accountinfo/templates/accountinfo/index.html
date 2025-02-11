@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="en-US">
+  <head>
+    <meta charset="utf-8" />
+    <title>My test page</title>
+    {% load static %}
+    {% load bootstrap5 %}
+    {% bootstrap_css %}
+    {% bootstrap_javascript %}
+    <link rel="stylesheet" href="{% static 'accountinfo/style.css' %}">
+  </head>
+  <nav>
+    <div>
+        
+        <ul>
+            <li><p>Finiance</p></li>
+            <li class="link"><a href="http://127.0.0.1:8000/">Home</a></li>
+            <li class="link"><a href="http://127.0.0.1:8000/savings">Savings</a></li>
+            <li class="link"><a href="http://127.0.0.1:8000/expenses">Expenses</a></li>
+            <li class="link"><a href="http://127.0.0.1:8000/subscriptions">Subscriptions</a></li>
+            <li class="link"><a href="http://127.0.0.1:8000/accountinfo">Account Info</a></li>
+            <li class="link"><a href="http://127.0.0.1:8000/login/login">Log In</a></li>
+        </ul>
+    </div>
+</nav>
+  <body>
+    <div class="mt-5 row ">
+        <div class=" side col">
+            <ul>
+                <li>Account</li>
+                <li>Expenses</li>
+                <li>Savings</li>
+                <li>Subscriptions</li>
+                <li>WishList</li>
+                <li>History</li>
+                <li>Log out</li>
+            </ul>
+        </div>
+        <div class="col">
+            <h1>Account Information</h1>
+            <div>
+                <h4>Name: </h4>
+                <p>Adriana Viviano</p>
+            </div>
+            <div>
+                <h4>Email: </h4>
+                <p>Aviviano@icloud.com</p>
+            </div>
+            <div>
+                <h4>Username: </h4>
+                <p>Noel</p>
+            </div>
+            <button>Change Password</button>
+            <button>Change Information</button>
+        </div>
+    </div>
+  </body>
+
+
+</html>

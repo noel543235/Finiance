@@ -1,0 +1,7 @@
+<h2>Add an Expense</h2>
+<form method="post">
+  {% csrf_token %}
+  {{ form.as_p }}
+  <button type="submit">Save Expense</button>
+</form>
+<a href="{% url 'expenses' %}">View All Expenses</a>

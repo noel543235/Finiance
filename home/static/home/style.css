@@ -1,5 +1,6 @@
 body{
     font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    background-color: #FAF9F6;
 }
 
 
@@ -9,7 +10,7 @@ body{
 }
 nav{
     position:fixed;
-    background-color: white;
+    background-color: #FAF9F6;
    top:0%;
    width:100%;
 }
@@ -32,7 +33,7 @@ nav ul li {
 
 .section1{
     margin-top:3%;
-    background-color: #1E3A5F;
+    background-color: #006600;
     padding: 5%;
     
     

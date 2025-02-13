@@ -10,7 +10,7 @@ def login_user(request):
         user = authenticate(request, username=username, password=password)
         if user is not None:
             login(request, user)
-            return redirect('/admin/')
+            return redirect('home')
         else:
             # Invalid login
             messages.success(request, "There was an error logging in. Please try again")
@@ -35,12 +35,13 @@ def signup_user(request):
         
         if User.objects.filter(email=email):
             messages.success(request, "Email already in use. Please try again")
+            return redirect('signup')
 
         user = User.objects.create_user(username=username, email=email, password=password1)
         user.save()
         login(request, user)
         messages.success(request, "User added successfully")
-        return redirect("/admin/")
+        return redirect("home")
     else:
         return render(request, 'authentication/signup.html', {})
 

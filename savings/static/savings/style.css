@@ -2,7 +2,6 @@
     border-radius: 50%;
     width: 400px;
     height: 400px;
-    background: conic-gradient(#DB93B0 0deg 172deg, #9046CF 172deg 249deg, #2D2A32 249deg 313deg, #AB3428 313deg 333deg, #6FD872 333deg 347deg, #002A22 347deg 360deg);
 }
 .circle2{
     border-radius: 50%;
@@ -12,11 +11,12 @@
 }
 body{
     font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    background-color: #FAF9F6;
 }
 
 nav{
     position:fixed;
-    background-color: white;
+    background-color: #FAF9F6;
    top:0%;
    width:100%;
 }
@@ -34,12 +34,12 @@ nav ul li {
 }
 .link a {
     text-decoration: none;
-    color:gray;
+    color: black;
 }
 .section1{
-    margin-top:3%;
-    background-color: #1E3A5F;
+    margin-top:2%;
     padding: 5%;
+    background-color: #006600;
     
     
 }
@@ -49,7 +49,7 @@ ol {
    color: white;
 }
 .hello{
-    margin-top: 100px;
+    margin-top: 50px;
 }
 .section2{
     padding: 5%;

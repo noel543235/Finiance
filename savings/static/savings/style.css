@@ -2,7 +2,6 @@
     border-radius: 50%;
     width: 400px;
     height: 400px;
-    background: conic-gradient(#DB93B0 0deg 172deg, #9046CF 172deg 249deg, #2D2A32 249deg 313deg, #AB3428 313deg 333deg, #6FD872 333deg 347deg, #002A22 347deg 360deg);
 }
 .circle2{
     border-radius: 50%;
@@ -58,4 +57,3 @@ ol {
     width: 500px;
     height: 500px;
 }
-

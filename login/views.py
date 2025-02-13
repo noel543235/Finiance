@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
 from django.contrib import messages
+from accountinfo.models import CustomUser
 
 def login_user(request):
     if request.method == "POST":
@@ -29,15 +30,15 @@ def signup_user(request):
             messages.success(request, "Passwords do not match. Please try again")
             return redirect('signup')
         
-        if User.objects.filter(username=username):
+        if CustomUser.objects.filter(username=username):
             messages.success(request, "Username already in use. Please try again")
             return redirect('signup')
         
-        if User.objects.filter(email=email):
+        if CustomUser.objects.filter(email=email):
             messages.success(request, "Email already in use. Please try again")
             return redirect('signup')
 
-        user = User.objects.create_user(username=username, email=email, password=password1)
+        user = CustomUser.objects.create_user(username=username, email=email, password=password1)
         user.save()
         login(request, user)
         messages.success(request, "User added successfully")

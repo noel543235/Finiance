@@ -34,4 +34,4 @@ class Loan(models.Model):
     start_date = models.DateField(default=timezone.now)
 
     def __str__(self):
-        return str(self.id) + ' - ' + self.name + self.user.date_of_birth
+        return str(self.id) + ' - ' + self.label + self.user.date_of_birth

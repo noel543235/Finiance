@@ -1,7 +1,7 @@
 from django.urls import path
-
-from . import views
+from .views import index, get_expenses
 
 urlpatterns = [
-    path("", views.index, name="index"),
+    path('', index, name="index"),
+    path('get_expenses', get_expenses, name="get_expenses"),  # AJAX request handler
 ]

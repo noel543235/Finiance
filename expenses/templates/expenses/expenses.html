@@ -1,10 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Your Expenses</title>
+  {% load static %} 
+  {% load bootstrap5 %} 
+  {% bootstrap_css %} 
+  {%bootstrap_javascript %}
+  <link rel="stylesheet" href="{% static 'home/style.css' %}" />
+  <nav>
+    <div>
+      <ul>
+        <li>
+          <p>Finiance</p>
+        </li>
+        <li class="link"><a href="http://127.0.0.1:8000/">Home</a></li>
+        <li class="link">
+          <a href="http://127.0.0.1:8000/savings">Savings</a>
+        </li>
+        <li class="link">
+          <a href="http://127.0.0.1:8000/expenses">Expenses</a>
+        </li>
+        <li class="link">
+          <a href="http://127.0.0.1:8000/subscriptions">Subscriptions</a>
+        </li>
+        <li class="link">
+          <a href="http://127.0.0.1:8000/accountinfo">Account Info</a>
+        </li>
+        <li class="link">
+          <a href="http://127.0.0.1:8000/login/login">Log In</a>
+        </li>
+      </ul>
+    </div>
+  </nav>
+</head>
+<body>
+  <div class="container mt-5 py-4 text-center bg-success rounded-2 text-white">
+    <h2>Your Expenses</h2>
+      <ul class="list-unstyled">
+        {% for expense in expenses %}
+          <li>{{ expense.label }} - ${{ expense.amount }} ({{ expense.date }})</li>
+        {% empty %}
+          <li>No expenses recorded yet.</li>
+        {% endfor %}
+      </ul>
+      <a href="{% url 'add_expense' %}" class="text-decoration-none text-dark btn btn-light">Add New Expense</a>
 
-  <h2>Your Expenses</h2>
-  <ul>
-    {% for expense in expenses %}
-      <li>{{ expense.label }} - ${{ expense.amount }} ({{ expense.date }})</li>
-    {% empty %}
-      <li>No expenses recorded yet.</li>
-    {% endfor %}
-  </ul>
-  <a href="{% url 'add_expense' %}">Add New Expense</a>
+  </div>
+
+
+
+
+
+
+  
+</body>
+</html>
+
+
+
+
+ 

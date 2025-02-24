@@ -6,6 +6,8 @@ class ExpenseForm(forms.ModelForm):
         model = Expense
         fields = ['label', 'amount', 'frequency']
         widgets = {
-            'frequency': forms.Select(choices=Expense.FREQUENCY_CHOICES)  # Dropdown for frequency
+            'label': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Enter Label'}),
+            'amount': forms.NumberInput(attrs={'class': 'form-control', 'placeholder': 'Enter amount'}),
+            'frequency': forms.Select(choices=Expense.FREQUENCY_CHOICES, attrs={'class': 'form-select', 'aria-label': 'Default'})  # Dropdown for frequency
         }
     

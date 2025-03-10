@@ -1,6 +1,6 @@
 body{
     font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
-    background-color: #FAF9F6;
+    background-color: #F8F8FF;
 }
 
 
@@ -10,9 +10,10 @@ body{
 }
 nav{
     position:fixed;
-    background-color: #FAF9F6;
+    background-color: #F8F8FF;
    top:0%;
    width:100%;
+   color: #2D2D2D;
 }
 nav p{
     display: inline;
@@ -26,15 +27,14 @@ nav ul li {
     list-style: none;
     margin-right: 50px;
 }
-
 .link a {
     text-decoration: none;
-    color:gray;
+    color: #2D2D2D;
 }
 
 .section1{
     margin-top:3%;
-    background-color: #006600;
+    background-color: #3D0066;
     padding: 5%;
     
     
@@ -42,8 +42,18 @@ nav ul li {
 
 
 .heading{
-    color: #DFBC00;
+    color: #FFD700;
+    font-weight: bold;
 }
 .textblue{
     color: #F8F8F8;
+}
+button{
+    background-color: #D4AF37;
+    color: #2D2D2D;
+    font-weight: bold;
+}
+
+.cards{
+    margin-left: 5%;
 }

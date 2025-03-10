@@ -17,43 +17,66 @@
             <li class="link"><a href="http://127.0.0.1:8000/">Home</a></li>
             <li class="link"><a href="http://127.0.0.1:8000/savings">Savings</a></li>
             <li class="link"><a href="http://127.0.0.1:8000/expenses">Expenses</a></li>
-            <li class="link"><a href="http://127.0.0.1:8000/subscriptions">Subscriptions</a></li>
             <li class="link"><a href="http://127.0.0.1:8000/accountinfo">Account Info</a></li>
             <li class="link"><a href="http://127.0.0.1:8000/login/login">Log In</a></li>
         </ul>
     </div>
 </nav>
   <body>
-    <div class="mt-5 row ">
-        <div class=" side col">
-            <ul>
-                <li>Account</li>
-                <li>Expenses</li>
-                <li>Savings</li>
-                <li>Subscriptions</li>
-                <li>WishList</li>
-                <li>History</li>
-                <li>Log out</li>
-            </ul>
+    <div class="row mt-5">
+        <div class="col-3">
+          <div id="list-example" class="list-group" >
+            <a class=" p-5 list-group-item list-group-item-action" style="background-color: #006600; color: white;" href="#list-item-1">Profile</a>
+            <a class=" p-5 list-group-item list-group-item-action" style="background-color: #006600; color: white;" href="#list-item-2">Expenses</a>
+            <a class=" p-5 list-group-item list-group-item-action" style="background-color: #006600; color: white;" href="#list-item-3">Savings</a>
+            <a class=" p-5 list-group-item list-group-item-action" style="background-color: #006600; color: white;" href="#list-item-4">Wishlist</a>
+            <a class=" p-5 list-group-item list-group-item-action" style="background-color: #006600; color: white;" href="#list-item-5">Budget</a>
+            <a class=" p-5 list-group-item list-group-item-action" style="background-color: #006600; color: white;" href="#list-item-6">Resources</a>
+ 
+          </div>
         </div>
-        <div class="col">
-            <h1>Account Information</h1>
+        <div class="col-6 ms-5">
+          <div data-bs-spy="scroll" data-bs-target="#list-example" data-bs-smooth-scroll="true" class="scrollspy-example" tabindex="0">
+            <h4 id="list-item-1">Profile</h4>
             <div>
-                <h4>Name: </h4>
-                <p>Adriana Viviano</p>
-            </div>
-            <div>
-                <h4>Email: </h4>
-                <p>Aviviano@icloud.com</p>
-            </div>
-            <div>
-                <h4>Username: </h4>
+                <h6>Username:</h6>
                 <p>Noel</p>
             </div>
-            <button>Change Password</button>
-            <button>Change Information</button>
+            <div>
+                <h6>Email:</h6>
+                <p>test@test.com</p>
+            </div>
+            <p class="mb-5">See Something Wrong if you would like to change anything <button>Press Here</button></p>
+            <h4 id="list-item-2">Expenses</h4>
+            <p>Expense: Netflix  Price: $15.00</p>
+            <p>Expense: Mortgage  Price: $1000.00</p>
+            <p>Expense: Hulu  Price: $20.00</p>
+            <p>Expense: water bill  Price: $100.00</p>
+            <button class="mb-5">Are you missing an expense please click here</button>
+            <h4 id="list-item-3">Savings</h4>
+            <h6>Goals</h6>
+            <p>Goal: New Car Current Ammount saved: $2000 Out of: $30000</p>
+            <p>Goal: New Home Current Ammount saved: $3000 Out of: $130000</p>
+            <p>Goal: vacation Current Ammount saved: $5000 Out of: $13000</p>
+            <h6>Budgeting/Emergency fund</h6>
+            <p>Emergencey Fund: $20000</p>
+            <p>Current Budget: $300 a week</p>
+            <h6>Expected Savings</h6>
+            <p>Estimated to save $900</p>
+            <button>See Something Missing Please Press Here</button>
+            <h4 id="list-item-4" class="mt-5">Wishlist</h4>
+            <p>Wish: Disney Vacation Cost: $3000</p>
+            <p>Wish: Universal Vacation Cost: $3000</p>
+            <p>Wish: Disney Vacation Cost: $3000</p>
+            <button>See Something Missing Please Press Here</button>
+            <h4 id="list-item-5" class="mt-5">Budget</h4>
+            <p>Current Budget: $300</p>
+            <button>Need to Update your budget press here</button>
+            <h4 id="list-item-6" class="mt-5">Resources</h4>
+            <p>Youtube Has A Lot of Resources</p>
+          </div>
         </div>
-    </div>
+      </div>
   </body>
 
 

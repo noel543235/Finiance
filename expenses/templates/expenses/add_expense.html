@@ -1,7 +1,49 @@
-<h2>Add an Expense</h2>
-<form method="post">
-  {% csrf_token %}
-  {{ form.as_p }}
-  <button type="submit">Save Expense</button>
-</form>
-<a href="{% url 'expenses' %}">View All Expenses</a>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  {% load static %} 
+  {% load bootstrap5 %} 
+  {% bootstrap_css %} 
+  {%bootstrap_javascript %}
+  <link rel="stylesheet" href="{% static 'home/style.css' %}" />
+</head>
+<nav>
+  <div>
+    <ul>
+      <li>
+        <p>Finiance</p>
+      </li>
+      <li class="link"><a href="http://127.0.0.1:8000/">Home</a></li>
+      <li class="link">
+        <a href="http://127.0.0.1:8000/savings">Savings</a>
+      </li>
+      <li class="link">
+        <a href="http://127.0.0.1:8000/expenses">Expenses</a>
+      </li>
+      <li class="link">
+        <a href="http://127.0.0.1:8000/subscriptions">Subscriptions</a>
+      </li>
+      <li class="link">
+        <a href="http://127.0.0.1:8000/accountinfo">Account Info</a>
+      </li>
+      <li class="link">
+        <a href="http://127.0.0.1:8000/login/login">Log In</a>
+      </li>
+    </ul>
+  </div>
+</nav>
+  <body>
+      <div class="container mt-5 border border-2 text-center">
+        <h2 class="text-center">Add an Expense</h2>
+        <form method="post">
+          {% csrf_token %}
+          {{ form.as_p }}
+          <button type="submit" class="bg-success text-white">Save Expense</button>
+        </form>
+        <a href="{% url 'expenses' %}" class="text-decoration-none">View All Expenses</a>
+      </div>
+  </body>
+</html>

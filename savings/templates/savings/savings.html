@@ -12,25 +12,21 @@
     </head>
     <nav>
         <div>
-            <ul>
+            <ul >
                 <li><p>Finiance</p></li>
-                <li class="link"><a href="http://127.0.0.1:8000/">Home</a></li>
+                <li class="link"><a href="http://127.0.0.1:8000/" >Home</a></li>
                 <li class="link">
                     <a href="http://127.0.0.1:8000/savings">Savings</a>
                 </li>
                 <li class="link">
-                    <a href="http://127.0.0.1:8000/expenses">Expenses</a>
+                    <a href="http://127.0.0.1:8000/expenses" >Expenses</a>
                 </li>
-                <li class="link">
-                    <a href="http://127.0.0.1:8000/subscriptions"
-                        >Subscriptions</a
-                    >
-                </li>
+             
                 <li class="link">
                     <a href="http://127.0.0.1:8000/accountinfo">Account Info</a>
                 </li>
                 <li class="link">
-                    <a href="http://127.0.0.1:8000/login/login">Log In</a>
+                    <a href="http://127.0.0.1:8000/login/login" >Log In</a>
                 </li>
             </ul>
         </div>
@@ -41,7 +37,7 @@
               <div class="circle1 mb-5"></div>
               <div style="margin-left: 105px;">
                 <form method="GET" action="">
-                  <label class="text-white fw-bold fs-4" for="frequency">Select Frequency:</label>
+                  <label class="heading fw-bold fs-4" for="frequency">Select Frequency:</label>
                   <select id="frequency" class="form-select w-50">
                       <option value="Monthly">Monthly</option>
                       <option value="Weekly">Weekly</option>
@@ -50,10 +46,10 @@
               </form>
             </div>
           </div>
-          <div class="col hello text-white ">
-            <h3 class="text-white fw-bold" id="savingsHeading">Expenses for month</h3>
+          <div class="col ms-4 hello">
+            <h3 class=" fw-bold heading" id="savingsHeading">Expenses for month</h3>
 
-              <ul class="list-unstyled fs-4">
+              <ul class="list-unstyled fs-4 text-white">
                   {% for expense in expenses %}
                   <li >{{ expense.label }}: ${{ expense.amount }}</li>
                   {% endfor %}
@@ -64,46 +60,71 @@
         <div class="col ms-5">
           <p class="fw-bold">Emergencey Fund: Please Add An Emergency Fund!</p>
           <p class="d-inline-flex gap-1">
-            <button class="btn btn-primary" type="button" data-bs-toggle="collapse" data-bs-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
+            <button  type="button" data-bs-toggle="collapse" data-bs-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
               Press Here to edit your Emergency Fund
             </button>
           </p>
           <div class="collapse" id="collapseExample">
             <div class="card card-body w-50">
-              Some placeholder content for the collapse component. This panel is hidden by default but revealed when the user activates the relevant trigger.
+              <form>
+                <label class="me-2">How much do you have in your emergency fund:</label>
+                <input type="number"/>
+                <button>Add</button>
+
+              </form>
             </div>
           </div>
           <p class="mt-3 fw-bold">Emergencey Fund Goal: Please Add An Emergency Fund Goal!</p>
           <p class="d-inline-flex gap-1">
-            <button class="btn btn-primary" type="button" data-bs-toggle="collapse" data-bs-target="#collapseExample2" aria-expanded="false" aria-controls="collapseExample2">
+            <button  type="button" data-bs-toggle="collapse" data-bs-target="#collapseExample2" aria-expanded="false" aria-controls="collapseExample2">
               Press Here to edit your Emergency Fund Goal
             </button>
           </p>
           <div class="collapse" id="collapseExample2">
             <div class="card card-body w-50">
-              Some placeholder content for the collapse component. This panel is hidden by default but revealed when the user activates the relevant trigger.
-            </div>
+              <form>
+                <label class="me-2">How much do you want to have in your emergency fund:</label>
+                <input type="number"/>
+                <button>Add</button>
+               </form>            
+              </div>
           </div>
           <p class="mt-3 fw-bold">Savings</p>
           <p class="d-inline-flex gap-1">
-            <button class="btn btn-primary" type="button" data-bs-toggle="collapse" data-bs-target="#collapseExample3" aria-expanded="false" aria-controls="collapseExample3">
+            <button  type="button" data-bs-toggle="collapse" data-bs-target="#collapseExample3" aria-expanded="false" aria-controls="collapseExample3">
               Press Here to edit your Savings
             </button>
           </p>
           <div class="collapse" id="collapseExample3">
             <div class="card card-body w-50">
-              Some placeholder content for the collapse component. This panel is hidden by default but revealed when the user activates the relevant trigger.
+              <form>
+                <label class="me-2">Saving Name:</label>
+                <input type="text"/>
+                <label class="me-2">How much does it cost:</label>
+                <input type="number"/>
+                <label class="me-2">How much do you have saved:</label>
+                <input type="number"/>
+                <button>Add</button>
+               </form>
             </div>
           </div>
           <p class="mt-3 fw-bold">Saving Goals</p>
           <p class="d-inline-flex gap-1">
-            <button class="btn btn-primary" type="button" data-bs-toggle="collapse" data-bs-target="#collapseExample4" aria-expanded="false" aria-controls="collapseExample4">
-              Press Here to edit your Saving Goals
+            <button  type="button" data-bs-toggle="collapse" data-bs-target="#collapseExample4" aria-expanded="false" aria-controls="collapseExample4">
+              Press Here to add your Saving Goals
             </button>
           </p>
           <div class="collapse" id="collapseExample4">
             <div class="card card-body w-50">
-              Some placeholder content for the collapse component. This panel is hidden by default but revealed when the user activates the relevant trigger.
+             <form>
+              <label class="me-2">Saving Goal Name:</label>
+              <input type="text"/>
+              <label class="me-2">How much does it cost:</label>
+              <input type="number"/>
+              <label class="me-2">How much do you have saved:</label>
+              <input type="number"/>
+              <button>Add</button>
+             </form>
             </div>
           </div>
         </div>
@@ -208,8 +229,8 @@
         </div>
       </div>
 
-      <div class="section1 row">
-          <div class="col">
+      <div class="section2 row">
+          <div class="col ms-5">
               <form class="text-white">
                   <label class="mb-5">Number of Periods</label>
                   <input type="number" value="10" />

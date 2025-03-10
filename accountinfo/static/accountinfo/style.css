@@ -1,5 +1,4 @@
 nav{
-    position:fixed;
     background-color: white;
    top:0%;
    width:100%;
@@ -22,7 +21,6 @@ nav ul li {
 }
 
 .side{
-    background-color: #1E3A5F;
     height: 100%;
 }
 .side ul li{

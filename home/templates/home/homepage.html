@@ -21,11 +21,7 @@
                 <li class="link">
                     <a href="http://127.0.0.1:8000/expenses">Expenses</a>
                 </li>
-                <li class="link">
-                    <a href="http://127.0.0.1:8000/subscriptions"
-                        >Subscriptions</a
-                    >
-                </li>
+           
                 <li class="link">
                     <a href="http://127.0.0.1:8000/accountinfo">Account Info</a>
                 </li>
@@ -37,7 +33,7 @@
     </nav>
     <body>
         <div class="section1">
-            <div class="row justify-content-center">
+            <div class="row ">
                 <div class="col mt-5">
                     <h1 class="heading">
                         {% if user.is_authenticated %} 
@@ -62,12 +58,12 @@
                 </div>
             </div>
         </div>
-
-        <div class="row ms-5 mt-5 mb-3">
+        <div>
+        <div class="row mt-5 mb-3 cards">
             <div class="col">
                 <div
                     class="card"
-                    style="width: 25rem; background-color: #1e3a5f"
+                    style="width: 25rem; background-color: #3D0066"
                 >
                     <img
                         src="{% static 'home/images/savings.webp' %}"
@@ -89,7 +85,7 @@
             <div class="col">
                 <div
                     class="card"
-                    style="width: 25rem; background-color: #1e3a5f"
+                    style="width: 25rem; background-color: #3D0066"
                 >
                     <img
                         src="{% static 'home/images/expenses.jpeg' %}"
@@ -154,14 +150,14 @@
                     </div>
                 </div>
             </div>
-
+            
             <div class="col">
                 <div
                     class="card"
-                    style="width: 25rem; background-color: #1e3a5f"
+                    style="width: 25rem; background-color: #3D0066"
                 >
                     <img
-                        src="{% static 'home/images/history.png' %}"
+                        src="{% static 'home/images/his.jpg' %}"
                         class="card-img-top savingsimg"
                         alt="..."
                     />

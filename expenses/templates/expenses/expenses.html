@@ -36,38 +36,49 @@
   </nav>
 </head>
 <body>
-  <div class="container mt-5 py-4 text-center bg-success rounded-2 text-white">
-    <h2>Your Expenses</h2>
-      <ul class="list-unstyled">
+  <div class="container mt-5 py-4 text-center rounded-3 text-white" style="background-color: #3D0066;">
+    <h2 class="text-warning">YOUR EXPENSES</h2>
+      <ul class="list-unstyled text-start">
         {% for expense in expenses %}
-          <li>{{ expense.label }} - ${{ expense.amount }} ({{ expense.date }})</li>
+          <li class="text-capitalize d-flex justify-content-between align-items-center mb-3">
+            <span class="text-capitalize ms-3"> {{ expense.label }} : ${{ expense.amount }} ({{ expense.date }})</span>
           <form action="{% url 'delete_expense' expense.id %}" method="POST" style="display:inline;">
             {% csrf_token %}
             <button type="submit" class="btn btn-warning text-white fw-bold">Delete</button>
           </form>
+        </li>
         {% empty %}
           <li>No expenses recorded yet.</li>
         {% endfor %}
       </ul>
-      <a href="{% url 'add_expense' %}" class="text-decoration-none text-white btn btn-warning">Add New Expense</a>
-
-
-  </div>
-  <div class="mt-5">
-    <div class="container ">
-      <div class="row">
-        <div class="col border border-2 border-warning">
-          Daily
-        </div>
-        <div class="col border border-2 border-warning">
-          Weekly
-        </div>
-        <div class="col border border-2 border-warning">
-          Yearly
+      <a href="{% url 'add_expense' %}" class="text-decoration-none text-white btn btn-warning mt-5">Add New Expense</a>
+      <br><br>
+      <div class="mt-5">
+        <div class="container border border-1 border-light rounded-3 py-5 ">
+          <div class="row">
+            <div class="col border border-2 border-warning me-3 ms-2">
+              Daily
+            </div>
+            <div class="col border border-2 border-warning me-3">
+              Weekly
+            </div>
+            <div class="col border border-2 border-warning me-3">
+              Yearly
+            </div>
+          </div>
         </div>
       </div>
-    </div>
+      <!--Breakdown section-->
+      <!--will have a pie chart-->
+
+
+
+
+      <!--alerts and history section-->
+      <!--import excel sheet-->
+
   </div>
+ 
   
 
   

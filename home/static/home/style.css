@@ -11,7 +11,7 @@ body{
 nav{
     position:fixed;
     background-color: #FAF9F6;
-   top:0%;
+    top:0;
    width:100%;
 }
 nav p{
@@ -36,7 +36,6 @@ nav ul li {
     margin-top:3%;
     background-color: #006600;
     padding: 5%;
-    
     
 }
 

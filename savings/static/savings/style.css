@@ -11,16 +11,20 @@
 }
 body{
     font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
-    background-color: #FAF9F6;
+    background-color: #F8F8FF;
 }
 
 nav{
-    background-color: #FAF9F6;
-   top:0%;
-   width:100%;
+    background-color: #F8F8FF;
+    top:0%;
+    width:100%;
+    color: #2D2D2D;
+
 }
 nav p{
     display: inline;
+    color: #2D2D2D;
+
    
 }
 nav ul {
@@ -30,16 +34,18 @@ nav ul li {
     font-size: larger;
     list-style: none;
     margin-right: 50px;
+    color: #2D2D2D;
+
 }
 .link a {
     text-decoration: none;
-    color: black;
+    color: #2D2D2D;
 }
 .section1{
     margin-top:2%;
     padding: 5%;
-    background-color: #006600;
-    
+    background-color: #3D0066;
+    padding-left: 3%;
     
 }
 ol {
@@ -58,3 +64,18 @@ ol {
     height: 500px;
 }
 
+.heading{
+    color: #D4AF37;
+    font-weight: bold;
+}
+button{
+    background-color: #D4AF37;
+    color: #2D2D2D;
+    font-weight: bold;
+}
+.section2{
+    margin-top:3%;
+    background-color: #3D0066;
+    padding: 2%;
+    
+}

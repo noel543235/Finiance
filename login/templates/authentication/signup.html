@@ -24,9 +24,9 @@
             </ul>
         </div>
     </nav>
-    <div class="container text-dark pt-3 text-center mb-5 mt-5" >
+    <div class="container text-dark pt-3 text-center mb-3 mt-5" >
 
-        <h1 class="create-title">Create an Account</h1>
+        <h1 class="create-title"  style="color: #3D0066;">Create an Account</h1>
         {% if messages %}
             {% for message in messages %}
                 <p style="color: red;">{{ message }}</p>
@@ -34,7 +34,7 @@
         {% endif %}
     </div>
     <br>
-   <section class="container my-3 py-4 bg-light w-50 text-dark text-center border border-dark border-1 rounded-3">
+   <section class="container my-3 py-4 bg-light w-50 text-dark text-center  rounded-3">
     <form method="POST" class="row g-3 mt-2 ps-3 pe-3">
         {% csrf_token %}
         <div class="col-md-6 text-start">
@@ -54,10 +54,10 @@
             <input type="password" name="password2" class="form-control" required><br>
         </div>
         <div class="col-12 text-center mb-3">
-            <button type="submit" class="btn btn-warning fw-bold">Sign Up</button>
+            <button type="submit" class="btn fw-bold text-white" style="background-color: #3D0066;">Sign Up</button>
         </div>
     </form>
-    <a href="{% url 'login' %}" class="text-decoration-none fw-bold">Already have an account? Login here.</a>
+    <a href="{% url 'login' %}" class="text-decoration-none fw-bold  text-warning">Already have an account? Login here.</a>
    </section>
     
 </body>

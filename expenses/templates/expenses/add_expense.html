@@ -36,21 +36,20 @@
   </div>
 </nav>
   <body >
-    <div class="bg-light">
-      <div class="container mt-5 text-center bg-success text-white py-5 rounded-3 border-1 border-light">
-        <h2 class="text-center">ADD AN EXPENSE</h2>
-        <form method="post" class="col-md-12">
-          {% csrf_token %}
-            {{ form.as_p }}
-        </form>
-        <div class="mt-4">
-          <button type="submit" class="bg-light text-dark border btn-sm border-1 border-dark rounded-3">Save Expense</button>
-          <a href="{% url 'expenses' %}" class="text-decoration-none text-white">View All Expenses</a>
+      <div class="d-flex justify-content-center align-items-center vh-100 ">
+        <div class="container mt-5 text-center text-white py-5 px-5 rounded-3 border-1 border-dark" style="background-color: #3D0066; max-width: 1000px; box-shadow: 3px 9px 10px rgba(0,0,0,0.5);" >
+          <h2 class="text-center mb-5 text-warning ">ADD AN EXPENSE</h2>
+          <form method="post" class="col-md-12">
+            {% csrf_token %}
+              {{ form.as_p }}
+          </form>
+          <div class="mt-4">
+            <button type="submit" class="bg-warning text-light border btn-sm border-1 border-dark rounded-3 me-2" style="letter-spacing: 1.5px;">SAVE EXPENSE</button>
+            <a href="{% url 'expenses' %}" class="text-decoration-none text-warning">VIEW ALL EXPENSES</a>
+          </div>
         </div>
       </div>
-     
-
-    </div>
+    
       
   </body>
 </html>

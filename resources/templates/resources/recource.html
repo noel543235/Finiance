@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en-US">
+    <head>
+        <meta charset="utf-8" />
+        <title>My test page</title>
+        {% load static %} 
+        {% load bootstrap5 %} 
+        {% bootstrap_css %} 
+        {%bootstrap_javascript %}
+        <link rel="stylesheet" href="{% static 'resources/style.css' %}" />
+    </head>
+    <nav>
+        <div>
+            <ul>
+                <li><p>Finiance</p></li>
+                <li class="link"><a href="http://127.0.0.1:8000/">Home</a></li>
+                <li class="link">
+                    <a href="http://127.0.0.1:8000/savings">Savings</a>
+                </li>
+                <li class="link">
+                    <a href="http://127.0.0.1:8000/expenses">Expenses</a>
+                </li>
+           
+                <li class="link">
+                    <a href="http://127.0.0.1:8000/accountinfo">Account Info</a>
+                </li>
+                <li class="link">
+                    <a href="http://127.0.0.1:8000/resources">Resources</a>
+                </li>
+                <li class="link">
+                    <a href="http://127.0.0.1:8000/login/login">Log In</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+    <body>
+        <div class="mt-5">
+            <div class="section1 row">
+                <div class="col ms-5">
+                    <h3 class="heading">Resources</h3>
+                </div>
+                <div class="col">
+                    <ul>
+                        <li class="list">Youtube</li>
+                        <li class="list">Google</li>
+                        <li class="list">Images</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>

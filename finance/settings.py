@@ -44,6 +44,8 @@ INSTALLED_APPS = [
     'expenses',
     'savings',
     'bootstrap5',
+    'resources',
+    
 ]
 
 MIDDLEWARE = [

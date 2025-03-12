@@ -25,8 +25,12 @@
                     <a href="http://127.0.0.1:8000/accountinfo">Account Info</a>
                 </li>
                 <li class="link">
+                    <a href="http://127.0.0.1:8000/resources">Resources</a>
+                </li>
+                <li class="link">
                     <a href="http://127.0.0.1:8000/login/login">Log In</a>
                 </li>
+              
             </ul>
         </div>
     </nav>
@@ -77,7 +81,7 @@
                         <p class="textblue">
                             Click here to go see more information on savings
                         </p>
-                        <button>Savings</button>
+                        <button ><a href="http://127.0.0.1:8000/savings" class="text-decoration-none" style="color: #2D2D2D;">Savings</a></button>
                     </div>
                 </div>
             </div>
@@ -100,7 +104,7 @@
                             Click here to go see more information on your
                             expenses
                         </p>
-                        <button>Expenses</button>
+                        <button><a href="http://127.0.0.1:8000/expenses" class="text-decoration-none" style="color: #2D2D2D;">History</a></button>
                     </div>
                 </div>
             </div>
@@ -124,7 +128,10 @@
                             Click here to go see more information on your
                             history
                         </p>
-                        <button>History</button>
+                        
+                        <button ><a href="{% url 'history' %}" class="text-decoration-none" style="color: #2D2D2D;">History</a></button>
+                          
+                      
                     </div>
                 </div>
             </div>
@@ -132,9 +139,10 @@
         <div class="mt-5 section1">
             <div class="row">
                 <div class="col">
+                    <h2 class="heading">Quarter Pounder The Finance Piggy</h2>
                     <img
                         style="border-radius: 50%; width: 400px; height: 400px"
-                        src="{% static 'home/images/mascot2.JPG' %}"
+                        src="{% static 'home/images/quarter.JPG' %}"
                     />
                 </div>
                 <div class="col">

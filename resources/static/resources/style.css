@@ -10,8 +10,8 @@ body{
 }
 nav{
     position:fixed;
-    background-color: #F8F8FF;
-   top:0%;
+    background-color: #FAF9F6;
+    top:0;
    width:100%;
    color: #2D2D2D;
 }
@@ -31,33 +31,16 @@ nav ul li {
     text-decoration: none;
     color: #2D2D2D;
 }
-
 .section1{
     margin-top:3%;
     background-color: #3D0066;
     padding: 5%;
-    
-    
+    color: white;
 }
-
-
 .heading{
     color: #FFD700;
     font-weight: bold;
 }
-.textblue{
-    color: #F8F8F8;
-}
-button{
-    background-color: #D4AF37;
-    color: #2D2D2D;
-    font-weight: bold;
-}
-
-.cards{
-    margin-left: 5%;
-}
-
-button a {
-    color: #2D2D2D;
+.list{
+    list-style: none;
 }

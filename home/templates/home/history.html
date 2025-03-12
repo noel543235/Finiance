@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en-US">
+    <head>
+        <meta charset="utf-8" />
+        <title>My test page</title>
+        {% load static %} 
+        {% load bootstrap5 %} 
+        {% bootstrap_css %} 
+        {%bootstrap_javascript %}
+        <link rel="stylesheet" href="{% static 'home/style.css' %}" />
+    </head>
+    <nav>
+        <div>
+            <ul>
+                <li><p>Finiance</p></li>
+                <li class="link"><a href="http://127.0.0.1:8000/">Home</a></li>
+                <li class="link">
+                    <a href="http://127.0.0.1:8000/savings">Savings</a>
+                </li>
+                <li class="link">
+                    <a href="http://127.0.0.1:8000/expenses">Expenses</a>
+                </li>
+           
+                <li class="link">
+                    <a href="http://127.0.0.1:8000/accountinfo">Account Info</a>
+                </li>
+                <li class="link">
+                    <a href="http://127.0.0.1:8000/resources">Resources</a>
+                </li>
+                <li class="link">
+                    <a href="http://127.0.0.1:8000/login/login">Log In</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+    <body style="background-color: #3D0066;">
+       <div class="mt-5">
+        <h2 class="heading text-center">History</h2>
+        <div class="container border border-light border-1">
+            <h4 class="text-white p-2">Savings</h4>
+            <table class="table table-bordered table-striped text-white text-center">
+
+                <tr>
+                  <th class="text-white">Category</th>
+                  <th class="text-white">Ammount Saved</th>
+                  <th class="text-white">Date</th>
+                </tr>
+                <tr>
+                  <td>Home Down Payment</td>
+                  <td>$3000</td>
+                  <td>2/02/25</td>
+                </tr>
+                <tr>
+                  <td class="text-white">Car Fund</td>
+                  <td class="text-white">$2000</td>
+                  <td class="text-white">1/02/25</td>
+                </tr>
+                <tr>
+                  <td>Emergency Fund</td>
+                  <td>$1500</td>
+                  <td>12/26/24</td>
+                </tr>
+                <tr>
+                  <td class="text-white">Vacation Fund</td>
+                  <td class="text-white">$1000</td>
+                  <td class="text-white">6/26/24</td>
+                </tr>
+                <tr>
+                  <td>Education Savings</td>
+                  <td>$500</td>
+                  <td>08/06/24</td>
+                </tr>
+                <tr>
+                  <td class="text-white">Tech Upgrade</td>
+                  <td class="text-white">$500</td>
+                  <td class="text-white">3/10/25</td>
+                </tr>
+              </table>
+
+        </div>
+        <div class="container border border-light border-1 mt-5">
+            <h4 class="text-white p-2">Expenses</h4>
+            <table class="table table-bordered table-striped text-white text-center">
+
+                <tr>
+                  <th class="text-white">Category</th>
+                  <th class="text-white">Ammount</th>
+                  <th class="text-white">Type</th>
+                  <th class="text-white">Date</th>
+                </tr>
+                <tr>
+                  <td>Mortgage</td>
+                  <td>$1000</td>
+                  <td>Yearly</td>
+                  <td>2/02/25</td>
+                </tr>
+                <tr>
+                  <td class="text-white">Car loan</td>
+                  <td class="text-white">$2000</td>
+                  <td>Monthly</td>
+                  <td class="text-white">1/02/25</td>
+                </tr>
+                <tr>
+                  <td>Emergency Fund</td>
+                  <td>$1500</td>
+                  <td>Weekly</td>
+                  <td>12/26/24</td>
+                </tr>
+                <tr>
+                  <td class="text-white">Netflix</td>
+                  <td class="text-white">$15</td>
+                  <td>Monthly</td>
+                  <td class="text-white">6/26/24</td>
+                </tr>
+                <tr>
+                  <td>Hulu</td>
+                  <td>$100</td>
+                  <td>Monthly</td>
+                  <td>08/06/24</td>
+                </tr>
+                <tr>
+                  <td class="text-white">Car Insurance</td>
+                  <td class="text-white">$300</td>
+                  <td>Yearly</td>
+                  <td class="text-white">3/10/25</td>
+                </tr>
+              </table>
+
+        </div>
+       </div>
+    </body>
+</html>

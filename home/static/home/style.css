@@ -56,3 +56,7 @@ button{
 .cards{
     margin-left: 5%;
 }
+
+button a {
+    color: #2D2D2D;
+}

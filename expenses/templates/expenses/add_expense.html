@@ -4,14 +4,14 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Document</title>
-  {% load static %} 
-  {% load bootstrap5 %} 
-  {% bootstrap_css %} 
+  {% load static %}
+  {% load bootstrap5 %}
+  {% bootstrap_css %}
   {%bootstrap_javascript %}
   <link rel="stylesheet" href="{% static 'home/style.css' %}" />
 </head>
 <nav>
-  <div >
+  <div>
     <ul>
       <li>
         <p>Finiance</p>
@@ -35,22 +35,55 @@
     </ul>
   </div>
 </nav>
-  <body >
-    <div class="bg-light">
-      <div class="container mt-5 text-center bg-success text-white py-5 rounded-3 border-1 border-light">
-        <h2 class="text-center">ADD AN EXPENSE</h2>
-        <form method="post" class="col-md-12">
-          {% csrf_token %}
-            {{ form.as_p }}
-        </form>
-        <div class="mt-4">
-          <button type="submit" class="bg-light text-dark border btn-sm border-1 border-dark rounded-3">Save Expense</button>
-          <a href="{% url 'expenses' %}" class="text-decoration-none text-white">View All Expenses</a>
-        </div>
-      </div>
-     
 
+<body>
+  <div class="bg-light">
+    <div class="container mt-5 text-center bg-success text-white py-5 rounded-3 border-1 border-light">
+      <h2 class="text-center">ADD AN EXPENSE</h2>
+      <form method="post" class="col-md-12">
+        {% csrf_token %}
+        <div>
+          <h2>Select Expense Type</h2>
+          {{ form.as_p }}
+        </div>
+
+        {% if expense_form %}
+        <h2>Enter Details</h2>
+        {{ expense_form.as_p }} <!-- Render the form fields dynamically -->
+        {% else %}
+        <p>No expense form available. Please select an expense type.</p>
+        {% endif %}
+
+        <!-- The Loan form -->
+        <div id="loan-form" style="display: none;">
+          <h2>Loan Expense</h2>
+          {{ expense_form.as_p }}
+        </div>
+
+        <!-- The Subscription form -->
+        <div id="subscription-form" style="display: none;">
+          <h2>Subscription Expense</h2>
+          {{ expense_form.as_p }}
+        </div>
+
+        <!-- The Utility form -->
+        <div id="utility-form" style="display: none;">
+          <h2>Utility Expense</h2>
+          {{ expense_form.as_p }}
+        </div>
+
+        <button type="submit" class="bg-light text-dark border btn-sm border-1 border-dark rounded-3">Save
+          Expense</button>
+
+      </form>
+      <div class="mt-4">
+        <a href="{% url 'expenses' %}" class="text-decoration-none text-white">View All Expenses</a>
+      </div>
     </div>
-      
-  </body>
+
+
+  </div>
+
+</body>
+
 </html>

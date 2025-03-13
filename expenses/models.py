@@ -27,10 +27,10 @@ class Expense(models.Model):
 
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     label = models.CharField(max_length=50)
-    amount = models.DecimalField(max_digits=10, decimal_places=2)
+    amount = models.DecimalField(max_digits=10, decimal_places=2, default=0.0)
     date = models.DateField(default=timezone.now)
-    description = models.CharField(max_length=50)
-    category = models.ForeignKey(Category, on_delete=models.CASCADE)
+    description = models.CharField(max_length=50, null=True)
+    category = models.ForeignKey(Category, on_delete=models.CASCADE, null=True)
     
     
 class Loan(Expense):
@@ -43,8 +43,8 @@ class Loan(Expense):
         ('Y', 'Years')
     ]
     
-    interest_rate = models.DecimalField(max_digits=10, decimal_places=2)
-    term_amt = models.IntegerField()
+    interest_rate = models.DecimalField(max_digits=10, decimal_places=2, default=0.0)
+    term_amt = models.IntegerField(default=0)
     term = models.CharField(
         max_length = 1,
         choices = TERM_CHOICES,

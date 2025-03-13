@@ -31,4 +31,4 @@ class LoanForm(ModelForm):
     
     class Meta:
         model = Loan
-        fields = ['label', 'amount', 'category', 'principal', 'interest_rate']
+        fields = ['label', 'amount', 'category', 'interest_rate']

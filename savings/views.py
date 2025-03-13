@@ -2,36 +2,67 @@ from django.shortcuts import render
 from expenses.models import Expense
 from django.db.models import Sum
 from django.http import JsonResponse
+from itertools import chain
+from expenses.models import *
 import json
 
+def sum_expenses(expenses):
+    total = 0
+    for expense in expenses:
+        total += expense.amount
+        
+    return total
+
+
+def getUserExpenses(request):
+    '''Return all expenses of the current user'''
+    return list(chain(
+        OneTime.objects.filter(user=request.user),
+        Subscription.objects.filter(user=request.user),
+        Loan.objects.filter(user=request.user)
+    ))
+    
 
 def index(request):
-
-    frequency = "Monthly"
+    frequency = request.GET.get('frequency', 'Monthly')
+    
+    print(frequency)
 
     # Query the database for the top 10 Monthly expenses
-    expenses = Expense.objects.filter(frequency=frequency).order_by('-amount')[:10]
+    expenses = getUserExpenses(request)
     
-    # Calculate the sum of all Monthly expenses 
-    total_expenses = Expense.objects.filter(frequency=frequency).aggregate(Sum('amount'))['amount__sum'] or 0
+    # Calculate the sum of all expenses 
+    total = sum_expenses(expenses)
     
     # Calculate proportions for each expense relative to the total
-    proportions = [expense.amount/total_expenses * 360 if total_expenses > 0 else 0 for expense in expenses]
-    proportions = [float(proportion) for proportion in proportions]
-    return render(request, "savings/savings.html", {'expenses':expenses, 'proportions': json.dumps(proportions)})
+    if total > 0:
+        proportions = [float(expense.amount / total) for expense in expenses]
+    else:
+        proportions = [0] * len(expenses)
+    
+    return render(request, "savings/savings.html", {'expenses': expenses, 'proportions': proportions})
     
 def get_expenses(request):
     frequency = request.GET.get('frequency', 'Monthly') 
 
-    # Query the database for the top 10 expenses for that frequency
-    expenses = Expense.objects.filter(frequency=frequency).order_by('-amount')[:10]
+    # Query the database for all expenses
+    expenses = list(chain(
+        OneTime.objects.filter(user=request.user),
+        Subscription.objects.filter(user=request.user),
+        Loan.objects.filter(user=request.user)
+    ))
     
-    # Calculate total expenses sum
-    total_expenses = Expense.objects.filter(frequency=frequency).aggregate(Sum('amount'))['amount__sum'] or 0
+    # Sort expenses by date
+    expenses = sorted(expenses, key = lambda x: x.date, reverse=True)   
+    
+    # Calculate the sum of all expenses 
+    total = sum_expenses(expenses)
 
-    # Calculate proportions for chart
-    proportions = [expense.amount / total_expenses * 360 if total_expenses > 0 else 0 for expense in expenses]
-    proportions = [float(proportion) for proportion in proportions]
+    # Calculate proportions for each expense relative to the total
+    if total > 0:
+        proportions = [expense.amount / total for expense in expenses]
+    else:
+        proportions = [0] * len(expenses)
     
     expenses_data = list(expenses.values('label', 'amount'))
 

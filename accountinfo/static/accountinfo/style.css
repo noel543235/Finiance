@@ -1,5 +1,5 @@
 nav{
-    background-color: white;
+   background-color: white;
    top:0%;
    width:100%;
 }
@@ -27,4 +27,15 @@ nav ul li {
     list-style: none;
     padding: 5%;
 
+}
+
+
+/*to remove a blue border that was around rescources */
+.list-group-item-action:focus, 
+.list-group-item-action.active {
+    outline: none !important;
+    border: none !important;
+    box-shadow: none !important;
+    background-color: #3D0066 !important; /* Keeps the same background */
+    color: white !important; /* Ensures text color stays white */
 }

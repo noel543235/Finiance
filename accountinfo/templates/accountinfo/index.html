@@ -1,88 +1,122 @@
 <!doctype html>
 <html lang="en-US">
-  <head>
-    <meta charset="utf-8" />
-    <title>My test page</title>
-    {% load static %}
-    {% load bootstrap5 %}
-    {% bootstrap_css %}
-    {% bootstrap_javascript %}
-    <link rel="stylesheet" href="{% static 'accountinfo/style.css' %}">
-  </head>
-  <nav>
-    <div>
-        
-        <ul>
-            <li><p>Finiance</p></li>
-            <li class="link"><a href="http://127.0.0.1:8000/">Home</a></li>
-            <li class="link"><a href="http://127.0.0.1:8000/savings">Savings</a></li>
-            <li class="link"><a href="http://127.0.0.1:8000/expenses">Expenses</a></li>
-            <li class="link"><a href="http://127.0.0.1:8000/accountinfo">Account Info</a></li>
-            <li class="link"><a href="http://127.0.0.1:8000/login/login">Log In</a></li>
-        </ul>
-    </div>
+
+<head>
+  <meta charset="utf-8" />
+  <title>My test page</title>
+  {% load static %}
+  {% load bootstrap5 %}
+  {% bootstrap_css %}
+  {% bootstrap_javascript %}
+  <link rel="stylesheet" href="{% static 'accountinfo/style.css' %}">
+</head>
+<nav>
+  <div class="ms-5">
+    <ul class="ms-5">
+      <li class="ms-5">
+        <p class="ms-4 fw-bold">Finiance</p>
+      </li>
+      <li class="link"><a href="http://127.0.0.1:8000/">Home</a></li>
+      <li class="link"><a href="http://127.0.0.1:8000/savings">Savings</a></li>
+      <li class="link"><a href="http://127.0.0.1:8000/expenses">Expenses</a></li>
+      <li class="link"><a href="http://127.0.0.1:8000/accountinfo">Account Info</a></li>
+      <li class="link"><a href="http://127.0.0.1:8000/login/login">Log In</a></li>
+    </ul>
+  </div>
 </nav>
-  <body>
-    <div class="row mt-5" >
-        <div class="col-3 ">
-          <div id="list-example" class="list-group" >
-            <a class=" p-5 list-group-item list-group-item-action" style="background-color: #3D0066; color: white;" href="#list-item-1">Profile</a>
-            <a class=" p-5 list-group-item list-group-item-action" style="background-color: #3D0066; color: white;" href="#list-item-2">Expenses</a>
-            <a class=" p-5 list-group-item list-group-item-action" style="background-color: #3D0066; color: white;" href="#list-item-3">Savings</a>
-            <a class=" p-5 list-group-item list-group-item-action" style="background-color: #3D0066; color: white;" href="#list-item-4">Wishlist</a>
-            <a class=" p-5 list-group-item list-group-item-action" style="background-color: #3D0066; color: white;" href="#list-item-5">Budget</a>
-            <a class=" p-5 list-group-item list-group-item-action" style="background-color: #3D0066; color: white;" href="#list-item-6">Resources</a>
- 
-          </div>
-        </div>
-        <div class="col-6 ms-5">
-          <div data-bs-spy="scroll" data-bs-target="#list-example" data-bs-smooth-scroll="true" class="scrollspy-example" tabindex="0">
-            <h4 id="list-item-1">Profile</h4>
-            <div>
-                <h6>Username:</h6>
-                <p>Noel</p>
-            </div>
-            <div>
-                <h6>Email:</h6>
-                <p>test@test.com</p>
-            </div>
-            <p class="mb-5 ">See Something Wrong if you would like to change anything &nbsp;<button class="rounded-3 p-2 text-white" style="background-color: #3D0066;"> Press Here</button></p>
+
+<body>
+  <div class="container-fluid min-vh-100"> 
+    <div class="row mt-5 h-100"> 
+      <div class="col-2" style="position: fixed; top: 0; left: 0; width: 190px; height: 100vh; background-color: #3D0066; color: white; padding: 10px; text-align: center; align-content: center;"> 
+        <div id="list-example" class="list-group flex-grow-1 overflow-auto">
+          <hr >
+          <a class=" p-5 list-group-item list-group-item-action" style="background-color: #3D0066; color: white;"
+            href="#list-item-1">Profile</a>
             <hr>
-            <h4 id="list-item-2">Expenses</h4>
-            <p>Expense: Netflix  Price: $15.00</p>
-            <p>Expense: Mortgage  Price: $1000.00</p>
-            <p>Expense: Hulu  Price: $20.00</p>
-            <p>Expense: water bill  Price: $100.00</p>
-            <button class="rounded-3 p-2 text-white mb-5 " style="background-color: #3D0066;">Are you missing an expense please click here</button>
+          <a class=" p-5 list-group-item list-group-item-action" style="background-color: #3D0066; color: white;"
+            href="#list-item-2">Expenses</a>
             <hr>
-            <h4 id="list-item-3">Savings</h4>
-            <h6>Goals</h6>
-            <p>Goal: New Car Current Ammount saved: $2000 Out of: $30000</p>
-            <p>Goal: New Home Current Ammount saved: $3000 Out of: $130000</p>
-            <p>Goal: vacation Current Ammount saved: $5000 Out of: $13000</p>
-            <h6>Budgeting/Emergency fund</h6>
-            <p>Emergencey Fund: $20000</p>
-            <p>Current Budget: $300 a week</p>
-            <h6>Expected Savings</h6>
-            <p>Estimated to save $900</p>
-            <button class="rounded-3 p-2 text-white" style="background-color: #3D0066;">See Something Missing Please Press Here</button>
+          <a class=" p-5 list-group-item list-group-item-action" style="background-color: #3D0066; color: white;"
+            href="#list-item-3">Savings</a>
             <hr>
-            <h4 id="list-item-4" class="mt-5">Wishlist</h4>
-            <p>Wish: Disney Vacation Cost: $3000</p>
-            <p>Wish: Universal Vacation Cost: $3000</p>
-            <p>Wish: Disney Vacation Cost: $3000</p>
-            <button class="rounded-3 p-2 text-white" style="background-color: #3D0066;">See Something Missing Please Press Here</button>
+          <a class=" p-5 list-group-item list-group-item-action" style="background-color: #3D0066; color: white;"
+            href="#list-item-4">Wishlist</a>
             <hr>
-            <h4 id="list-item-5" class="mt-5">Budget</h4>
-            <p>Current Budget: $300</p>
-            <button class="rounded-3 p-2 text-white" style="background-color: #3D0066;">Need to Update your budget press here</button>
+          <a class=" p-5 list-group-item list-group-item-action" style="background-color: #3D0066; color: white;"
+            href="#list-item-5">Budget</a>
             <hr>
-            <h4 id="list-item-6" class="mt-5">Resources</h4>
-            <p>Youtube Has A Lot of Resources</p>
-          </div>
+          <a class=" p-5 list-group-item list-group-item-action" style="background-color: #3D0066; color: white;"
+            href="#list-item-6">Resources</a>
+            <hr>
         </div>
       </div>
-  </body>
+    </div>
+
+    <div class="col-10 ms-5" style="margin-left: 220px; padding-left: 150px;">
+      <div data-bs-spy="scroll" data-bs-target="#list-example" data-bs-smooth-scroll="true" class="scrollspy-example"
+        tabindex="0">
+        <h4 id="list-item-1 fw-bold" style="text-decoration: underline;">Profile</h4>
+        <div class="d-flex align-items-center">
+          <h6 class="me-2">Username:</h6>
+          <p class="mb-1">Noel</p>
+        </div>
+        <div class="d-flex align-items-center">
+          <h6 class="me-2">Email:</h6>
+          <p class="mb-2">test@test.com</p>
+        </div>
+        <p class="mb-5 ">See Something Wrong? <br> If you would like to change anything &nbsp;<button
+            class="rounded-3 ps-1 pe-1 text-white" style="background-color: #3D0066;"> Press Here</button></p>
+        <hr>
+
+        <h4 id="list-item-2" style="text-decoration: underline;">Expenses</h4>
+        <p>Expense: Netflix Price: $15.00</p>
+        <p>Expense: Mortgage Price: $1000.00</p>
+        <p>Expense: Hulu Price: $20.00</p>
+        <p>Expense: water bill Price: $100.00</p>
+        <br>
+        <p>Are You Missing an Expense?</p>
+        <button class="rounded-3 p-2 text-white mb-5 " style="background-color: #3D0066;">Please Click Here</button>
+        <hr>
+
+        <h4 id="list-item-3" style="text-decoration: underline;">Savings</h4>
+        <h6>Goals</h6>
+        <p style="margin-left: 10px;">Goal: New Car - Current Ammount saved: $2000 out of: $30000</p>
+        <p style="margin-left: 10px;">Goal: New Home - Current Ammount saved: $3000 out of: $130000</p>
+        <p style="margin-left: 10px;">Goal: Vacation - Current Ammount saved: $5000 out of: $13000</p>
+        <h6>Budgeting/Emergency fund</h6>
+        <p style="margin-left: 10px;">Emergencey Fund: $20000</p>
+        <p style="margin-left: 10px;">Current Budget: $300 a week</p>
+        <h6>Expected Savings</h6>
+        <p style="margin-left: 10px;">Estimated to save $900</p>
+        <br>
+        <p>See Something Missing?</p>
+        <button class="rounded-3 p-2 text-white" style="background-color: #3D0066;">Please Click
+          Here</button>
+        <hr>
+
+        <h4 id="list-item-4" class="mt-5" style="text-decoration: underline;">Wishlist</h4>
+        <p style="margin-left: 10px;">Wish: Disney Vacation Cost: $3000</p>
+        <p style="margin-left: 10px;">Wish: Universal Vacation Cost: $3000</p>
+        <p style="margin-left: 10px;">Wish: Disney Vacation Cost: $3000</p>
+        <br>
+        <p>See Something Missing?</p>
+        <button class="rounded-3 p-2 text-white" style="background-color: #3D0066;">Please Click
+          Here</button>
+        <hr>
+
+        <h4 id="list-item-5" class="mt-5" style="text-decoration: underline;">Budget</h4>
+        <p>Current Budget: $300</p>
+        <button class="rounded-3 p-2 text-white" style="background-color: #3D0066;">Need to Update your budget? Press
+          Here</button>
+        <hr>
+
+        <h4 id="list-item-6" class="mt-5" style="text-decoration: underline;">Resources</h4>
+        <p>Youtube Has A Lot of Resources!</p>
+      </div>
+    </div>
+  </div>
+</body>
 
 
 </html>

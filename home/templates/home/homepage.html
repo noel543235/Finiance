@@ -37,7 +37,7 @@
     <body>
         <div class="section1">
             <div class="row ">
-                <div class="col mt-5">
+                <div class="col mt-5 ms-5 me-5 align-self-center">
                     <h1 class="heading">
                         {% if user.is_authenticated %} 
                             Welcome, {{ user.username }}!
@@ -53,7 +53,7 @@
                         you?
                     </p>
                 </div>
-                <div class="col">
+                <div class="col ms-5">
                     <img
                         style="width: 400px; height: 400px; border-radius: 50%"
                         src="{% static 'home/images/finance.jpeg' %}"
@@ -62,19 +62,19 @@
             </div>
         </div>
         <div>
-        <div class="row mt-5 mb-3 p-5">
+        <div class="row mt-5 mb-3 ms-5 p-5">
             <div class="col">
                 <div
                     class="card"
-                    style="width: 25rem; background-color: #3D0066"
+                    style="width: 25rem; height: 32rem; background-color: #3D0066"
                 >
                     <img
                         src="{% static 'home/images/savings.webp' %}"
                         class="card-img-top savingsimg"
                         alt="..."
                     />
-                    <div class="card-body">
-                        <h4 class="heading">Savings</h4>
+                    <div class="card-body text-center"">
+                        <h4 class="heading text-center">Savings</h4>
                         <p class="textblue">
                             Would you like to see more about savings?
                         </p>
@@ -88,15 +88,15 @@
             <div class="col">
                 <div
                     class="card"
-                    style="width: 25rem; background-color: #3D0066"
+                    style="width: 25.1rem;  height: 32rem; background-color: #3D0066"
                 >
                     <img
                         src="{% static 'home/images/expenses.jpeg' %}"
                         class="card-img-top savingsimg"
                         alt="..."
                     />
-                    <div class="card-body">
-                        <h4 class="heading">Expenses</h4>
+                    <div class="card-body text-center"">
+                        <h4 class="heading text-center">Expenses</h4>
                         <p class="textblue">
                             Would you like to see more about your expenses?
                         </p>
@@ -104,7 +104,7 @@
                             Click here to go see more information on your
                             expenses
                         </p>
-                        <button><a href="http://127.0.0.1:8000/expenses" class="text-decoration-none" style="color: #2D2D2D;">History</a></button>
+                        <button><a href="http://127.0.0.1:8000/expenses" class="text-decoration-none rounded-1 " style="color: #2D2D2D; letter-spacing: 1px;">Expenses</a></button>
                     </div>
                 </div>
             </div>
@@ -112,15 +112,15 @@
             <div class="col">
                 <div
                     class="card"
-                    style="width: 25rem; background-color: #3D0066"
+                    style="width: 25rem;  height: 32rem; background-color: #3D0066"
                 >
                     <img
                         src="{% static 'home/images/his.jpg' %}"
                         class="card-img-top savingsimg"
                         alt="..."
                     />
-                    <div class="card-body">
-                        <h4 class="heading">history</h4>
+                    <div class="card-body text-center">
+                        <h4 class="heading text-center">history</h4>
                         <p class="textblue">
                             Would you like to see you expenses history?
                         </p>
@@ -145,7 +145,7 @@
                         src="{% static 'home/images/quarter.JPG' %}"
                     />
                 </div>
-                <div class="col">
+                <div class="col align-self-center">
                     <h1 class="heading">About</h1>
                     <p class="textblue">
                         This site aims to help you learn more about savings

@@ -50,6 +50,11 @@ class Loan(Expense):
         choices = TERM_CHOICES,
         default = 'M'
     )
+    frequency = models.CharField(
+        max_length = 2,
+        choices = FREQUENCY_CHOICES,
+        default = 'O'
+    )
     
     
 class Subscription(Expense):

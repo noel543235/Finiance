@@ -1,17 +1,32 @@
 from django.shortcuts import render
-from expenses.models import Expense
-from django.db.models import Sum
 from django.http import JsonResponse
 from itertools import chain
 from expenses.models import *
+from .forms import SavingsAccountForm, SavingsGoalForm, FrequencyForm
 import json
 
-def sum_expenses(expenses):
+
+def sumExpenses(expenses):
+    '''Sum amounts of given expenses'''
     total = 0
     for expense in expenses:
         total += expense.amount
         
     return total
+
+
+def getProportions(expenses):
+    '''Calculate the proportions of each expense amount relative to the total'''
+    # Find total of all expenses
+    total = sumExpenses(expenses)
+    
+    # Calculate proportions
+    if total > 0:
+        proportions = [float(expense.amount / total) for expense in expenses]
+    else:
+        proportions = [0]
+        
+    return proportions
 
 
 def getUserExpenses(request):
@@ -22,23 +37,27 @@ def getUserExpenses(request):
         Loan.objects.filter(user=request.user)
     ))
     
+#def filterExpenses(expenses, frequency):
+    
+    
 
 def index(request):
-    frequency = request.GET.get('frequency', 'Monthly')
-    
-    print(frequency)
-
-    # Query the database for the top 10 Monthly expenses
+    '''Initial template when user visits page'''
+    # Query all user expenses from the database
     expenses = getUserExpenses(request)
     
-    # Calculate the sum of all expenses 
-    total = sum_expenses(expenses)
+    # Extract frequency selection from user
+    form = FrequencyForm(request.POST)
+    frequency = form.cleaned_data["frequency"]
     
-    # Calculate proportions for each expense relative to the total
-    if total > 0:
-        proportions = [float(expense.amount / total) for expense in expenses]
-    else:
-        proportions = [0] * len(expenses)
+    # Filter expenses by specified frequency
+    
+    
+    # Calculate the sum of all expenses 
+    total = sumExpenses(expenses)
+    
+    # Calculate the proportions of each expense amount relative to the total
+    proportions = getProportions(expenses)    
     
     return render(request, "savings/savings.html", {'expenses': expenses, 'proportions': proportions})
     

@@ -1,89 +1,79 @@
+<!DOCTYPE html>
 <html lang="en">
-
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Document</title>
+  <title>Your Expenses</title>
   {% load static %}
   {% load bootstrap5 %}
   {% bootstrap_css %}
-  {%bootstrap_javascript %}
+  {% bootstrap_javascript %}
   <link rel="stylesheet" href="{% static 'home/style.css' %}" />
+  <nav>
+    <div>
+      <ul>
+        <li>
+          <p>Finiance</p>
+        </li>
+        <li class="link"><a href="http://127.0.0.1:8000/">Home</a></li>
+        <li class="link"><a href="http://127.0.0.1:8000/savings">Savings</a></li>
+        <li class="link"><a href="http://127.0.0.1:8000/expenses">Expenses</a></li>
+        <li class="link"><a href="http://127.0.0.1:8000/accountinfo">Account Info</a></li>
+        <li class="link"><a href="http://127.0.0.1:8000/resources">Resources</a></li>
+        <li class="link"><a href="http://127.0.0.1:8000/login/login">Log In</a></li>
+      </ul>
+    </div>
+  </nav>
 </head>
-<nav>
-  <div>
-    <ul>
-      <li>
-        <p>Finiance</p>
-      </li>
-      <li class="link"><a href="http://127.0.0.1:8000/">Home</a></li>
-      <li class="link">
-        <a href="http://127.0.0.1:8000/savings">Savings</a>
-      </li>
-      <li class="link">
-        <a href="http://127.0.0.1:8000/expenses">Expenses</a>
-      </li>
-      <li class="link">
-        <a href="http://127.0.0.1:8000/accountinfo">Account Info</a>
-      </li>
-      <li class="link">
-        <a href="http://127.0.0.1:8000/resources">Resources</a>
-    </li>
-      <li class="link">
-        <a href="http://127.0.0.1:8000/login/login">Log In</a>
-      </li>
-    </ul>
-  </div>
-</nav>
-
 <body>
-  <div class="bg-light">
-    <div class="container mt-5 text-center bg-success text-white py-5 rounded-3 border-1 border-light">
-      <h2 class="text-center">ADD AN EXPENSE</h2>
-      <form method="post" class="col-md-12">
-        {% csrf_token %}
-        <div>
-          <h2>Select Expense Type</h2>
-          {{ form.as_p }}
+    <div class="bg-light">
+        <div class="container mt-5 text-center bg-success text-white py-5 rounded-3 border-1 border-light">
+            <h2 class="text-center">ADD AN EXPENSE</h2>
+            <form method="post" class="col-md-12">
+                {% csrf_token %}
+                <div>
+                    <h2>Select Expense Type</h2>
+                    {{ form.as_p }} <!-- This renders the dropdown for expense_type -->
+                </div>
+
+                <div id="dynamic-form-container">
+                    <!-- The form will be injected here dynamically based on the expense type -->
+                </div>
+
+                <button type="submit" class="bg-light text-dark border btn-sm border-1 border-dark rounded-3">
+                    Save Expense
+                </button>
+            </form>
+
+            <div class="mt-4">
+                <a href="{% url 'expenses' %}" class="text-decoration-none text-white">View All Expenses</a>
+            </div>
         </div>
-
-        {% if expense_form %}
-        <h2>Enter Details</h2>
-        {{ expense_form.as_p }} <!-- Render the form fields dynamically -->
-        {% else %}
-        <p>No expense form available. Please select an expense type.</p>
-        {% endif %}
-
-        <!-- The Loan form -->
-        <div id="loan-form" style="display: none;">
-          <h2>Loan Expense</h2>
-          {{ expense_form.as_p }}
-        </div>
-
-        <!-- The Subscription form -->
-        <div id="subscription-form" style="display: none;">
-          <h2>Subscription Expense</h2>
-          {{ expense_form.as_p }}
-        </div>
-
-        <!-- The Utility form -->
-        <div id="utility-form" style="display: none;">
-          <h2>Utility Expense</h2>
-          {{ expense_form.as_p }}
-        </div>
-
-        <button type="submit" class="bg-light text-dark border btn-sm border-1 border-dark rounded-3">Save
-          Expense</button>
-
-      </form>
-      <div class="mt-4">
-        <a href="{% url 'expenses' %}" class="text-decoration-none text-white">View All Expenses</a>
-      </div>
     </div>
 
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const expenseTypeField = document.querySelector("#id_expense_type");
+            const dynamicFormContainer = document.getElementById("dynamic-form-container");
 
-  </div>
+            // Function to fetch the corresponding form via AJAX
+            function loadExpenseForm() {
+                const expenseType = expenseTypeField.value;
+                
+                fetch(`/expenses/load-expense-form?expense_type=${expenseType}`)
+                    .then(response => response.json())
+                    .then(data => {
+                        dynamicFormContainer.innerHTML = data.form_html;
+                    })
+                    .catch(error => console.error("Error loading form:", error));
+            }
 
+            // Call the function when the page loads to show the form based on the selected expense type
+            loadExpenseForm();
+
+            // Listen for changes to the select field and load the form dynamically
+            expenseTypeField.addEventListener("change", loadExpenseForm);
+        });
+    </script>
 </body>
-
 </html>

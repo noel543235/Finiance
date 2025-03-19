@@ -1,25 +1,21 @@
 from django.db import models
 from django.contrib.auth.models import User
-from django.utils import timezone
+from dateutil.relativedelta import relativedelta
 
-FREQUENCY_CHOICES = [
-        ('O', 'One Time'),
-        ('D', 'Daily'),
-        ('W', 'Weekly'),
-        ('M', 'Monthly'),
-        ('A', 'Annually'),
-        ('BW', 'Biweekly')
-    ]
-
+# User defined categories to group expenses into
 class Category(models.Model):
     
     class Meta:
         db_table = 'categories_table'
     
     name = models.CharField(max_length=50, unique=True, primary_key=True)
-   
-# EXPENSE ABSTRACT MODEL ---------------------------------------------------------
-
+    
+    def __str__(self):
+        return f'{self.name}'
+    
+    
+# BASE ABSTRACT Expense model from which One Time Expenses and Recurring Expenses inherit from.
+# All Expense objects share these fields
 class Expense(models.Model):
 
     class Meta:
@@ -27,51 +23,102 @@ class Expense(models.Model):
 
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     label = models.CharField(max_length=50)
-    amount = models.DecimalField(max_digits=10, decimal_places=2, default=0.0)
-    date = models.DateField(default=timezone.now)
-    description = models.CharField(max_length=50, null=True)
+    amount = models.DecimalField(max_digits=10, decimal_places=2)
+    date_created = models.DateTimeField(auto_now_add=True) # NOTE: This is not when purchase was made, but rather when entry is added to DB
+    description = models.TextField(blank=True, null=True)
     category = models.ForeignKey(Category, on_delete=models.CASCADE, null=True, blank=True)
     
-    
-class Loan(Expense):
-    
-    class Meta:
-        db_table = 'loans_table'
-    
-    TERM_CHOICES = [
-        ('M', 'Months'),
-        ('Y', 'Years')
-    ]
-    
-    interest_rate = models.DecimalField(max_digits=10, decimal_places=2, default=0.0)
-    term_amt = models.IntegerField(default=0)
-    term = models.CharField(
-        max_length = 1,
-        choices = TERM_CHOICES,
-        default = 'M'
-    )
-    frequency = models.CharField(
-        max_length = 2,
-        choices = FREQUENCY_CHOICES,
-        default = 'O'
-    )
+    def __str__(self):
+        return f'{self.label} - ${self.amount}'
     
     
-class Subscription(Expense):
-    
-    class Meta:
-        db_table = 'subscriptions_table'
-    
-    frequency = models.CharField(
-        max_length = 2,
-        choices = FREQUENCY_CHOICES,
-        default = 'O'
-    )
-    
-    
+# One Time Expense Model
 class OneTime(Expense):
     
     class Meta:
-        db_table = 'one_times_table'
+        db_table = 'one_time_table'
         
-    pass
+    date_purchased = models.DateField(auto_now_add=True)
+    
+    def __str__(self):
+        return f'{self.label} - ${self.amount}'
+    
+    
+# Recurring Expense Model
+class Recurring(Expense):
+    
+    class Meta:
+        db_table = 'recurring_table'
+        
+    # Choices for how often an expense recurs
+    FREQUENCY_CHOICES = [
+            ('D', 'Daily'),
+            ('W', 'Weekly'),
+            ('BW', 'Biweekly'),
+            ('M', 'Monthly'),
+            ('SA', 'Semiannually'),
+            ('A', 'Annually'),
+            ('BA', 'Biannually')
+        ]  
+    
+    start_date = models.DateField(auto_now_add=True)
+    end_date = models.DateField(blank=True, null=True)
+    frequency = models.CharField(max_length=2, choices=FREQUENCY_CHOICES)
+    next_due_date = models.DateField()
+    
+    
+    def when_next_payment(self):
+        '''Calculate the due date of the following payment in schedule'''
+        if self.frequency == 'D':
+            return self.next_due_date + relativedelta(days=1)
+        elif self.frequency == 'W':
+            return self.next_due_date + relativedelta(weeks=1)
+        elif self.frequency == 'BW':
+            return self.next_due_date + relativedelta(weeks=2)
+        elif self.frequency == 'M':
+            return self.next_due_date + relativedelta(months=1)
+        elif self.frequency == 'SA':
+            return self.next_due_date + relativedelta(months=6)
+        elif self.frequency == 'A':
+            return self.next_due_date + relativedelta(years=1)
+        else:
+            return self.next_due_date + relativedelta(years=2)
+        
+        
+    def update_next_payment_date(self, new_date):
+        '''Update the due date of the following payment in schedule'''
+        self.next_due_date = new_date
+        self.save()
+        
+    def __str__(self):
+        return f'{self.label} - ${self.amount} - {self.frequency}'
+    
+    
+# Loan Model - Inherits from Recurring Expense Model
+class Loan(Recurring):
+    
+    class Meta:
+        db_table = 'loan_table'
+    
+    principal = models.DecimalField(max_digits=20, decimal_places=2)
+    apr = models.DecimalField(max_digits=10, decimal_places=2) # Annual Interest Rate
+    term_amt = models.IntegerField() # Months
+    
+    # NOTE: Monthly compounding is assumed
+    
+    def __str__(self):
+        return f'{self.label} - ${self.principal} - {self.apr}'
+    
+
+# Loan Payment Model - Represents payments towards loan objects
+class LoanPayment(models.Model):
+    
+    class Meta:
+        db_table = 'loan_payment_table'
+    
+    loan = models.ForeignKey(Loan, on_delete=models.CASCADE)
+    payment_date = models.DateField()
+    amount = models.DecimalField(max_digits=10, decimal_places=2)
+    
+    def __str__(self):
+            return f'Payment of ${self.amount} on {self.payment_date} toward {self.loan.name}'

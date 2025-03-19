@@ -2,33 +2,34 @@ from django import forms
 from django.forms import Form, ModelForm
 from .models import *
 
-class ExpenseForm(Form):
+class GeneralForm(Form):
     
-    EXPENSE_CHOICES = [
-        ('O', 'One Time'),
-        ('S', 'Subscription'),
-        ('L', 'Loan')
-    ]
-    
-    expense_type = forms.ChoiceField(choices = EXPENSE_CHOICES)
+    is_recurring = forms.BooleanField()
 
 
 class OneTimeForm(ModelForm):
     
     class Meta:
         model = OneTime
-        fields = ['label', 'amount', 'category']
+        fields = ['label', 'amount', 'date_purchased', 'category', 'description']
         
 
-class SubscriptionForm(ModelForm):
+class RecurringForm(ModelForm):
     
     class Meta:
-        model = Subscription
-        fields = ['label', 'amount', 'category', 'frequency']
+        model = Recurring
+        fields = ['label', 'amount', 'start_date', 'frequency', 'next_due_date', 'end_date', 'category']
         
 
 class LoanForm(ModelForm):
     
     class Meta:
         model = Loan
-        fields = ['label', 'amount', 'category', 'interest_rate']
+        fields = ['label', 'principal', 'amount', 'apr', 'term_amt', 'frequency', 'start_date', 'next_due_date', 'category']
+        
+        
+class LoanPaymentForm(ModelForm):
+    
+    class Meta:
+        model = LoanPayment
+        fields = ['loan', 'payment_date', 'amount']

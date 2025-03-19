@@ -2,17 +2,18 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.http import JsonResponse
 from django.template.loader import render_to_string
 from itertools import chain
-from .forms import ExpenseForm, OneTimeForm, SubscriptionForm, LoanForm
-from .models import OneTime, Subscription, Loan, Expense
+from .forms import *
+from .models import *
 
 def add_expense(request):
     """Handles adding a new expense for the logged-in user."""
 
+    # Redirects user to login page if they are not logged in
     if not request.user.is_authenticated:
         return redirect('/login/login')
 
-    expense_form = None
-    selected_expense_type = None
+    # Initialize
+    form = GeneralForm(request.POST)
 
     if request.method == "POST":
         form = ExpenseForm(request.POST)

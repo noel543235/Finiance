@@ -34,7 +34,29 @@ def getUserExpenses(request):
     return list(chain(
         OneTime.objects.filter(user=request.user),
         Recurring.objects.filter(user=request.user),
-    ))   
+    ))  
+    
+
+def getUserGoals(request):
+    '''Return all savings goals of the current user''' 
+    return SavingsGoal.objects.filter(user=request.user)
+
+
+def getGoalPayments(goal):
+    return goal.goalpayment_set.all()
+
+
+def getGoalProportions(goals):
+    '''Calculate the percetage completed for each goal'''
+    proportions = list()
+    for goal in goals:
+        payments = getGoalPayments(goal)
+        total = sum(payment.amount for payment in payments)
+        percent = max(0.01, total / goal.amount)
+        proportions.append(percent * 100)
+        
+    return proportions
+        
     
 
 def index(request):
@@ -51,11 +73,11 @@ def get_chart_data(request):
     frequency = request.GET.get('frequency')
 
     # Query the database for all expenses
-    expenses = getUserExpenses(request)  
+    goals = getUserGoals(request) 
     
-    proportions = getProportions(expenses)
+    proportions = getGoalProportions(goals)
     
-    labels = [expense.label for expense in expenses]
+    labels = [goal.label for goal in goals]
     
     print(labels, proportions)
 

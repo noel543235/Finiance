@@ -293,7 +293,6 @@
       data: {
         labels: ['Goal1', 'Goal2', 'Goal3'], // Empty labels initially
         datasets: [{
-          label: 'Dataset Bro',
           data: [1, 0.2, 3], // Empty dataset initially
           backgroundColor: [
             'rgba(255, 99, 132, 0.2)',
@@ -317,8 +316,18 @@
       options: {
         indexAxis: 'y', // Set indexAxis to 'y' to make the bars horizontal
         scales: {
+          x: {
+            beginAtZero: true, // Ensures x-axis starts from 0
+            min: 0, // Set the minimum value for the x-axis
+            max: 100, // Set the maximum value for the x-axis
+          },
           y: {
             beginAtZero: true
+          }
+        },
+        plugins: {
+          legend: {
+            display: false // This hides the legend completely
           }
         }
       }

@@ -35,7 +35,7 @@ class SavingsAccount(Saving):
         default = 'M'
     )
     
-def SavingsGoal(Saving):
+class SavingsGoal(Saving):
     
     class Meta:
         db_table = 'savings_goal_table'

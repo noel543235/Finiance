@@ -4,6 +4,7 @@ from django.template.loader import render_to_string
 from itertools import chain
 from .forms import *
 from .models import *
+from datetime import datetime
 
 def add_expense(request):
     """Handles adding a new expense for the logged-in user."""
@@ -12,59 +13,65 @@ def add_expense(request):
     if not request.user.is_authenticated:
         return redirect('/login/login')
 
-    # Initialize
-    form = GeneralForm(request.POST)
+    # Initialize general form allowing user to select one-time or recurring expense
+    form = ExpenseForm()
 
-    if request.method == "POST":
+    if request.method == 'POST':
         form = ExpenseForm(request.POST)
         if form.is_valid():
-            expense_type = form.cleaned_data["expense_type"]
-            selected_expense_type = expense_type
+            is_recurring = form.cleaned_data['is_recurring']
+            is_loan = form.cleaned_data['is_loan']
 
-            # Determine the correct form to use based on selected expense type
-            if expense_type == 'O':
-                expense_form = OneTimeForm(request.POST)
-            elif expense_type == 'S':
-                expense_form = SubscriptionForm(request.POST)
-            elif expense_type == 'L':
-                expense_form = LoanForm(request.POST)
-            
-            if expense_form and expense_form.is_valid():
-                expense = expense_form.save(commit=False)
-                expense.user = request.user  # Associate expense with the logged-in user
-                expense.save()
-                return redirect("expenses")
+            if not is_recurring:
+                # Handle one-time expense
+                one_time_expense = OneTime(
+                    user=request.user,
+                    label=form.cleaned_data['label'],
+                    amount=form.cleaned_data['amount'],
+                    description=form.cleaned_data['description'],
+                    category=form.cleaned_data['category'],
+                    date_created=datetime.now(),
+                    date_purchased=form.cleaned_data['date_purchased']
+                )
+                one_time_expense.save()
+            else:
+                if not is_loan:
+                    # Handle recurring expense
+                    recurring_expense = Recurring(
+                        user=request.user,
+                        label=form.cleaned_data['label'],
+                        amount=form.cleaned_data['amount'],
+                        description=form.cleaned_data['description'],
+                        category=form.cleaned_data['category'],
+                        date_created=datetime.now(),
+                        start_date=form.cleaned_data['start_date'],
+                        end_date=form.cleaned_data['end_date'],
+                        frequency=form.cleaned_data['frequency'],
+                        next_due_date=form.cleaned_data['next_due_date']
+                    )
+                    recurring_expense.save()
+                
+                else:
+                    # Handle loan expense
+                    loan_expense = Loan(
+                        user=request.user,
+                        label=form.cleaned_data['label'],
+                        amount=form.cleaned_data['amount'],
+                        description=form.cleaned_data['description'],
+                        category=form.cleaned_data['category'],
+                        date_created=datetime.now(),
+                        start_date=form.cleaned_data['start_date'],
+                        end_date=form.cleaned_data['end_date'],
+                        frequency=form.cleaned_data['frequency'],
+                        next_due_date=form.cleaned_data['next_due_date'],
+                        principal=form.cleaned_data['principal'],
+                        apr=form.cleaned_data['apr'],
+                        term_amt=form.cleaned_data['term_amt']
+                    )
+                    loan_expense.save()
+                    
 
-    else:  # Handle GET request
-        form = ExpenseForm()
-        selected_expense_type = request.GET.get('expense_type', None)
-
-    return render(request, "expenses/add_expense.html", {
-        "form": form,
-        "expense_form": expense_form,
-        "selected_expense_type": selected_expense_type
-    })
-
-def load_expense_form(request):
-    """Loads the specific form based on the selected expense type."""
-    expense_type = request.GET.get('expense_type')
-
-    # Handle form creation based on expense_type
-    if expense_type == 'O':
-        form = OneTimeForm()
-    elif expense_type == 'S':
-        form = SubscriptionForm()
-    elif expense_type == 'L':
-        form = LoanForm()
-    else:
-        form = None
-
-    # If form is valid, return the form HTML rendered as a string
-    if form:
-        form_html = form.as_p()
-        return JsonResponse({"form_html": form_html})
-    else:
-        return JsonResponse({"form_html": ""}, status=400)
+    return render(request, "expenses/add_expense.html", {'form': form})
 
 
 def expense_list(request):
@@ -73,23 +80,44 @@ def expense_list(request):
     if not request.user.is_authenticated:
         return redirect('/login/login')
 
-    expenses = chain(
-        OneTime.objects.filter(user=request.user),
-        Subscription.objects.filter(user=request.user),
-        Loan.objects.filter(user=request.user)
-    )
+    onetime_expenses = OneTime.objects.filter(user=request.user)
+    recurring_expenses = Recurring.objects.filter(user=request.user)
     
-    return render(request, "expenses/expenses.html", {"expenses": expenses})
+    return render(request, "expenses/expenses.html", {"onetime_expenses": onetime_expenses, "recurring_expenses": recurring_expenses})
 
-def delete_expense(request, expense_id):
+def delete_onetime_expense(request, expense_id):
     """Deletes an expense if it belongs to the logged-in user."""
-
+    
     if not request.user.is_authenticated:
         return redirect('/login/login')
+    
+    expense = get_object_or_404(OneTime, pk=expense_id)
 
     if request.method == "POST":
-
+            
         # Retrieve the expense, ensuring it belongs to the current user
-        expense = get_object_or_404(Expense, id=expense_id, user=request.user) 
         expense.delete()
+
+        # expense.delete()
+            
+            
+    return redirect('expenses')
+
+
+def delete_recurring_expense(request, expense_id):
+    """Deletes an expense if it belongs to the logged-in user."""
+    
+    if not request.user.is_authenticated:
+        return redirect('/login/login')
+    
+    expense = get_object_or_404(Recurring, pk=expense_id)
+    
+    if request.method == "POST":
+            
+        # Retrieve the expense, ensuring it belongs to the current user
+        expense.delete()
+        
+        # expense.delete()
+            
+            
     return redirect('expenses')

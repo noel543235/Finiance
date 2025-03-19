@@ -24,9 +24,10 @@ class Expense(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     label = models.CharField(max_length=50)
     amount = models.DecimalField(max_digits=10, decimal_places=2)
-    date_created = models.DateTimeField(auto_now_add=True) # NOTE: This is not when purchase was made, but rather when entry is added to DB
     description = models.TextField(blank=True, null=True)
     category = models.ForeignKey(Category, on_delete=models.CASCADE, null=True, blank=True)
+    date_created = models.DateTimeField(auto_now_add=True) # NOTE: This is not when purchase was made, but rather when entry is added to DB
+
     
     def __str__(self):
         return f'{self.label} - ${self.amount}'
@@ -38,7 +39,7 @@ class OneTime(Expense):
     class Meta:
         db_table = 'one_time_table'
         
-    date_purchased = models.DateField(auto_now_add=True)
+    date_purchased = models.DateField()
     
     def __str__(self):
         return f'{self.label} - ${self.amount}'
@@ -61,7 +62,7 @@ class Recurring(Expense):
             ('BA', 'Biannually')
         ]  
     
-    start_date = models.DateField(auto_now_add=True)
+    start_date = models.DateField()
     end_date = models.DateField(blank=True, null=True)
     frequency = models.CharField(max_length=2, choices=FREQUENCY_CHOICES)
     next_due_date = models.DateField()

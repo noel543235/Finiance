@@ -7,21 +7,38 @@
 </head>
 
 <body>
-    <nav>
-        <div>
-            
-            <ul>
-                <li><p>Finiance</p></li>
-                <li class="link"><a href="http://127.0.0.1:8000/">Home</a></li>
-                <li class="link"><a href="http://127.0.0.1:8000/savings">Savings</a></li>
-                <li class="link"><a href="http://127.0.0.1:8000/expenses">Expenses</a></li>
-                <li class="link"><a href="http://127.0.0.1:8000/accountinfo">Account Info</a></li>
-                <li class="link"><a href="http://127.0.0.1:8000/login/login">Log In</a></li>
+    <nav class="navbar navbar-expand-lg fixed-top mb-5 bg-body-tertiary">
+        <div class="container-fluid">
+          <a style="color: #2D2D2D;" class="navbar-brand" href="#">Finiance</a>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav">
+              <li class="nav-item">
+                <a style="color: #2D2D2D;" class="nav-link active" aria-current="page" href="http://127.0.0.1:8000/">Home</a>
+              </li>
+              <li class="nav-item">
+                <a style="color: #2D2D2D;" class="nav-link" href="http://127.0.0.1:8000/savings">Savings</a>
+              </li>
+              <li class="nav-item">
+                <a style="color: #2D2D2D;" class="nav-link" href="http://127.0.0.1:8000/expenses">Expenses</a>
+              </li>
+              <li class="nav-item">
+                <a style="color: #2D2D2D;" class="nav-link" href="http://127.0.0.1:8000/accountinfo">Account Information</a>
+              </li>
+              <li class="nav-item">
+                <a style="color: #2D2D2D;" class="nav-link" href="http://127.0.0.1:8000/resources">Resources</a>
+              </li>
+              <li class="nav-item">
+                <a style="color: #2D2D2D;" class="nav-link" href="http://127.0.0.1:8000/login/login">Login</a>
+              </li>
             </ul>
+          </div>
         </div>
-    </nav>
-    <div class="container border border-3 rounded-3 mt-5 pb-4 text-center " >
-        <h1 class="fw-bold" style="color: #3D0066;">Login</h1>
+      </nav>
+    <div class="container border border-secondary border-3 rounded-3 pb-4 text-center " style="margin-top: 5%;">
+        <h1 class="fw-bold" style="color: #1E3A5F;">Login</h1>
         {% if messages %}
         {% for message in messages %}
         <p style="color: red;">{{ message }}</p>
@@ -39,10 +56,10 @@
                 <input type="password" class="form-control" name="password" required>
             </div>
             <div class="container d-flex justify-content-center text-center">
-                <button type="submit" class="fw-bold text-white border border-1 ps-3 pe-3 rounded-1" style="background-color: #3D0066;">Submit</button>
+                <button type="submit" class="btn btn-warning fw-bold">Submit</button>
             </div>
         </form>
-        <a href="{% url 'signup' %}" class="text-decoration-none  text-warning">Don't have an account? Sign up here.</a>
+        <a href="{% url 'signup' %}" class="text-decoration-none">Don't have an account? Sign up here.</a>
     </div>
 </body>
 

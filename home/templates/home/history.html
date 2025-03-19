@@ -9,124 +9,132 @@
         {%bootstrap_javascript %}
         <link rel="stylesheet" href="{% static 'home/style.css' %}" />
     </head>
-    <nav>
-        <div>
-            <ul>
-                <li><p>Finiance</p></li>
-                <li class="link"><a href="http://127.0.0.1:8000/">Home</a></li>
-                <li class="link">
-                    <a href="http://127.0.0.1:8000/savings">Savings</a>
-                </li>
-                <li class="link">
-                    <a href="http://127.0.0.1:8000/expenses">Expenses</a>
-                </li>
-           
-                <li class="link">
-                    <a href="http://127.0.0.1:8000/accountinfo">Account Info</a>
-                </li>
-                <li class="link">
-                    <a href="http://127.0.0.1:8000/resources">Resources</a>
-                </li>
-                <li class="link">
-                    <a href="http://127.0.0.1:8000/login/login">Log In</a>
-                </li>
-            </ul>
+    <nav class="navbar navbar-expand-lg fixed-top bg-body-tertiary">
+      <div class="container-fluid">
+        <a style="color: #2D2D2D;" class="navbar-brand" href="#">Finiance</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+          <ul class="navbar-nav">
+            <li class="nav-item">
+              <a style="color: #2D2D2D;" class="nav-link active" aria-current="page" href="http://127.0.0.1:8000/">Home</a>
+            </li>
+            <li class="nav-item">
+              <a style="color: #2D2D2D;" class="nav-link" href="http://127.0.0.1:8000/savings">Savings</a>
+            </li>
+            <li class="nav-item">
+              <a style="color: #2D2D2D;" class="nav-link" href="http://127.0.0.1:8000/expenses">Expenses</a>
+            </li>
+            <li class="nav-item">
+              <a style="color: #2D2D2D;" class="nav-link" href="http://127.0.0.1:8000/accountinfo">Account Information</a>
+            </li>
+            <li class="nav-item">
+              <a style="color: #2D2D2D;" class="nav-link" href="http://127.0.0.1:8000/resources">Resources</a>
+            </li>
+            <li class="nav-item">
+              <a style="color: #2D2D2D;" class="nav-link" href="http://127.0.0.1:8000/login/login">Login</a>
+            </li>
+          </ul>
         </div>
+      </div>
     </nav>
-    <body style="background-color: #3D0066;">
-       <div class="mt-5">
+    <body  style="background-color: #3D0066;">
+      <div class="p-5">
+       <div class="mt-5 p-5 rounded" style="background-color: #FAF9F6;">
         <h2 class="heading text-center">History</h2>
-        <div class="container border border-light border-1">
-            <h4 class="text-white p-2">Savings</h4>
-            <table class="table table-bordered table-striped text-white text-center">
+        <div class="container rounded" style="border: 1px solid #088F8F;">
+            <h4 class=" p-2" style="color: #088F8F;">Savings</h4>
+            <table class="table table-bordered table-striped text-white text-center rounded" style="border-color: #088F8F;">
 
                 <tr>
-                  <th class="text-white">Category</th>
-                  <th class="text-white">Ammount Saved</th>
-                  <th class="text-white">Date</th>
+                  <th style="color: #088F8F;">Category</th>
+                  <th style="color: #088F8F;">Ammount Saved</th>
+                  <th style="color: #088F8F;">Date</th>
                 </tr>
                 <tr>
-                  <td>Home Down Payment</td>
-                  <td>$3000</td>
-                  <td>2/02/25</td>
+                  <td style="color: #088F8F;">Home Down Payment</td>
+                  <td style="color: #088F8F;">$3000</td>
+                  <td style="color: #088F8F;">2/02/25</td>
                 </tr>
                 <tr>
-                  <td class="text-white">Car Fund</td>
-                  <td class="text-white">$2000</td>
-                  <td class="text-white">1/02/25</td>
+                  <td style="color: #088F8F;">Car Fund</td>
+                  <td style="color: #088F8F;">$2000</td>
+                  <td style="color: #088F8F;">1/02/25</td>
                 </tr>
                 <tr>
-                  <td>Emergency Fund</td>
-                  <td>$1500</td>
-                  <td>12/26/24</td>
+                  <td style="color: #088F8F;">Emergency Fund</td>
+                  <td style="color: #088F8F;">$1500</td>
+                  <td style="color: #088F8F;">12/26/24</td>
                 </tr>
                 <tr>
-                  <td class="text-white">Vacation Fund</td>
-                  <td class="text-white">$1000</td>
-                  <td class="text-white">6/26/24</td>
+                  <td style="color: #088F8F;">Vacation Fund</td>
+                  <td style="color: #088F8F;">$1000</td>
+                  <td style="color: #088F8F;">6/26/24</td>
                 </tr>
                 <tr>
-                  <td>Education Savings</td>
-                  <td>$500</td>
-                  <td>08/06/24</td>
+                  <td style="color: #088F8F;">Education Savings</td>
+                  <td style="color: #088F8F;">$500</td>
+                  <td style="color: #088F8F;">08/06/24</td>
                 </tr>
                 <tr>
-                  <td class="text-white">Tech Upgrade</td>
-                  <td class="text-white">$500</td>
-                  <td class="text-white">3/10/25</td>
+                  <td style="color: #088F8F;">Tech Upgrade</td>
+                  <td style="color: #088F8F;">$500</td>
+                  <td style="color: #088F8F;">3/10/25</td>
                 </tr>
               </table>
 
         </div>
-        <div class="container border border-light border-1 mt-5">
-            <h4 class="text-white p-2">Expenses</h4>
-            <table class="table table-bordered table-striped text-white text-center">
+        <div class="container mt-5 rounded" style="border: 1px solid #C41E3A;">
+            <h4 class="p-2" style="color: #C41E3A;">Expenses</h4>
+            <table class="table table-bordered table-striped text-white text-center rounded" style="border-color: #C41E3A;">
 
                 <tr>
-                  <th class="text-white">Category</th>
-                  <th class="text-white">Ammount</th>
-                  <th class="text-white">Type</th>
-                  <th class="text-white">Date</th>
+                  <th style="color: #C41E3A;">Category</th>
+                  <th style="color: #C41E3A;">Ammount</th>
+                  <th style="color: #C41E3A;">Type</th>
+                  <th style="color: #C41E3A;">Date</th>
                 </tr>
                 <tr>
-                  <td>Mortgage</td>
-                  <td>$1000</td>
-                  <td>Yearly</td>
-                  <td>2/02/25</td>
+                  <td style="color: #C41E3A;">Mortgage</td>
+                  <td style="color: #C41E3A;">$1000</td>
+                  <td style="color: #C41E3A;">Yearly</td>
+                  <td style="color: #C41E3A;">2/02/25</td>
                 </tr>
                 <tr>
-                  <td class="text-white">Car loan</td>
-                  <td class="text-white">$2000</td>
-                  <td>Monthly</td>
-                  <td class="text-white">1/02/25</td>
+                  <td style="color: #C41E3A;">Car loan</td>
+                  <td style="color: #C41E3A;">$2000</td>
+                  <td style="color: #C41E3A;">Monthly</td>
+                  <td style="color: #C41E3A;">1/02/25</td>
                 </tr>
                 <tr>
-                  <td>Emergency Fund</td>
-                  <td>$1500</td>
-                  <td>Weekly</td>
-                  <td>12/26/24</td>
+                  <td style="color: #C41E3A;">Emergency Fund</td>
+                  <td style="color: #C41E3A;">$1500</td>
+                  <td style="color: #C41E3A;">Weekly</td>
+                  <td style="color: #C41E3A;">12/26/24</td>
                 </tr>
                 <tr>
-                  <td class="text-white">Netflix</td>
-                  <td class="text-white">$15</td>
-                  <td>Monthly</td>
-                  <td class="text-white">6/26/24</td>
+                  <td style="color: #C41E3A;">Netflix</td>
+                  <td style="color: #C41E3A;">$15</td>
+                  <td style="color: #C41E3A;">Monthly</td>
+                  <td style="color: #C41E3A;">6/26/24</td>
                 </tr>
                 <tr>
-                  <td>Hulu</td>
-                  <td>$100</td>
-                  <td>Monthly</td>
-                  <td>08/06/24</td>
+                  <td style="color: #C41E3A;">Hulu</td>
+                  <td style="color: #C41E3A;">$100</td>
+                  <td style="color: #C41E3A;">Monthly</td>
+                  <td style="color: #C41E3A;">08/06/24</td>
                 </tr>
                 <tr>
-                  <td class="text-white">Car Insurance</td>
-                  <td class="text-white">$300</td>
-                  <td>Yearly</td>
-                  <td class="text-white">3/10/25</td>
+                  <td style="color: #C41E3A;">Car Insurance</td>
+                  <td style="color: #C41E3A;">$300</td>
+                  <td style="color: #C41E3A;">Yearly</td>
+                  <td style="color: #C41E3A;">3/10/25</td>
                 </tr>
               </table>
 
         </div>
        </div>
+      </div>
     </body>
 </html>

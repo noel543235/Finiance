@@ -33,60 +33,34 @@ def getUserExpenses(request):
     '''Return all expenses of the current user'''
     return list(chain(
         OneTime.objects.filter(user=request.user),
-        Subscription.objects.filter(user=request.user),
-        Loan.objects.filter(user=request.user)
-    ))
-    
-#def filterExpenses(expenses, frequency):
-    
+        Recurring.objects.filter(user=request.user),
+    ))   
     
 
 def index(request):
     '''Initial template when user visits page'''
     # Query all user expenses from the database
-    expenses = getUserExpenses(request)
-    
-    # Extract frequency selection from user
-    form = FrequencyForm(request.POST)
-    frequency = form.cleaned_data["frequency"]
-    
-    # Filter expenses by specified frequency
-    
-    
-    # Calculate the sum of all expenses 
-    total = sumExpenses(expenses)
+    expenses = getUserExpenses(request)   
     
     # Calculate the proportions of each expense amount relative to the total
     proportions = getProportions(expenses)    
     
     return render(request, "savings/savings.html", {'expenses': expenses, 'proportions': proportions})
     
-def get_expenses(request):
-    frequency = request.GET.get('frequency', 'Monthly') 
+def get_chart_data(request):
+    frequency = request.GET.get('frequency')
 
     # Query the database for all expenses
-    expenses = list(chain(
-        OneTime.objects.filter(user=request.user),
-        Subscription.objects.filter(user=request.user),
-        Loan.objects.filter(user=request.user)
-    ))
+    expenses = getUserExpenses(request)  
     
-    # Sort expenses by date
-    expenses = sorted(expenses, key = lambda x: x.date, reverse=True)   
+    proportions = getProportions(expenses)
     
-    # Calculate the sum of all expenses 
-    total = sum_expenses(expenses)
-
-    # Calculate proportions for each expense relative to the total
-    if total > 0:
-        proportions = [expense.amount / total for expense in expenses]
-    else:
-        proportions = [0] * len(expenses)
+    labels = [expense.label for expense in expenses]
     
-    expenses_data = list(expenses.values('label', 'amount'))
+    print(labels, proportions)
 
     # Convert to JSON format
-    return JsonResponse({'expenses': expenses_data, 'proportions': proportions})
+    return JsonResponse({'labels': labels, 'data': proportions})
 
 def future_value_calculator(present_value, compounds, interest_rate, periodic_deposit):
     '''

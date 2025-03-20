@@ -6,7 +6,7 @@ class SavingsGoalForm(ModelForm):
     
     class Meta:
         model = SavingsGoal
-        fields = ['label', 'amount', 'start_date', 'frequency', 'next_due_date', 'end_date', 'category']        
+        fields = ['label', 'goal_amount', 'amount', 'start_date', 'frequency', 'category']        
         
 class LoanPaymentForm(ModelForm):
     

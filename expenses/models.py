@@ -64,31 +64,29 @@ class Recurring(Expense):
     
     start_date = models.DateField()
     end_date = models.DateField(blank=True, null=True)
-    frequency = models.CharField(max_length=2, choices=FREQUENCY_CHOICES)
-    next_due_date = models.DateField()
-    
+    frequency = models.CharField(max_length=2, choices=FREQUENCY_CHOICES)    
     
     def when_next_payment(self):
         '''Calculate the due date of the following payment in schedule'''
         if self.frequency == 'D':
-            return self.next_due_date + relativedelta(days=1)
+            return self.start_date + relativedelta(days=1)
         elif self.frequency == 'W':
-            return self.next_due_date + relativedelta(weeks=1)
+            return self.start_date + relativedelta(weeks=1)
         elif self.frequency == 'BW':
-            return self.next_due_date + relativedelta(weeks=2)
+            return self.start_date + relativedelta(weeks=2)
         elif self.frequency == 'M':
-            return self.next_due_date + relativedelta(months=1)
+            return self.start_date + relativedelta(months=1)
         elif self.frequency == 'SA':
-            return self.next_due_date + relativedelta(months=6)
+            return self.start_date + relativedelta(months=6)
         elif self.frequency == 'A':
-            return self.next_due_date + relativedelta(years=1)
+            return self.start_date + relativedelta(years=1)
         else:
-            return self.next_due_date + relativedelta(years=2)
+            return self.start_date + relativedelta(years=2)
         
         
     def update_next_payment_date(self, new_date):
         '''Update the due date of the following payment in schedule'''
-        self.next_due_date = new_date
+        self.start_date = new_date
         self.save()
         
     def __str__(self):

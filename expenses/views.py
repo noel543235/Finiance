@@ -47,7 +47,6 @@ def add_expense(request):
                         start_date=form.cleaned_data['start_date'],
                         end_date=form.cleaned_data['end_date'],
                         frequency=form.cleaned_data['frequency'],
-                        next_due_date=form.cleaned_data['next_due_date']
                     )
                     recurring_expense.save()
                 
@@ -63,7 +62,6 @@ def add_expense(request):
                         start_date=form.cleaned_data['start_date'],
                         end_date=form.cleaned_data['end_date'],
                         frequency=form.cleaned_data['frequency'],
-                        next_due_date=form.cleaned_data['next_due_date'],
                         principal=form.cleaned_data['principal'],
                         apr=form.cleaned_data['apr'],
                         term_amt=form.cleaned_data['term_amt']

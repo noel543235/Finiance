@@ -52,7 +52,7 @@ def getGoalProportions(goals):
     for goal in goals:
         payments = getGoalPayments(goal)
         total = sum(payment.amount for payment in payments)
-        percent = max(0.01, total / goal.amount)
+        percent = max(0.01, total / goal.goal_amount)
         proportions.append(percent * 100)
         
     return proportions
@@ -62,12 +62,9 @@ def getGoalProportions(goals):
 def index(request):
     '''Initial template when user visits page'''
     # Query all user expenses from the database
-    expenses = getUserExpenses(request)   
+    goals = getUserGoals(request)       
     
-    # Calculate the proportions of each expense amount relative to the total
-    proportions = getProportions(expenses)    
-    
-    return render(request, "savings/savings.html", {'expenses': expenses, 'proportions': proportions})
+    return render(request, "savings/savings.html", {'expenses': goals})
     
 def get_chart_data(request):
     frequency = request.GET.get('frequency')

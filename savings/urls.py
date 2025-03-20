@@ -1,7 +1,7 @@
 from django.urls import path
-from .views import index, get_expenses
+from .views import *
 
 urlpatterns = [
     path('', index, name="index"),
-    path('get_expenses', get_expenses, name="get_expenses"),  # AJAX request handler
+    path('get_chart_data/', get_chart_data, name="get_chart_data"),
 ]

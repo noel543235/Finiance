@@ -33,60 +33,56 @@ def getUserExpenses(request):
     '''Return all expenses of the current user'''
     return list(chain(
         OneTime.objects.filter(user=request.user),
-        Subscription.objects.filter(user=request.user),
-        Loan.objects.filter(user=request.user)
-    ))
+        Recurring.objects.filter(user=request.user),
+    ))  
     
-#def filterExpenses(expenses, frequency):
-    
+
+def getUserGoals(request):
+    '''Return all savings goals of the current user''' 
+    return SavingsGoal.objects.filter(user=request.user)
+
+
+def getGoalPayments(goal):
+    return goal.goalpayment_set.all()
+
+
+def getGoalProportions(goals):
+    '''Calculate the percetage completed for each goal'''
+    proportions = list()
+    for goal in goals:
+        payments = getGoalPayments(goal)
+        total = sum(payment.amount for payment in payments)
+        percent = max(0.01, total / goal.amount)
+        proportions.append(percent * 100)
+        
+    return proportions
+        
     
 
 def index(request):
     '''Initial template when user visits page'''
     # Query all user expenses from the database
-    expenses = getUserExpenses(request)
-    
-    # Extract frequency selection from user
-    form = FrequencyForm(request.POST)
-    frequency = form.cleaned_data["frequency"]
-    
-    # Filter expenses by specified frequency
-    
-    
-    # Calculate the sum of all expenses 
-    total = sumExpenses(expenses)
+    expenses = getUserExpenses(request)   
     
     # Calculate the proportions of each expense amount relative to the total
     proportions = getProportions(expenses)    
     
     return render(request, "savings/savings.html", {'expenses': expenses, 'proportions': proportions})
     
-def get_expenses(request):
-    frequency = request.GET.get('frequency', 'Monthly') 
+def get_chart_data(request):
+    frequency = request.GET.get('frequency')
 
     # Query the database for all expenses
-    expenses = list(chain(
-        OneTime.objects.filter(user=request.user),
-        Subscription.objects.filter(user=request.user),
-        Loan.objects.filter(user=request.user)
-    ))
+    goals = getUserGoals(request) 
     
-    # Sort expenses by date
-    expenses = sorted(expenses, key = lambda x: x.date, reverse=True)   
+    proportions = getGoalProportions(goals)
     
-    # Calculate the sum of all expenses 
-    total = sum_expenses(expenses)
-
-    # Calculate proportions for each expense relative to the total
-    if total > 0:
-        proportions = [expense.amount / total for expense in expenses]
-    else:
-        proportions = [0] * len(expenses)
+    labels = [goal.label for goal in goals]
     
-    expenses_data = list(expenses.values('label', 'amount'))
+    print(labels, proportions)
 
     # Convert to JSON format
-    return JsonResponse({'expenses': expenses_data, 'proportions': proportions})
+    return JsonResponse({'labels': labels, 'data': proportions})
 
 def future_value_calculator(present_value, compounds, interest_rate, periodic_deposit):
     '''

@@ -19,7 +19,7 @@ class GoalPayment(models.Model):
     amount = models.DecimalField(max_digits=10, decimal_places=2)
     
     def __str__(self):
-            return f'Payment of ${self.amount} on {self.payment_date} toward {self.goal.name}'
+            return f'Payment of ${self.amount} on {self.payment_date} toward {self.goal.label}'
     
         
         

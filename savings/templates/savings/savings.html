@@ -67,43 +67,8 @@
         {% endfor %}
       </ul>
     </div>
-  </div>
-  <div class="row p-3 mt-3 ms-5 fs-4">
-    <div class="col ms-5">
-      <p class="fw-bold">Emergencey Fund: Please Add An Emergency Fund!</p>
-      <p class="d-inline-flex gap-1">
-        <button type="button" data-bs-toggle="collapse" data-bs-target="#collapseExample" aria-expanded="false"
-          aria-controls="collapseExample">
-          Press Here to edit your Emergency Fund
-        </button>
-      </p>
-      <div class="collapse" id="collapseExample">
-        <div class="card card-body w-50">
-          <form>
-            <label class="me-2">How much do you have in your emergency fund:</label>
-            <input type="number" />
-            <button>Add</button>
-
-          </form>
-        </div>
-      </div>
-      <p class="mt-3 fw-bold">Emergencey Fund Goal: Please Add An Emergency Fund Goal!</p>
-      <p class="d-inline-flex gap-1">
-        <button type="button" data-bs-toggle="collapse" data-bs-target="#collapseExample2" aria-expanded="false"
-          aria-controls="collapseExample2">
-          Press Here to edit your Emergency Fund Goal
-        </button>
-      </p>
-      <div class="collapse" id="collapseExample2">
-        <div class="card card-body w-50">
-          <form>
-            <label class="me-2">How much do you want to have in your emergency fund:</label>
-            <input type="number" />
-            <button>Add</button>
-          </form>
-        </div>
-      </div>
-      <p class="mt-3 fw-bold">Savings</p>
+    <div class="col">
+      <h5 class="mt-5 fw-bold text-white">Savings</h5>
       <p class="d-inline-flex gap-1">
         <button type="button" data-bs-toggle="collapse" data-bs-target="#collapseExample3" aria-expanded="false"
           aria-controls="collapseExample3">
@@ -114,16 +79,14 @@
         <div class="card card-body w-50">
           <form>
             <label class="me-2">Saving Name:</label>
-            <input type="text" />
-            <label class="me-2">How much does it cost:</label>
-            <input type="number" />
-            <label class="me-2">How much do you have saved:</label>
-            <input type="number" />
-            <button>Add</button>
+            <input type="text" id="savingsname"/>
+            <label class="me-2">How much did it cost:</label>
+            <input type="number" id="savingscost"/>
+            <button >Add</button>
           </form>
         </div>
       </div>
-      <p class="mt-3 fw-bold">Saving Goals</p>
+      <h5 class="mt-3 fw-bold text-white">Saving Goals</h5>
       <p class="d-inline-flex gap-1">
         <button type="button" data-bs-toggle="collapse" data-bs-target="#collapseExample4" aria-expanded="false"
           aria-controls="collapseExample4">
@@ -134,125 +97,53 @@
         <div class="card card-body w-50">
           <form>
             <label class="me-2">Saving Goal Name:</label>
-            <input type="text" />
+            <input type="text" id="savingsgoalname"/>
             <label class="me-2">How much does it cost:</label>
-            <input type="number" />
+            <input type="number" id="savingsgoalcost"/>
             <label class="me-2">How much do you have saved:</label>
-            <input type="number" />
+            <input type="number" id="savingsgoalsaved"/>
             <button>Add</button>
           </form>
         </div>
       </div>
     </div>
-    <div class="col me-5">
-      <p class="fw-bold">Saving Goals</p>
-      <p>New Car</p>
-      <div class="progress mb-1 bg-white border border-1" role="progressbar" aria-label="Basic example"
-        aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">
-        <div class="progress-bar ms-1" style="width: 0%"></div>
+  </div>
+  <div style="padding: 3%; margin-bottom: 15%;">
+    <div class="row mt-3 ms-5 fs-4">
+      <div class="col ms-5">
+        <h4>Emergency Food</h4>
+        <button>Press Here To See Your Emergency Fund</button>
       </div>
-      <p>Travel fund</p>
-      <div class="progress mb-1 bg-white border border-1" role="progressbar" aria-label="Basic example"
-        aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">
-        <div class="progress-bar ms-1" style="width: 25%"></div>
+      <div class="col me-5">
+        <h4>Loans</h4>
+        <button>Press Here To See Your Loans</button>
       </div>
-      <p>Home Down Payment</p>
-      <div class="progress mb-1 bg-white border border-1" role="progressbar" aria-label="Basic example"
-        aria-valuenow="50" aria-valuemin="0" aria-valuemax="100">
-        <div class="progress-bar ms-1" style="width: 50%"></div>
+      <div class="col me-5">
+        <h4>Projected Savings</h4>
+        <button>Press Here To See Your Projected Savings</button>
       </div>
-      <p>laundry machines upgrade</p>
-      <div class="progress mb-1 bg-white border border-1" role="progressbar" aria-label="Basic example"
-        aria-valuenow="75" aria-valuemin="0" aria-valuemax="100">
-        <div class="progress-bar ms-1" style="width: 75%"></div>
+    </div>
+  </div>
+  <div class="section1">
+    <div class="row">
+      <div class="col">
+        <div class="savingsimg"></div>
       </div>
-      <p>Emergencey fund</p>
-      <div class="progress mb-1 bg-white border border-1" role="progressbar" aria-label="Basic example"
-        aria-valuenow="100" aria-valuemin="0" aria-valuemax="100">
-        <div class="progress-bar ms-1" style="width: 100%"></div>
+      <div class="col">
+        <ul class="list-unstyled text-white p-5">
+          <li class="fs-4 m-5">Savings</li>
+          <li class="fs-4 m-5">Loans</li>
+          <li class="fs-4 m-5">Emergencey Fund</li>
+        </ul>
       </div>
-      <p class="fw-bold mt-3">Savings Break Down</p>
-      <table>
-        <tr>
-          <th>Category</th>
-          <th>Ammount Saved</th>
-          <th>Percentage</th>
-        </tr>
-        <tr>
-          <td>Home Down Payment</td>
-          <td>$3000</td>
-          <td>35%</td>
-        </tr>
-        <tr>
-          <td>Car Fund</td>
-          <td>$2000</td>
-          <td>24%</td>
-        </tr>
-        <tr>
-          <td>Emergency Fund</td>
-          <td>$1500</td>
-          <td>18%</td>
-        </tr>
-        <tr>
-          <td>Vacation Fund</td>
-          <td>$1000</td>
-          <td>12%</td>
-        </tr>
-        <tr>
-          <td>Education Savings</td>
-          <td>$500</td>
-          <td>6%</td>
-        </tr>
-        <tr>
-          <td>Tech Upgrade</td>
-          <td>$500</td>
-          <td>6%</td>
-        </tr>
-      </table>
-      <p class="fw-bold mt-3">Projected Savings estimation</p>
-      <table>
-        <tr class="me-1">
-          <th>Month</th>
-          <th>Starting Balance</th>
-          <th>Deposit</th>
-          <th>Interest Earned</th>
-          <th>New Balance</th>
-        </tr>
-        <tr>
-          <td>1</td>
-          <td>$2000.00</td>
-          <td>$300.00</td>
-          <td>$8.63</td>
-          <td>$2308.33</td>
-        </tr>
-        <tr>
-          <td>2</td>
-          <td>$2308.33</td>
-          <td>$300.00</td>
-          <td>$9.61</td>
-          <td>$2617.94</td>
-        </tr>
-        <tr>
-          <td>3</td>
-          <td>$2617.95</td>
-          <td>$300.00</td>
-          <td>$10.91</td>
-          <td>$2928.85</td>
-        </tr>
-        <tr>
-          <td>12</td>
-          <td>$5405.88</td>
-          <td>$300.00</td>
-          <td>$22.62</td>
-          <td>$5,748.50</td>
-        </tr>
-      </table>
     </div>
   </div>
 
-  <div class="section2 row">
+<div class="p-5 mt-3 ms-5">
+  <h3 class="mb-4 fw-bold">Future Value Calculator</h3>
+  <div class=" row">
     <div class="col ms-5">
-      <form class="text-white">
+      <form >
         <label class="mb-5">Number of Periods</label>
         <input type="number" value="10" />
         <br />
@@ -281,6 +172,8 @@
       </div>
     </div>
   </div>
+
+</div>
 </body>
 
 </html>
@@ -377,4 +270,7 @@
     // Add event listener to toggle fields based on user selection
     frequencyField.addEventListener("change", toggleFields);
 
-  }); </script>
+  }); 
+  
+
+  </script>

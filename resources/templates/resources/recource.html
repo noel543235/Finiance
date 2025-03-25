@@ -40,18 +40,67 @@
         </div>
       </nav>
     <body>
-        <div>
-            <div class="section1 row">
-                <div class="col ms-5">
-                    <h3 class="heading">Resources</h3>
-                </div>
+        
+        <div class="section1">
+            <div class="text-center">
+                <h3 class="heading">Resources</h3>
+            </div>
+        </div>
+        <div class="section2">
+            <div class="row interior">
                 <div class="col">
-                    <ul>
-                        <li class="list">Youtube</li>
-                        <li class="list">Google</li>
-                        <li class="list">Images</li>
-                    </ul>
+                    <a>Videos</a>
                 </div>
+                <div class="col" style="border-left: 2px solid #2D2D2D;">
+                    <a>Images</a>
+                </div>
+                <div class="col" style="border-left: 2px solid #2D2D2D;">
+                    <a>Articles</a>
+                </div>
+            </div>
+        </div>
+        
+        <div class="section3">
+            <h5 class="fw-bold">Videos</h5>
+            <div class="row">
+                {% for video in videoArray|slice:":4" %}
+                <div class="col-sm-3 mb-3 mb-sm-0" >
+                    <div class="card" style="background-color: #3D0066; border: 1px solid #2D2D2D;">
+                      <div class="card-body">
+                        <h5 class="card-title text-white">{{video.name}}, {{video.channel}}</h5>
+                        <p class="card-text text-white">{{video.description}}</p>
+                        <a href="{{video.link}}" class="btn" style="background-color: #FFD700; border: 1px solid #2D2D2D; color: #2D2D2D;">Video Link!</a>
+                      </div>
+                    </div>
+                  </div>
+                {%endfor%}
+            </div>
+        </div>
+        <div class="section4">
+            <h5 class="fw-bold">Articles</h5>
+            <div class="row">
+                {% for article in articleArray|slice:":4" %}
+                <div class="col-sm-3 mb-3 mb-sm-0" >
+                    <div class="card" style="background-color: #3D0066; border: 1px solid #2D2D2D;">
+                      <div class="card-body">
+                        <h5 class="card-title text-white">{{article.name}}</h5>
+                        <p class="card-text text-white">{{article.description}}</p>
+                        <a href="{{article.link}}" class="btn" style="background-color: #FFD700; border: 1px solid #2D2D2D; color: #2D2D2D;">Article Link!</a>
+                      </div>
+                    </div>
+                  </div>
+                {%endfor%}
+            </div>
+        </div>
+
+        <div class="section3">
+            <h5 class="fw-bold">Images</h5>
+            <div class="row">
+                {% for image in imageArray|slice:":3" %}
+                <div class="col-sm-4 mb-3 mb-sm-0" >
+                    <img src="{{image.link}}" style="width: 500px; height: 300px;"/>
+                  </div>
+                {%endfor%}
             </div>
         </div>
     </body>

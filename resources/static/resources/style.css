@@ -32,8 +32,9 @@ nav ul li {
     color: #2D2D2D;
 }
 .section1{
+    margin-top: 3%;
     background-color: #3D0066;
-    padding: 5%;
+    padding: 3%;
     color: white;
 }
 .heading{
@@ -42,4 +43,36 @@ nav ul li {
 }
 .list{
     list-style: none;
+}
+
+.section2{
+    padding: 1.5%;
+    background-color:  #C38CC3;
+    text-align: center;
+}
+/*
+#FFCDA2
+#008080
+*/
+.interior{
+    border: 2px solid #2D2D2D;
+    padding: 1%;
+    color: #2D2D2D;
+    font-weight: bold;
+}
+
+.section3{
+    padding-top: 3%;
+    padding-bottom: 4%;
+    padding-left: 2%;
+    padding-right: 2%;
+
+}
+
+.section4{
+    padding-top: 3%;
+    padding-bottom: 4%;
+    padding-left: 2%;
+    padding-right: 2%;
+    background-color: #FCF5E5;
 }

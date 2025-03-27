@@ -101,9 +101,20 @@ def future_value_calculator(present_value, compounds, interest_rate, periodic_de
         # calculate the future value for each compound and add the present value,
         # deposit amount, interest of present value, and the future value
         future_value = present_value * (1 + interest_rate) + periodic_deposit
-        compound_rows.append([present_value, periodic_deposit, interest_rate*present_value, future_value])
+        compound_rows.append([i+1, present_value, periodic_deposit, interest_rate*present_value, future_value])
 
         # set the new present value for the next iteration
         present_value = future_value
 
     return compound_rows
+
+def Calculate(request):
+    if request.method == "POST":
+        present_value = request.POST.get("present_value")
+        compounds = request.POST.get("compounds")
+        periodic_deposit = request.POST.get("periodic_deposit")
+        interest_rate = request.POST.get("interest_rate")
+        
+        table = future_value_calculator(float(present_value), int(compounds), float(interest_rate), float(periodic_deposit))
+        
+        return render(request, "savings.html", {"table": table})

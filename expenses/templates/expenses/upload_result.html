@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Imported Data</title>
+    <style>
+        .editable {
+            cursor: pointer;
+            background-color: #f0f0f0;
+        }
+    </style>
+    <script>
+        function makeEditable(td) {
+            // Make the content of the clicked cell editable
+            var originalValue = td.innerHTML;
+            td.innerHTML = `<input type="text" value="${originalValue}" />`;
+            td.querySelector('input').focus();
+
+            // Save the edited value when the input loses focus
+            td.querySelector('input').onblur = function() {
+                td.innerHTML = td.querySelector('input').value;
+            };
+        }
+    </script>
+</head>
+<body>
+    <h1>Imported Data</h1>
+
+    {% if error %}
+    <p style="color: red;">{{ error }}</p>
+    {% endif %}
+
+    {% if data %}
+    <h2>Data:</h2>
+    <table border="1">
+        <thead>
+            <tr>
+                <!-- Assuming the CSV/JSON keys are columns; display dynamic headers -->
+                {% for key in data.0 %}
+                    <th>{{ key }}</th>
+                {% endfor %}
+            </tr>
+        </thead>
+        <tbody>
+            {% for row in data %}
+            <tr>
+                {% for key, value in row.items %}
+                <td class="editable" onclick="makeEditable(this)">{{ value }}</td>
+                {% endfor %}
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% endif %}
+
+    <a href="{% url 'import_expenses' %}">Go back and upload another file</a>
+</body>
+</html>

@@ -4,6 +4,8 @@ from django.template.loader import render_to_string
 from itertools import chain
 from .forms import ExpenseForm, OneTimeForm, SubscriptionForm, LoanForm
 from .models import OneTime, Subscription, Loan, Expense
+import io
+import polars as pl
 
 def add_expense(request):
     """Handles adding a new expense for the logged-in user."""
@@ -92,3 +94,64 @@ def delete_expense(request, expense_id):
         expense = get_object_or_404(Expense, id=expense_id, user=request.user) 
         expense.delete()
     return redirect('expenses')
+
+def import_expenses(request):
+    return render(request, 'expenses/import_expenses.html')
+
+def import_data(request):
+    if request.method == "POST" and request.FILES["file"]:
+        uploaded_file = request.FILES["file"]
+
+        # Handle CSV file with Polars
+        if uploaded_file.name.endswith('.csv'):
+            try:
+                # Convert the uploaded file to a file-like object using io.BytesIO
+                file_like_object = io.BytesIO(uploaded_file.read())
+
+                # Read the CSV file using Polars
+                df = pl.read_csv(file_like_object,truncate_ragged_lines=True)
+
+                expected_cols = ["label", "amount", "category", "startDate", "frequency", "principal", "interestRate", "termLength"]
+
+                # Check for missing or extra columns
+                missing_cols = [col for col in expected_cols if col not in df.columns]
+                extra_cols = [col for col in df.columns if col not in expected_cols]
+
+                if missing_cols or extra_cols:
+                    error = "Column names do not match."
+                    if missing_cols:
+                        error += f" Missing columns: {missing_cols}."
+                    if extra_cols:
+                        error += f" Extra columns: {extra_cols}."
+
+                # Convert the DataFrame to a list of dictionaries for easy rendering in templates
+                data = df.to_dicts()
+
+                # Pass the data to the template
+                return render(request, 'expenses/upload_result.html', {'data': data})
+
+            except Exception as e:
+                return render(request, 'expenses/import_expenses.html', {'error': f"Error reading CSV file: {str(e)}"})
+
+        # Handle JSON file with Polars
+        elif uploaded_file.name.endswith('.json'):
+            try:
+                # Convert the uploaded file to a file-like object using io.BytesIO
+                file_like_object = io.BytesIO(uploaded_file.read())
+
+                # Read the JSON file using Polars
+                df = pl.read_json(file_like_object, truncate_ragged_lines=True)
+
+                # Convert the DataFrame to a list of dictionaries for easy rendering in templates
+                data = df.to_dicts()
+
+                # Pass the data to the template
+                return render(request, 'expenses/upload_result.html', {'data': data})
+
+            except Exception as e:
+                return render(request, 'expenses/import_expenses.html', {'error': f"Error reading JSON file: {str(e)}"})
+
+        else:
+            return render(request, 'expenses/import_expenses.html', {'error': "Invalid file type. Please upload a CSV or JSON file."})
+    
+    return render(request, 'expenses/import_expenses.html')

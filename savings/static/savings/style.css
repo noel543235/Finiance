@@ -79,3 +79,10 @@ button{
     padding: 2%;
     
 }
+
+.savingsimg{
+    width: 400px;
+    height: 400px;
+    background-color: #002A22;
+    border-radius: 50%;
+}

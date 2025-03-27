@@ -9,7 +9,7 @@ body{
     height: 300px;
 }
 nav{
-    position:fixed;
+    
     background-color: #FAF9F6;
     top:0;
    width:100%;
@@ -37,7 +37,11 @@ nav ul li {
     padding: 5%;
     
 }
-
+.section2{
+    background-color: #3D0066;
+    padding: 1%;
+    
+}
 
 .heading{
     color: #FFD700;

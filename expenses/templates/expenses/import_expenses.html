@@ -1,17 +1,22 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+    <meta charset="UTF-8">
     <title>Upload CSV/JSON File</title>
 </head>
 <body>
-    <h1>Upload a cleaned CSV or JSON File</h1>
+    <h1>Upload a CSV or JSON File</h1>
 
     <!-- Form for uploading CSV or JSON file -->
     <form action="{% url 'import_data' %}" method="POST" enctype="multipart/form-data">
         {% csrf_token %}
-        
+
         <label for="file">Choose a file:</label>
         <input type="file" id="file" name="file" accept=".csv, .json" required><br><br>
+
+        <!-- Checkbox to indicate if the data is cleaned -->
+        <label for="cleaned">✅ Data is cleaned and in the correct format</label>
+        <input type="checkbox" id="cleaned" name="cleaned"><br><br>
 
         <button type="submit">Upload</button>
     </form>

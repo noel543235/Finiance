@@ -97,6 +97,52 @@ def delete_expense(request, expense_id):
 
 def import_expenses(request):
     return render(request, 'expenses/import_expenses.html')
+    
+def clean_data(df: pl.DataFrame) -> dict:
+
+    # Columns that might already be present
+    expected_cols = {"label", "amount", "category", "startDate", "frequency", "principal", "interestRate", "termLength"}    
+
+    # Step 1: Find matching columns
+    matching = [col_df for col_df in df.columns if col_df.lower() in expected_cols]
+
+    # Check for other possible column names
+    for col in ["name", "description", "date"]:
+        
+        # Convert column names to lowercase and compare
+        matching_columns = [col_df for col_df in df.columns if col_df.lower() == col]
+        
+        # Rename any found matches to match our expected data format
+        if matching_columns:
+            if col == "name":
+                matching.append("label")
+                df = df.rename({"name": "label"})
+            elif col == "description":
+                matching.append("label")
+                df = df.rename({"description": "label"})
+            elif col == "date":
+                matching.append("startDate")
+                df = df.rename({"date": "startDate"})
+
+
+    # Create a new DataFrame with matching columns
+    df_clean = df.select(matching)
+
+    # Add missing columns (if any) with null values
+    for col in expected_cols:
+        if col not in df_clean.columns:
+            df_clean = df_clean.with_columns(pl.lit(None).alias(col))
+
+    # Reorder the columns to match the expected order
+    df_clean = df_clean.select(sorted(list(expected_cols)))
+
+    # Check if some data was extracted
+    if df_clean.drop_nulls().is_empty():
+        error = "All values in the dataset are null. Please upload a valid file."
+        raise ValueError(error)
+
+    # Step 2: Find Recurring expenses
+    return df_clean.to_dict()
 
 def import_data(request):
     if request.method == "POST" and request.FILES["file"]:
@@ -111,25 +157,30 @@ def import_data(request):
                 # Read the CSV file using Polars
                 df = pl.read_csv(file_like_object,truncate_ragged_lines=True)
 
-                expected_cols = ["label", "amount", "category", "startDate", "frequency", "principal", "interestRate", "termLength"]
+                if request.POST.get('cleaned') == 'on':
+                    expected_cols = ["label", "amount", "category", "startDate", "frequency", "principal", "interestRate", "termLength"]
 
-                # Check for missing or extra columns
-                missing_cols = [col for col in expected_cols if col not in df.columns]
-                extra_cols = [col for col in df.columns if col not in expected_cols]
+                    # Check for missing or extra columns
+                    missing_cols = [col for col in expected_cols if col not in df.columns]
+                    extra_cols = [col for col in df.columns if col not in expected_cols]
 
-                if missing_cols or extra_cols:
-                    error = "Column names do not match."
-                    if missing_cols:
-                        error += f" Missing columns: {missing_cols}."
-                    if extra_cols:
-                        error += f" Extra columns: {extra_cols}."
+                    if missing_cols or extra_cols:
+                        error = "Column names do not match."
+                        if missing_cols:
+                            error += f" Missing columns: {missing_cols}."
+                        if extra_cols:
+                            error += f" Extra columns: {extra_cols}."
+                        return render(request, 'expenses/import_expenses.html', {'error': error})
 
-                # Convert the DataFrame to a list of dictionaries for easy rendering in templates
-                data = df.to_dicts()
+                    # Convert the DataFrame to a list of dictionaries for easy rendering in templates
+                    data = df.to_dicts()
+
+                else:
+                    data = clean_data(df)
 
                 # Pass the data to the template
                 return render(request, 'expenses/upload_result.html', {'data': data})
-
+            
             except Exception as e:
                 return render(request, 'expenses/import_expenses.html', {'error': f"Error reading CSV file: {str(e)}"})
 
@@ -140,11 +191,29 @@ def import_data(request):
                 file_like_object = io.BytesIO(uploaded_file.read())
 
                 # Read the JSON file using Polars
-                df = pl.read_json(file_like_object, truncate_ragged_lines=True)
+                df = pl.read_json(file_like_object)
 
-                # Convert the DataFrame to a list of dictionaries for easy rendering in templates
-                data = df.to_dicts()
+                if request.POST.get('cleaned') == 'on':
+                    expected_cols = ["label", "amount", "category", "startDate", "frequency", "principal", "interestRate", "termLength"]
 
+                    # Check for missing or extra columns
+                    missing_cols = [col for col in expected_cols if col not in df.columns]
+                    extra_cols = [col for col in df.columns if col not in expected_cols]
+
+                    if missing_cols or extra_cols:
+                        error = "Column names do not match."
+                        if missing_cols:
+                            error += f" Missing columns: {missing_cols}."
+                        if extra_cols:
+                            error += f" Extra columns: {extra_cols}."
+                        return render(request, 'expenses/import_expenses.html', {'error': error})
+
+                    # Convert the DataFrame to a list of dictionaries for easy rendering in templates
+                    data = df.to_dicts()
+
+                else:
+                    data = clean_data(df)
+                
                 # Pass the data to the template
                 return render(request, 'expenses/upload_result.html', {'data': data})
 

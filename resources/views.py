@@ -159,3 +159,13 @@ def index(request):
 
 
     return render(request, "resources/recource.html", {'articleArray': articleArray, 'imageArray': imageArray, 'videoArray': videoArray})
+def videos(request): 
+
+    return render(request, "resources/videos.html")
+
+def images(request): 
+
+    return render(request, "resources/images.html")
+def articles(request): 
+
+    return render(request, "resources/articles.html")

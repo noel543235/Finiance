@@ -2,7 +2,7 @@
 <html lang="en-US">
     <head>
         <meta charset="utf-8" />
-        <title>My test page</title>
+        <title>Finiance</title>
         {% load static %} 
         {% load bootstrap5 %} 
         {% bootstrap_css %} 
@@ -45,7 +45,7 @@
                 <div class="col mt-5 ms-5 me-5 align-self-center">
                     <h1 class="heading">
                         {% if user.is_authenticated %} 
-                            Welcome, {{ user.username }}!
+                            Welcome, {{ user.username|capfirst }}!
                         {% else %} 
                             Welcome, User! 
                         {% endif %}
@@ -61,7 +61,7 @@
                 <div class="col ms-5">
                     <img
                         style="width: 400px; height: 400px; border-radius: 50%"
-                        src="{% static 'home/images/finance.jpeg' %}"
+                        src="{% static 'home/images/finiance.webp' %}"
                     />
                 </div>
             </div>
@@ -149,6 +149,7 @@
                 <div class="col">
                     <h2 class="heading ms-5">Penny The Finance Piggy</h2>
                     <img
+                        class="piggy"
                         style="border-radius: 50%; width: 400px; height: 400px"
                         src="{% static 'home/images/quarter.JPG' %}"
                     />
@@ -170,5 +171,15 @@
                 </div>
             </div>
         </div>
+       
     </body>
+
+  
 </html>
+
+<style>
+  body {
+    cursor:cell;
+}
+
+</style>

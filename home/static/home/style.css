@@ -63,3 +63,25 @@ button{
 button a {
     color: #2D2D2D;
 }
+
+
+
+.piggy {
+
+    display: inline-block; /* Ensures transform works */
+  
+}
+
+.piggy:hover {
+    animation: spin 0.1s ease-out forwards infinite;
+}
+
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
+
+}

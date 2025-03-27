@@ -67,21 +67,11 @@ button a {
 
 
 .piggy {
-
-    display: inline-block; /* Ensures transform works */
-  
+    display: inline-block;
+    transition: transform 2s ease-out; /* Smooth transition */
 }
 
+/* Trigger the animation on hover */
 .piggy:hover {
-    animation: spin 0.1s ease-out forwards infinite;
-}
-
-@keyframes spin {
-    0% {
-        transform: rotate(0deg);
-    }
-    100% {
-        transform: rotate(360deg);
-    }
-
+    transform: translateX(100vw) translateY(100vh); /* Moves the image off-screen */
 }

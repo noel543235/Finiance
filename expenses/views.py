@@ -101,48 +101,93 @@ def import_expenses(request):
 def clean_data(df: pl.DataFrame) -> dict:
 
     # Columns that might already be present
-    expected_cols = {"label", "amount", "category", "startDate", "frequency", "principal", "interestRate", "termLength"}    
+    expected_cols = {"label", "amount", "category", "startdate", "frequency", "principal", "interestRate", "termLength"}    
 
     # Step 1: Find matching columns
+
+    # Map lowercase names to actual column names
+    col_map = {col.lower(): col for col in df.columns}
+
+    # Define potential names and map them to the correct casing
+    name_aliases = ["name", "description"]
+    date_aliases = ["date"]
+
+    # Handle name/description mapping
+    for alias in name_aliases:
+        if alias in col_map:
+            df = df.rename({col_map[alias]: "Label"})
+
+    # Handle date mapping
+    for alias in date_aliases:
+        if alias in col_map:
+            df = df.rename({col_map[alias]: "startDate"})
+
+    # See which columns match the expected name
     matching = [col_df for col_df in df.columns if col_df.lower() in expected_cols]
-
-    # Check for other possible column names
-    for col in ["name", "description", "date"]:
-        
-        # Convert column names to lowercase and compare
-        matching_columns = [col_df for col_df in df.columns if col_df.lower() == col]
-        
-        # Rename any found matches to match our expected data format
-        if matching_columns:
-            if col == "name":
-                matching.append("label")
-                df = df.rename({"name": "label"})
-            elif col == "description":
-                matching.append("label")
-                df = df.rename({"description": "label"})
-            elif col == "date":
-                matching.append("startDate")
-                df = df.rename({"date": "startDate"})
-
 
     # Create a new DataFrame with matching columns
     df_clean = df.select(matching)
 
     # Add missing columns (if any) with null values
     for col in expected_cols:
-        if col not in df_clean.columns:
+        if col not in {col_df.lower() for col_df in df_clean.columns}:
             df_clean = df_clean.with_columns(pl.lit(None).alias(col))
 
-    # Reorder the columns to match the expected order
-    df_clean = df_clean.select(sorted(list(expected_cols)))
-
     # Check if some data was extracted
-    if df_clean.drop_nulls().is_empty():
+    if (sum(df_clean.null_count().sum())==df_clean.shape[0] * df_clean.shape[1])[0]:
         error = "All values in the dataset are null. Please upload a valid file."
         raise ValueError(error)
 
     # Step 2: Find Recurring expenses
-    return df_clean.to_dict()
+
+    # Ensure "startDate" is in date format
+    df_clean = df_clean.with_columns(pl.col("startDate").cast(pl.Date).alias("startDate"))
+
+    # Group by label and check for duplicates
+    df_grouped = df_clean.group_by("Label").agg([
+
+        # Store the smallest startDate as min_startDate
+        pl.col("startDate").min().alias("min_startDate"),
+
+        # Calculate the smallest difference in start dates
+        pl.col("startDate").diff().min().alias("date_diff"),
+
+        # Counts how many times any one label appears
+        pl.col("startDate").count().alias("count"),
+    ])
+
+    # Iterate through the groups and determine the frequency
+    df_final = df_clean.join(df_grouped, on="Label", how="left")
+
+    def set_frequency(row):
+        """Assigns frequency based on date difference and occurrence count."""
+        
+        count = row['count']
+        date_diff = row['date_diff']
+
+        if count == 1:
+            return None  # One-time expense
+        elif date_diff.days >= 28 and date_diff.days <= 32:
+            return "Monthly"
+        elif date_diff.days >= 360 and date_diff.days <= 370:
+            return "Yearly"
+        else:
+            return None  # Irregular or unknown frequency
+
+    # Set frequency based on the date difference and count
+    df_final = df_final.with_columns(
+        pl.struct(["count", "date_diff"])
+        .map_elements(lambda row: set_frequency(row), return_dtype=pl.Utf8)
+        .alias("frequency")
+        )
+
+    # Remove duplicate rows based on the label, keeping the first entry
+    df_final = df_final.sort("startDate").unique(subset=["Label"], keep="first")
+
+    # Select all columns except the three that were used for frequency
+    df_final = df_final.select(df_final.columns[:-3])
+    
+    return df_final.to_dicts()
 
 def import_data(request):
     if request.method == "POST" and request.FILES["file"]:

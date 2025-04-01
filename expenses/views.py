@@ -3,9 +3,12 @@ from django.http import JsonResponse
 from django.template.loader import render_to_string
 from itertools import chain
 from .forms import ExpenseForm, OneTimeForm, SubscriptionForm, LoanForm
-from .models import OneTime, Subscription, Loan, Expense
+from .models import OneTime, Subscription, Loan, Expense, Category
+from django.utils import timezone
+from datetime import datetime
 import io
 import polars as pl
+import json
 
 def add_expense(request):
     """Handles adding a new expense for the logged-in user."""
@@ -66,7 +69,6 @@ def load_expense_form(request):
         return JsonResponse({"form_html": form_html})
     else:
         return JsonResponse({"form_html": ""}, status=400)
-
 
 def expense_list(request):
     """Displays a list of expenses for the logged-in user, sorted by date."""
@@ -167,10 +169,14 @@ def clean_data(df: pl.DataFrame) -> dict:
 
         if count == 1:
             return None  # One-time expense
+        elif date_diff.days >= 5 and date_diff.days <= 9:
+            return "Weekly"
+        elif date_diff.days >= 12 and date_diff.days <= 16:
+            return "Biweekly"
         elif date_diff.days >= 28 and date_diff.days <= 32:
             return "Monthly"
         elif date_diff.days >= 360 and date_diff.days <= 370:
-            return "Yearly"
+            return "Annually"
         else:
             return None  # Irregular or unknown frequency
 
@@ -269,3 +275,56 @@ def import_data(request):
             return render(request, 'expenses/import_expenses.html', {'error': "Invalid file type. Please upload a CSV or JSON file."})
     
     return render(request, 'expenses/import_expenses.html')
+
+def import_result(request):
+    if request.method == "POST":
+        data = json.loads(request.body).get("data", [])
+        expenses = []
+        for row in data:
+            # Check and create category if it doesn't exist
+            category_name = row.get("category")
+            category = None
+            if category_name:
+                # Get or create the category
+                category, created = Category.objects.get_or_create(name=category_name)
+
+            if row['startDate']:
+                date = timezone.make_aware(datetime.strptime(row['startDate'], "%Y-%m-%d"), timezone.get_current_timezone())
+            else:
+                date = timezone.now().date()
+
+            frequency = {"None":"O", "Daily":"D", "Weekly":"W", "Biweekly":"BW","Monthly":"M","Annually":"A" }[row['frequency']]
+
+            if frequency == "O":
+                expenses.append(OneTime(
+                    user = request.user,
+                    label = row['label'],
+                    amount = row['amount'],
+                    date = date,
+                    description = "",
+                    category = category 
+                    ))
+            elif row['principal'] == "None" or row['termLength'] == "None" or row['interestRate'] == "None":
+                expenses.append(Subscription(
+                    user = request.user,
+                    label = row['label'],
+                    amount = row['amount'],
+                    date = date,
+                    description = "",
+                    category = category,
+                    frequency = frequency
+                ))
+            else:
+                expenses.append(Loan(
+                    user = request.user,
+                    label = row['label'],
+                    amount = row['amount'],
+                    date = date,
+                    description = "",
+                    category = category,
+                    frequency = frequency,
+                    interest_rate = row['interestRate'],
+                    term_amt = row['']
+
+                ))
+        return JsonResponse({"message": "Data received successfully!"})

@@ -9,17 +9,114 @@
         }
     </style>
     <script>
-        function makeEditable(td) {
-            // Make the content of the clicked cell editable
-            var originalValue = td.innerHTML;
-            td.innerHTML = `<input type="text" value="${originalValue}" />`;
-            td.querySelector('input').focus();
+        document.addEventListener("DOMContentLoaded", function() {
+            document.getElementById("import-btn").addEventListener("click", function() {
+            let extractedData = getTableData();
 
-            // Save the edited value when the input loses focus
-            td.querySelector('input').onblur = function() {
-                td.innerHTML = td.querySelector('input').value;
-            };
-        }
+
+            fetch("import_result/", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "X-CSRFToken": getCsrfToken()
+                },
+                body: JSON.stringify({ data: extractedData })
+            })
+            .then(response => response.json())
+            .then(data => console.log("Server response:", data))
+            .catch(error => console.error("Error:", error));
+            });
+
+            const table = document.querySelector("table");
+            if (!table) return;
+
+            let frequencyColumnIndex = -1;
+            const headers = table.querySelectorAll("thead th");
+            headers.forEach((th, index) => {
+                if (th.innerText.trim().toLowerCase() === "frequency") {
+                    frequencyColumnIndex = index;
+                }
+            });
+
+            function makeEditable(td, columnIndex) {
+                const originalValue = td.innerText.trim();
+
+                if (columnIndex === frequencyColumnIndex) {
+                    // Create dropdown for "frequency"
+                    const select = document.createElement("select");
+                    const options = ["None", "Daily", "Weekly", "Biweekly", "Monthly", "Annually"]; // Blank option first
+                    options.forEach(option => {
+                        const opt = document.createElement("option");
+                        opt.value = option;
+                        opt.textContent = option;
+                        if (option === originalValue) {
+                            opt.selected = true;
+                        }
+                        select.appendChild(opt);
+                    });
+
+                    td.innerHTML = "";
+                    td.appendChild(select);
+                    select.focus();
+
+                    // Wait for user selection
+                    select.addEventListener("change", function() {
+                        td.innerText = select.value || originalValue; // Keep original if blank selected
+                    });
+
+                    // Revert if user clicks away without selection
+                    select.addEventListener("blur", function() {
+                        if (!select.value) {
+                            td.innerText = originalValue;
+                        }
+                    });
+                } else {
+                    // Default text input for other columns
+                    const input = document.createElement("input");
+                    input.type = "text";
+                    input.value = originalValue;
+
+                    td.innerHTML = "";
+                    td.appendChild(input);
+                    input.focus();
+
+                    input.onblur = function() {
+                        td.innerText = input.value;
+                    };
+                }
+            }
+
+            table.querySelectorAll("tbody td").forEach((td, index) => {
+                const columnIndex = index % headers.length;
+                td.addEventListener("click", function() {
+                    makeEditable(td, columnIndex);
+                });
+            });
+        });
+
+    function getTableData() {
+        let table = document.querySelector("table");
+        let headers = Array.from(table.querySelectorAll("thead th")).map(th => th.innerText.trim());
+        let data = [];
+
+        table.querySelectorAll("tbody tr").forEach(row => {
+            let rowData = {};
+            let cells = row.querySelectorAll("td");
+
+            cells.forEach((cell, index) => {
+                rowData[headers[index]] = cell.innerText.trim();
+            });
+
+            data.push(rowData);
+        });
+
+        return data;
+    }
+
+    function getCsrfToken() {
+        return document.querySelector("[name=csrfmiddlewaretoken]")?.value || "";
+    }
+
     </script>
 </head>
 <body>
@@ -34,7 +131,6 @@
     <table border="1">
         <thead>
             <tr>
-                <!-- Assuming the CSV/JSON keys are columns; display dynamic headers -->
                 {% for key in data.0 %}
                     <th>{{ key }}</th>
                 {% endfor %}
@@ -44,13 +140,20 @@
             {% for row in data %}
             <tr>
                 {% for key, value in row.items %}
-                <td class="editable" onclick="makeEditable(this)">{{ value }}</td>
+                <td class="editable">{{ value }}</td>
                 {% endfor %}
             </tr>
             {% endfor %}
         </tbody>
     </table>
     {% endif %}
+
+    <!-- CSRF Token for JavaScript to use -->
+    <input type="hidden" name="csrfmiddlewaretoken" value="{{ csrf_token }}">
+
+    <div>
+        <button id="import-btn" class="import-btn">Import</button>
+    </div>
 
     <a href="{% url 'import_expenses' %}">Go back and upload another file</a>
 </body>

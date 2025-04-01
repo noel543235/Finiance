@@ -1,14 +1,20 @@
-from django.shortcuts import render, redirect, get_object_or_404
-from django.http import JsonResponse
-from django.template.loader import render_to_string
-from itertools import chain
-from .forms import ExpenseForm, OneTimeForm, SubscriptionForm, LoanForm
-from .models import OneTime, Subscription, Loan, Expense, Category
-from django.utils import timezone
-from datetime import datetime
+# Standard Library Imports
 import io
-import polars as pl
 import json
+from datetime import datetime
+
+# Third-Party Imports
+import polars as pl
+
+# Django Imports
+from django.http import JsonResponse
+from django.shortcuts import render, redirect, get_object_or_404
+from django.template.loader import render_to_string
+from django.utils import timezone
+
+# Local Imports
+from .forms import *
+from .models import *
 
 def add_expense(request):
     """Handles adding a new expense for the logged-in user."""
@@ -137,7 +143,7 @@ def clean_data(df: pl.DataFrame) -> dict:
 
     # Check if some data was extracted
     if (sum(df_clean.null_count().sum())==df_clean.shape[0] * df_clean.shape[1])[0]:
-        error = "All values in the dataset are null. Please upload a valid file."
+        error = "Data could not be extracted. Please upload a valid file."
         raise ValueError(error)
 
     # Step 2: Find Recurring expenses
@@ -145,55 +151,61 @@ def clean_data(df: pl.DataFrame) -> dict:
     # Ensure "startDate" is in date format
     df_clean = df_clean.with_columns(pl.col("startDate").cast(pl.Date).alias("startDate"))
 
-    # Group by label and check for duplicates
-    df_grouped = df_clean.group_by("Label").agg([
+    if df_clean['frequency'].is_null().all():
+        # Group by label and check for duplicates
+        df_grouped = df_clean.group_by("Label").agg([
 
-        # Store the smallest startDate as min_startDate
-        pl.col("startDate").min().alias("min_startDate"),
+            # Store the smallest startDate as min_startDate
+            pl.col("startDate").min().alias("min_startDate"),
 
-        # Calculate the smallest difference in start dates
-        pl.col("startDate").diff().min().alias("date_diff"),
+            # Calculate the smallest difference in start dates
+            pl.col("startDate").diff().min().alias("date_diff"),
 
-        # Counts how many times any one label appears
-        pl.col("startDate").count().alias("count"),
-    ])
+            # Counts how many times any one label appears
+            pl.col("startDate").count().alias("count"),
+        ])
 
-    # Iterate through the groups and determine the frequency
-    df_final = df_clean.join(df_grouped, on="Label", how="left")
+        # Iterate through the groups and determine the frequency
+        df_final = df_clean.join(df_grouped, on="Label", how="left")
 
-    def set_frequency(row):
-        """Assigns frequency based on date difference and occurrence count."""
-        
-        count = row['count']
-        date_diff = row['date_diff']
+        def set_frequency(row):
+            """Assigns frequency based on date difference and occurrence count."""
+            
+            count = row['count']
+            date_diff = row['date_diff']
 
-        if count == 1:
-            return None  # One-time expense
-        elif date_diff.days >= 5 and date_diff.days <= 9:
-            return "Weekly"
-        elif date_diff.days >= 12 and date_diff.days <= 16:
-            return "Biweekly"
-        elif date_diff.days >= 28 and date_diff.days <= 32:
-            return "Monthly"
-        elif date_diff.days >= 360 and date_diff.days <= 370:
-            return "Annually"
-        else:
-            return None  # Irregular or unknown frequency
+            if count == 1:
+                return None  # One-time expense
+            elif date_diff.days >= 5 and date_diff.days <= 9:
+                return "Weekly"
+            elif date_diff.days >= 12 and date_diff.days <= 16:
+                return "Biweekly"
+            elif date_diff.days >= 28 and date_diff.days <= 32:
+                return "Monthly"
+            elif date_diff.days >= 360 and date_diff.days <= 370:
+                return "Annually"
+            else:
+                return None  # Irregular or unknown frequency
 
-    # Set frequency based on the date difference and count
-    df_final = df_final.with_columns(
-        pl.struct(["count", "date_diff"])
-        .map_elements(lambda row: set_frequency(row), return_dtype=pl.Utf8)
-        .alias("frequency")
-        )
+        # Set frequency based on the date difference and count
+        df_final = df_final.with_columns(
+            pl.struct(["count", "date_diff"])
+            .map_elements(lambda row: set_frequency(row), return_dtype=pl.Utf8)
+            .alias("frequency")
+            )
 
-    # Remove duplicate rows based on the label, keeping the first entry
-    df_final = df_final.sort("startDate").unique(subset=["Label"], keep="first")
+        # Remove duplicate rows based on the label, keeping the first entry
+        df_final = df_final.sort("startDate").unique(subset=["Label"], keep="first")
 
-    # Select all columns except the three that were used for frequency
-    df_final = df_final.select(df_final.columns[:-3])
+        # Select all columns except the three that were used for frequency
+        df_final = df_final.select(df_final.columns[:-3])
+
+        # Convert the date into a string that can be parsed by Python
+        df_final = df_final.with_columns(pl.col("startDate").map_elements(lambda x: str(x)))
     
-    return df_final.to_dicts()
+        return df_final.to_dicts()
+    else:
+        return df_clean.to_dicts()
 
 def import_data(request):
     if request.method == "POST" and request.FILES["file"]:
@@ -287,44 +299,46 @@ def import_result(request):
             if category_name:
                 # Get or create the category
                 category, created = Category.objects.get_or_create(name=category_name)
-
-            if row['startDate']:
-                date = timezone.make_aware(datetime.strptime(row['startDate'], "%Y-%m-%d"), timezone.get_current_timezone())
-            else:
-                date = timezone.now().date()
-
+            try:
+                if row['startDate']:
+                    date = timezone.make_aware(datetime.strptime(row['startDate'], "%Y-%m-%d"), timezone.get_current_timezone())
+                else:
+                    date = timezone.now()
+            except ValueError:
+                return JsonResponse({"error": "Error: Date could not be converted. Please use 'YYYY-MM-DD' (e.g., 2024-03-31)."}, status=400)
+            
             frequency = {"None":"O", "Daily":"D", "Weekly":"W", "Biweekly":"BW","Monthly":"M","Annually":"A" }[row['frequency']]
 
-            if frequency == "O":
-                expenses.append(OneTime(
-                    user = request.user,
-                    label = row['label'],
-                    amount = row['amount'],
-                    date = date,
-                    description = "",
-                    category = category 
-                    ))
-            elif row['principal'] == "None" or row['termLength'] == "None" or row['interestRate'] == "None":
-                expenses.append(Subscription(
-                    user = request.user,
-                    label = row['label'],
-                    amount = row['amount'],
-                    date = date,
-                    description = "",
-                    category = category,
-                    frequency = frequency
-                ))
-            else:
-                expenses.append(Loan(
-                    user = request.user,
-                    label = row['label'],
-                    amount = row['amount'],
-                    date = date,
-                    description = "",
-                    category = category,
-                    frequency = frequency,
-                    interest_rate = row['interestRate'],
-                    term_amt = row['']
+            # if frequency == "O":
+            #     expenses.append(OneTime(
+            #         user = request.user,
+            #         label = row['label'],
+            #         amount = row['amount'],
+            #         date = date,
+            #         description = "",
+            #         category = category 
+            #         ))
+            # elif row['principal'] == "None" or row['termLength'] == "None" or row['interestRate'] == "None":
+            #     expenses.append(Subscription(
+            #         user = request.user,
+            #         label = row['label'],
+            #         amount = row['amount'],
+            #         date = date,
+            #         description = "",
+            #         category = category,
+            #         frequency = frequency
+            #     ))
+            # else:
+            #     expenses.append(Loan(
+            #         user = request.user,
+            #         label = row['label'],
+            #         amount = row['amount'],
+            #         date = date,
+            #         description = "",
+            #         category = category,
+            #         frequency = frequency,
+            #         interest_rate = row['interestRate'],
+            #         term_amt = row['']
 
-                ))
+            #     ))
         return JsonResponse({"message": "Data received successfully!"})

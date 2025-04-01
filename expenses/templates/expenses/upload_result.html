@@ -23,7 +23,13 @@
                 body: JSON.stringify({ data: extractedData })
             })
             .then(response => response.json())
-            .then(data => console.log("Server response:", data))
+            .then(data => {
+                if (data.error) {
+                    displayError(data.error);
+                } else {
+                    console.log("Server response:", data);
+            }
+        })
             .catch(error => console.error("Error:", error));
             });
 
@@ -37,6 +43,16 @@
                     frequencyColumnIndex = index;
                 }
             });
+            function displayError(message) {
+                let errorDiv = document.getElementById("error-message");
+                if (!errorDiv) {
+                    errorDiv = document.createElement("p");
+                    errorDiv.id = "error-message";
+                    errorDiv.style.color = "red";
+                    document.body.insertBefore(errorDiv, document.body.firstChild);
+                }
+                errorDiv.textContent = message;
+            }
 
             function makeEditable(td, columnIndex) {
                 const originalValue = td.innerText.trim();
@@ -121,6 +137,9 @@
 </head>
 <body>
     <h1>Imported Data</h1>
+
+    <!-- Placeholder for displaying errors -->
+    <p id="error-message" style="color: red;"></p>
 
     {% if error %}
     <p style="color: red;">{{ error }}</p>

@@ -68,10 +68,22 @@ button a {
 
 .piggy {
     display: inline-block;
-    transition: transform 2s ease-out; /* Smooth transition */
+    transition: transform 1s ease-out; /* Smooth transition */
 }
 
 /* Trigger the animation on hover */
 .piggy:hover {
-    transform: translateX(100vw) translateY(100vh); /* Moves the image off-screen */
+    transform: translateX(-500px); /* Moves the image off-screen */
+}
+.piggy:active{
+    animation: spin 1s ease-out forwards 1;
+}
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
+
 }

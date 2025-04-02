@@ -46,7 +46,7 @@ nav ul li {
 }
 
 .section2{
-    padding: 1.5%;
+    padding: 1%;
     background-color:  #C38CC3;
     text-align: center;
 }
@@ -76,33 +76,50 @@ nav ul li {
     padding-right: 2%;
     background-color: #C38CC3;
 }
+.cardtop{
+    background-color: #662d91; 
+    border: 1px solid #2D2D2D;
+    color: #F8F8FF;
+    transition: 0.5s;
+}
+.cardtop h5{
+    font-weight: bold;
+}
+.cardbutton{
+    background-color: #00308F; 
+    border: 1px solid #2D2D2D; 
+    color: white;
+    transition: 0.5s;
+}
+.cardbutton:hover{
+    background-color: #662d91;
+    color: #F8F8FF;
+    transition: 0.5s;
+}
+.cardtop:hover{
+    background-color:#6CB4EE;
+    color: #2D2D2D;
+    transition: 0.5s;
+}
 
 .atag {
     text-decoration: none;
     color: #2D2D2D;
     display: inline-block; /* Ensures transform works properly */
-    transition: background-color 0.3s, color 0.3s;
+    transition: 1s;
 }
 
 .atag:hover {
     background-color: #3D0066;
     text-decoration: none;
     color: white;
-    border-radius: 3px;
-    animation: spin 3s ease-out forwards infinite; /* Spins once on hover */
-    scale: 10;
-    padding: 2%;
+    border-radius: 5px;
+    scale: 2;
+    padding: 0.5%;
+    transition: 1s;
     
 }
 
-@keyframes spin {
-    0% {
-        transform: rotate(0deg);
-    }
-    100% {
-        transform: rotate(360deg);
-    }
 
-}
 
 

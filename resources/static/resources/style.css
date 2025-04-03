@@ -107,6 +107,7 @@ nav ul li {
     color: #2D2D2D;
     display: inline-block; /* Ensures transform works properly */
     transition: 1s;
+    font-size: large;
 }
 
 .atag:hover {
@@ -114,12 +115,17 @@ nav ul li {
     text-decoration: none;
     color: white;
     border-radius: 5px;
-    scale: 2;
+    scale: 1.5;
     padding: 0.5%;
     transition: 1s;
     
 }
 
+.headersub{
+    background-color: #3D0066;
+    padding: 3%;
+    color: #F8F8FF;
+}
 
 
 

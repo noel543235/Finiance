@@ -15,11 +15,8 @@ class imageObect(object):
     link = None
     name = None
 
-
-def index(request): 
+def getVids():
     videoArray = []
-    articleArray = []
-    imageArray = []
     video1 = videoObect()
     video1.channel = "The Ramsay Show Highlights"
     video1.link = "https://www.youtube.com/watch?v=-R1CLOuouYc"
@@ -88,27 +85,10 @@ def index(request):
     video10.name = "Excel Budget Teplate | Autommate your budget in 15 minutes"
     video10.description = "Video talking about how to set up a budget excel template"
     videoArray.append(video10)
+    return videoArray
 
-    image1 = imageObect()
-    image1.link = "https://www.ccu.com/wp-content/uploads/PROD-5338_Graphic-1-2880x1279.png"
-    image1.name = "tips"
-    imageArray.append(image1)
-
-    image2 = imageObect()
-    image2.link = "https://www.goodfinancialcents.com/wp-content/uploads/2023/09/15-Surprisingly-Simple-Money-Saving-Tips-for-Families-1024x713.png.webp"
-    image2.name = "tips2"
-    imageArray.append(image2)
-
-    image3 = imageObect()
-    image3.link = "https://cdn.prod.website-files.com/5f3f94d9ae99fbb1ea28cc2c/672dc780fae5f0083101e4f4_60054105eaf5d7da6bc52f22_Copy%2520of%2520Copy%2520of%2520Outbound%2520Creatives%2520(New)%2520(24).png"
-    image3.name = "tips3"
-    imageArray.append(image3)
-
-    image4 = imageObect()
-    image4.link = "https://cdn.educba.com/academy/wp-content/uploads/2024/12/Practical-Ways-for-Saving-Money-on-Everyday-Expenses.jpg"
-    image4.name = "tips4"
-    imageArray.append(image4)
-
+def getArt():
+    articleArray = []
     article1 = articlesObect()
     article1.name = "Voya"
     article1.link = "https://www.voya.com/page/financial-wellness-library?gad_source=1&gclid=Cj0KCQjwhYS_BhD2ARIsAJTMMQY6guUHIIQjSVMobZVvvBpZEPkfJSQimXIuyMbQnul7HehXqx-8EcUaApdpEALw_wcB&gclsrc=aw.ds"
@@ -156,16 +136,44 @@ def index(request):
     article8.link = "https://www.investor.gov/additional-resources/spotlight/never-stop-learning?utm_source=google&utm_medium=cpc&utm_adgroup={AdGroupName}&utm_campaign={CampaignName}&gad_source=1&gclid=Cj0KCQjwhYS_BhD2ARIsAJTMMQY_fToKUMIifpmjOlUSrhhOuPrHcFmrU_-eFW-UHfnCRK-W5KhN1cYaAgzPEALw_wcB"
     article8.description = "Good Source for finding tips to save money"
     articleArray.append(article8)
+    return articleArray
 
+def getImg():
+    imageArray = []
+    image1 = imageObect()
+    image1.link = "https://www.ccu.com/wp-content/uploads/PROD-5338_Graphic-1-2880x1279.png"
+    image1.name = "tips"
+    imageArray.append(image1)
+
+    image2 = imageObect()
+    image2.link = "https://www.goodfinancialcents.com/wp-content/uploads/2023/09/15-Surprisingly-Simple-Money-Saving-Tips-for-Families-1024x713.png.webp"
+    image2.name = "tips2"
+    imageArray.append(image2)
+
+    image3 = imageObect()
+    image3.link = "https://cdn.prod.website-files.com/5f3f94d9ae99fbb1ea28cc2c/672dc780fae5f0083101e4f4_60054105eaf5d7da6bc52f22_Copy%2520of%2520Copy%2520of%2520Outbound%2520Creatives%2520(New)%2520(24).png"
+    image3.name = "tips3"
+    imageArray.append(image3)
+
+    image4 = imageObect()
+    image4.link = "https://cdn.educba.com/academy/wp-content/uploads/2024/12/Practical-Ways-for-Saving-Money-on-Everyday-Expenses.jpg"
+    image4.name = "tips4"
+    imageArray.append(image4)
+    return imageArray
+
+def index(request): 
+    videoArray = getVids()
+    articleArray = getArt()
+    imageArray = getImg()
 
     return render(request, "resources/recource.html", {'articleArray': articleArray, 'imageArray': imageArray, 'videoArray': videoArray})
 def videos(request): 
-
-    return render(request, "resources/videos.html")
+    videoArray = getVids()
+    return render(request, "resources/videos.html", { 'videoArray': videoArray})
 
 def images(request): 
-
-    return render(request, "resources/images.html")
+    imageArray = getImg()
+    return render(request, "resources/images.html", { 'imageArray': imageArray})
 def articles(request): 
-
-    return render(request, "resources/articles.html")
+    articleArray = getArt()
+    return render(request, "resources/articles.html", {'articleArray': articleArray})

@@ -8,7 +8,7 @@
   {% load bootstrap5 %}
   {% bootstrap_css %}
   {%bootstrap_javascript %}
-  <link rel="stylesheet" href="{% static 'savings/style.css' %}" />
+  <link rel="stylesheet" href="{% static 'resources/style.css' %}" />
 </head>
 <nav class="navbar navbar-expand-lg fixed-top bg-body-tertiary">
       <div class="container-fluid">
@@ -42,9 +42,23 @@
     </nav>
 
 
-<body>
- 
+<body style="margin-top: 3%;">
+  <div class="text-center headersub">
+    <div>
+      <h1>Image Resources</h1>
+    </div>
+  </div>
 </body>
+<div class="p-5">
+  <h5 class="fw-bold">Images</h5>
+    <div class="row">
+      {% for image in imageArray %}
+        <div class="col-sm-4 mb-sm-5" >
+          <img src="{{image.link}}" style="width: 500px; height: 300px;"/>
+        </div>
+      {%endfor%}
+    </div>
+</div>
 
 </html>
 

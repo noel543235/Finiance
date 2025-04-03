@@ -5,7 +5,6 @@ from expenses.models import *
 from .forms import *
 import json
 
-
 def sumExpenses(expenses):
     '''Sum amounts of given expenses'''
     total = 0
@@ -52,34 +51,34 @@ def getGoalProportions(goals):
     for goal in goals:
         payments = getGoalPayments(goal)
         total = sum(payment.amount for payment in payments)
-        percent = max(0.01, total / goal.amount)
+        percent = max(0.01, total / goal.goal_amount)
         proportions.append(percent * 100)
         
     return proportions
         
     
-
 def index(request):
     '''Initial template when user visits page'''
-    # Query all user expenses from the database
-    expenses = getUserExpenses(request)   
+    # Query all user goals from the database
+    goals = getUserGoals(request)
     
-    # Calculate the proportions of each expense amount relative to the total
-    proportions = getProportions(expenses)    
+    # Create context object to send to template
+    context = {
+        'goals': goals,
+        'goal_form': SavingsGoalForm,
+        'payment_form': GoalPaymentForm
+    }         
     
-    return render(request, "savings/savings.html", {'expenses': expenses, 'proportions': proportions})
+    return render(request, "savings/savings.html", context)   
+    
     
 def get_chart_data(request):
-    frequency = request.GET.get('frequency')
-
     # Query the database for all expenses
     goals = getUserGoals(request) 
     
     proportions = getGoalProportions(goals)
     
     labels = [goal.label for goal in goals]
-    
-    print(labels, proportions)
 
     # Convert to JSON format
     return JsonResponse({'labels': labels, 'data': proportions})

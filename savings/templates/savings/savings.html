@@ -11,35 +11,36 @@
   <link rel="stylesheet" href="{% static 'savings/style.css' %}" />
 </head>
 <nav class="navbar navbar-expand-lg fixed-top bg-body-tertiary">
-      <div class="container-fluid">
-        <a style="color: #2D2D2D;" class="navbar-brand" href="#">Finiance</a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-          <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarNav">
-          <ul class="navbar-nav">
-            <li class="nav-item">
-              <a style="color: #2D2D2D;" class="nav-link active" aria-current="page" href="http://127.0.0.1:8000/">Home</a>
-            </li>
-            <li class="nav-item">
-              <a style="color: #2D2D2D;" class="nav-link" href="http://127.0.0.1:8000/savings">Savings</a>
-            </li>
-            <li class="nav-item">
-              <a style="color: #2D2D2D;" class="nav-link" href="http://127.0.0.1:8000/expenses">Expenses</a>
-            </li>
-            <li class="nav-item">
-              <a style="color: #2D2D2D;" class="nav-link" href="http://127.0.0.1:8000/accountinfo">Account Information</a>
-            </li>
-            <li class="nav-item">
-              <a style="color: #2D2D2D;" class="nav-link" href="http://127.0.0.1:8000/resources">Resources</a>
-            </li>
-            <li class="nav-item">
-              <a style="color: #2D2D2D;" class="nav-link" href="http://127.0.0.1:8000/login/login">Login</a>
-            </li>
-          </ul>
-        </div>
-      </div>
-    </nav>
+  <div class="container-fluid">
+    <a style="color: #2D2D2D;" class="navbar-brand" href="#">Finiance</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+      aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav">
+        <li class="nav-item">
+          <a style="color: #2D2D2D;" class="nav-link active" aria-current="page" href="http://127.0.0.1:8000/">Home</a>
+        </li>
+        <li class="nav-item">
+          <a style="color: #2D2D2D;" class="nav-link" href="http://127.0.0.1:8000/savings">Savings</a>
+        </li>
+        <li class="nav-item">
+          <a style="color: #2D2D2D;" class="nav-link" href="http://127.0.0.1:8000/expenses">Expenses</a>
+        </li>
+        <li class="nav-item">
+          <a style="color: #2D2D2D;" class="nav-link" href="http://127.0.0.1:8000/accountinfo">Account Information</a>
+        </li>
+        <li class="nav-item">
+          <a style="color: #2D2D2D;" class="nav-link" href="http://127.0.0.1:8000/resources">Resources</a>
+        </li>
+        <li class="nav-item">
+          <a style="color: #2D2D2D;" class="nav-link" href="http://127.0.0.1:8000/login/login">Login</a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
 
 
 <body>
@@ -59,7 +60,7 @@
       </div>
     </div>
     <div class="col-12 ms-5 col-md-4 hello">
-      <h3 class=" fw-bold heading" id="savingsHeading">Expenses for month</h3>
+      <h3 class=" fw-bold heading" id="savingsHeading">Savings Goals for Month</h3>
 
       <ul class="list-unstyled fs-4 text-white">
         {% for expense in expenses %}
@@ -77,12 +78,14 @@
       </p>
       <div class="collapse" id="collapseExample3">
         <div class="card card-body w-50">
-          <form>
+          <form method="post">
             <label class="me-2">Saving Name:</label>
-            <input type="text" id="savingsname"/>
+            <input type="text" id="savingsname" />
             <label class="me-2">How much did it cost:</label>
-            <input type="number" id="savingscost"/>
-            <button >Add</button>
+            <input type="number" id="savingscost" />
+            <button type="submit" class="bg-light text-dark border btn-sm border-1 border-dark rounded-3">
+              Add
+            </button>
           </form>
         </div>
       </div>
@@ -97,11 +100,11 @@
         <div class="card card-body w-50">
           <form>
             <label class="me-2">Saving Goal Name:</label>
-            <input type="text" id="savingsgoalname"/>
+            <input type="text" id="savingsgoalname" />
             <label class="me-2">How much does it cost:</label>
-            <input type="number" id="savingsgoalcost"/>
+            <input type="number" id="savingsgoalcost" />
             <label class="me-2">How much do you have saved:</label>
-            <input type="number" id="savingsgoalsaved"/>
+            <input type="number" id="savingsgoalsaved" />
             <button>Add</button>
           </form>
         </div>
@@ -143,41 +146,41 @@
     </div>
   </div>
 
-<div class="p-5 mt-3" style="margin-left: 15%;">
-  <h3 class="mb-4 fw-bold">Future Value Calculator</h3>
-  <div class=" row">
-    <div class="col ms-5">
-      <form >
-        <label class="mb-5">Number of Periods</label>
-        <input type="number" value="10" />
-        <br />
-        <label class="mb-5">Starting Amount</label>
-        <input type="number" value="1000" />
-        <br />
-        <label class="mb-5">Interest Rate</label>
-        <input type="number" value="6" />
-        <br />
-        <label class="mb-5">Periodic Deposit</label>
-        <input type="number" value="100" />
-        <br />
-        <p>Time when you want to make it</p>
-        <label class="mb-5">Beginning</label>
-        <input type="radio" />
-        <br />
-        <label class="mb-5">End</label>
-        <input type="radio" />
-        <br />
-        <button>Calculate</button>
-      </form>
-    </div>
-    <div class="col">
-      <div class="line bg-secondary p-3">
-        <h4>Results: Please Put in a Calculation</h4>
+  <div class="p-5 mt-3 ms-5">
+    <h3 class="mb-4 fw-bold">Future Value Calculator</h3>
+    <div class=" row">
+      <div class="col ms-5">
+        <form>
+          <label class="mb-5">Number of Periods</label>
+          <input type="number" value="10" />
+          <br />
+          <label class="mb-5">Starting Amount</label>
+          <input type="number" value="1000" />
+          <br />
+          <label class="mb-5">Interest Rate</label>
+          <input type="number" value="6" />
+          <br />
+          <label class="mb-5">Periodic Deposit</label>
+          <input type="number" value="100" />
+          <br />
+          <p>Time when you want to make it</p>
+          <label class="mb-5">Beginning</label>
+          <input type="radio" />
+          <br />
+          <label class="mb-5">End</label>
+          <input type="radio" />
+          <br />
+          <button>Calculate</button>
+        </form>
+      </div>
+      <div class="col">
+        <div class="line bg-secondary p-3">
+          <h4>Results: Please Put in a Calculation</h4>
+        </div>
       </div>
     </div>
-  </div>
 
-</div>
+  </div>
 </body>
 
 </html>
@@ -274,7 +277,7 @@
     // Add event listener to toggle fields based on user selection
     frequencyField.addEventListener("change", toggleFields);
 
-  }); 
-  
+  });
 
-  </script>
+
+</script>

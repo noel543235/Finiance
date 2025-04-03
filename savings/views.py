@@ -4,61 +4,18 @@ from itertools import chain
 from expenses.models import *
 from .forms import *
 import json
-
-def sumExpenses(expenses):
-    '''Sum amounts of given expenses'''
-    total = 0
-    for expense in expenses:
-        total += expense.amount
-        
-    return total
+from datetime import datetime
 
 
-def getProportions(expenses):
-    '''Calculate the proportions of each expense amount relative to the total'''
-    # Find total of all expenses
-    total = sumExpenses(expenses)
-    
-    # Calculate proportions
-    if total > 0:
-        proportions = [float(expense.amount / total) for expense in expenses]
-    else:
-        proportions = [0]
-        
-    return proportions
-
-
-def getUserExpenses(request):
-    '''Return all expenses of the current user'''
-    return list(chain(
-        OneTime.objects.filter(user=request.user),
-        Recurring.objects.filter(user=request.user),
-    ))  
-    
-
-def getUserGoals(request):
-    '''Return all savings goals of the current user''' 
-    return SavingsGoal.objects.filter(user=request.user)
-
-
-def getGoalPayments(goal):
-    return goal.goalpayment_set.all()
-
-
-def getGoalProportions(goals):
-    '''Calculate the percetage completed for each goal'''
-    proportions = list()
-    for goal in goals:
-        payments = getGoalPayments(goal)
-        total = sum(payment.amount for payment in payments)
-        percent = max(0.01, total / goal.goal_amount)
-        proportions.append(percent * 100)
-        
-    return proportions
-        
-    
 def index(request):
-    '''Initial template when user visits page'''
+    """Initial template when user visits savings page
+
+    Args:
+        request (HttpRequest): User info
+
+    Returns:
+        HttpResponse: Template to load with context (forms, goals, etc.)
+    """
     # Query all user goals from the database
     goals = getUserGoals(request)
     
@@ -69,19 +26,102 @@ def index(request):
         'payment_form': GoalPaymentForm
     }         
     
-    return render(request, "savings/savings.html", context)   
+    return render(request, "savings/savings.html", context)
+   
+
+def getUserGoals(request):
+    """Return all savings goals of the current user
+
+    Args:
+        request (HttpRequest): User info
+
+    Returns:
+        iterable: Iterable of savings goal objects
+    """
+    return SavingsGoal.objects.filter(user=request.user)
+
+
+def getGoalPayments(goal):
+    """Get a list of all goal payments for the current user
+
+    Args:
+        goal (models.SavingsGoal): Saving's goal of current user
+
+    Returns:
+        iterable: All payment objects linked to given savings goal object
+    """
+    return goal.goalpayment_set.all()
+
+
+def getGoalPercentages(goals):
+    """Calculate the percetage reached for each given goal
+
+    Args:
+        goals (models.SavingsGoal): Iterable of savings goal objects
+
+    Returns:
+        arr[float]: Percent completed for each goal
+    """
+    # Initialize percentages array
+    percentages = list()
+    
+    # Calculate goal % reached for every goal
+    for goal in goals:
+        payments = getGoalPayments(goal) # Get all payments for specific goal
+        total = sum(payment.amount for payment in payments) # Sum payments 
+        percent = max(0.01, total / goal.goal_amount) # Convert to percent (showing 0% as 0.1%)
+        percentages.append(percent * 100)
+        
+    return percentages 
+
+
+def create_goal(request):    
+    form = SavingsGoalForm(request.POST)
+    if form.is_valid():
+        # Handle one-time expense
+        savings_goal = SavingsGoal(
+            # Mandatory fields
+            user=request.user,
+            label=form.cleaned_data['label'],
+            amount=form.cleaned_data['amount'],
+            description=form.cleaned_data['description'],
+            category=form.cleaned_data['category'],
+            date_created=datetime.now()
+            )
+        savings_goal.save()
+        
+        # Make initial payment towards goal
+        initial = form.cleaned_data['initial']
+        payment = GoalPayment(
+            goal=savings_goal,
+            payment_date=datetime.now(),
+            amount=initial            
+        )
+        payment.save()
+    
     
     
 def get_chart_data(request):
+    """Get up-to-date goal info for goals bar chart
+
+    Args:
+        request (HttpRequest): User info
+
+    Returns:
+        json: Goal labels and their percentages reached
+    """
     # Query the database for all expenses
     goals = getUserGoals(request) 
     
-    proportions = getGoalProportions(goals)
+    # Calculate percentages reached per goal    
+    proportions = getGoalPercentages(goals)
     
+    # Labels for each goal
     labels = [goal.label for goal in goals]
 
-    # Convert to JSON format
+    # Convert to JSON format and return
     return JsonResponse({'labels': labels, 'data': proportions})
+
 
 def future_value_calculator(present_value, compounds, interest_rate, periodic_deposit):
     '''

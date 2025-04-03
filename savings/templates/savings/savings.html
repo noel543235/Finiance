@@ -1,225 +1,265 @@
 <!DOCTYPE html>
 <html lang="en-US">
-
-<head>
-  <meta charset="utf-8" />
-  <title>My test page</title>
-  {% load static %}
-  {% load bootstrap5 %}
-  {% bootstrap_css %}
-  {%bootstrap_javascript %}
-  <link rel="stylesheet" href="{% static 'savings/style.css' %}" />
-</head>
-<nav class="navbar navbar-expand-lg fixed-top bg-body-tertiary">
-  <div class="container-fluid">
-    <a style="color: #2D2D2D;" class="navbar-brand" href="#">Finiance</a>
-    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
-      aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-      <span class="navbar-toggler-icon"></span>
-    </button>
-    <div class="collapse navbar-collapse" id="navbarNav">
-      <ul class="navbar-nav">
-        <li class="nav-item">
-          <a style="color: #2D2D2D;" class="nav-link active" aria-current="page" href="http://127.0.0.1:8000/">Home</a>
-        </li>
-        <li class="nav-item">
-          <a style="color: #2D2D2D;" class="nav-link" href="http://127.0.0.1:8000/savings">Savings</a>
-        </li>
-        <li class="nav-item">
-          <a style="color: #2D2D2D;" class="nav-link" href="http://127.0.0.1:8000/expenses">Expenses</a>
-        </li>
-        <li class="nav-item">
-          <a style="color: #2D2D2D;" class="nav-link" href="http://127.0.0.1:8000/accountinfo">Account Information</a>
-        </li>
-        <li class="nav-item">
-          <a style="color: #2D2D2D;" class="nav-link" href="http://127.0.0.1:8000/resources">Resources</a>
-        </li>
-        <li class="nav-item">
-          <a style="color: #2D2D2D;" class="nav-link" href="http://127.0.0.1:8000/login/login">Login</a>
-        </li>
-      </ul>
-    </div>
-  </div>
-</nav>
-
-
-<body>
-  <div class="section1 row">
-    <div class=" col-12 col-md-4 mb-5 ms-5">
-      <div class=" mb-5 "></div>
-      <div style="margin-left: 105px;">
-        <canvas id="ProgressChart" width="200" height="100"></canvas>
-        <form method="GET" action="">
-          <label class="heading fw-bold fs-4" for="frequency">Select Frequency:</label>
-          <select id="frequency" class="form-select w-50">
-            <option value="Monthly">Monthly</option>
-            <option value="Weekly">Weekly</option>
-            <option value="Yearly">Yearly</option>
-          </select>
-        </form>
-      </div>
-    </div>
-    <div class="col-12 ms-5 col-md-4 hello">
-      <h3 class=" fw-bold heading" id="savingsHeading">Savings Goals for Month</h3>
-
-      <ul class="list-unstyled fs-4 text-white">
-        {% for expense in expenses %}
-        <li>{{ expense.label }}: ${{ expense.amount }}</li>
-        {% endfor %}
-      </ul>
-    </div>
-    <div class="col">
-      <h5 class="mt-5 fw-bold text-white">Savings</h5>
-      <p class="d-inline-flex gap-1">
-        <button type="button" data-bs-toggle="collapse" data-bs-target="#collapseExample3" aria-expanded="false"
-          aria-controls="collapseExample3">
-          Press Here to edit your Savings
-        </button>
-      </p>
-      <div class="collapse" id="collapseExample3">
-        <div class="card card-body w-50">
-          <form method="post">
-            <label class="me-2">Saving Name:</label>
-            <input type="text" id="savingsname" />
-            <label class="me-2">How much did it cost:</label>
-            <input type="number" id="savingscost" />
-            <button type="submit" class="bg-light text-dark border btn-sm border-1 border-dark rounded-3">
-              Add
-            </button>
-          </form>
-        </div>
-      </div>
-      <h5 class="mt-3 fw-bold text-white">Saving Goals</h5>
-      <p class="d-inline-flex gap-1">
-        <button type="button" data-bs-toggle="collapse" data-bs-target="#collapseExample4" aria-expanded="false"
-          aria-controls="collapseExample4">
-          Press Here to add your Saving Goals
-        </button>
-      </p>
-      <div class="collapse" id="collapseExample4">
-        <div class="card card-body w-50">
-          <form>
-            <label class="me-2">Saving Goal Name:</label>
-            <input type="text" id="savingsgoalname" />
-            <label class="me-2">How much does it cost:</label>
-            <input type="number" id="savingsgoalcost" />
-            <label class="me-2">How much do you have saved:</label>
-            <input type="number" id="savingsgoalsaved" />
-            <button>Add</button>
-          </form>
-        </div>
-      </div>
-    </div>
-  </div>
-  <div style="padding: 3%; margin-bottom: 5%;">
-    <div class="row mt-3 ms-5  fs-4">
-      <div class="col ms-5">
-        <img src="{% static 'savings/images/emergency.jpg' %}" alt="">
-        <h4>Emergency Fund</h4>
-        <button>Press Here To See Your Emergency Fund</button>
-      </div>
-      <div class="col me-5">
-        <img src="{% static 'savings/images/loans.jpg' %}" alt="">
-        <h4>Loans</h4>
-        <button>Press Here To See Your Loans</button>
-      </div>
-      <div class="col me-5">
-        <img src="{% static 'savings/images/budget.jpg' %}" alt="">
-        <h4>Budget</h4>
-        <button>Press Here To See Your Budget</button>
-      </div>
-    </div>
-  </div>
-  <div class="section2">
-    <div class="row" style="margin-left: 13%;">
-      <div class="col">
-        <div class="savingsimg"></div>
-      </div>
-      <div class="col">
-        <ul class="list-unstyled text-white p-4">
-          <li class="fs-4 m-5">Savings</li>
-          <li class="fs-4 m-5">Loans</li>
-          <li class="fs-4 m-5">Emergencey Fund</li>
-          <li class="fs-4 m-5">Budget</li>
+  <head>
+    <meta charset="utf-8" />
+    <title>My test page</title>
+    {% load static %} {% load bootstrap5 %} {% bootstrap_css %}
+    {%bootstrap_javascript %}
+    <link rel="stylesheet" href="{% static 'savings/style.css' %}" />
+  </head>
+  <nav class="navbar navbar-expand-lg fixed-top bg-body-tertiary">
+    <div class="container-fluid">
+      <a style="color: #2d2d2d" class="navbar-brand" href="#">Finiance</a>
+      <button
+        class="navbar-toggler"
+        type="button"
+        data-bs-toggle="collapse"
+        data-bs-target="#navbarNav"
+        aria-controls="navbarNav"
+        aria-expanded="false"
+        aria-label="Toggle navigation"
+      >
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav">
+          <li class="nav-item">
+            <a
+              style="color: #2d2d2d"
+              class="nav-link active"
+              aria-current="page"
+              href="http://127.0.0.1:8000/"
+              >Home</a
+            >
+          </li>
+          <li class="nav-item">
+            <a
+              style="color: #2d2d2d"
+              class="nav-link"
+              href="http://127.0.0.1:8000/savings"
+              >Savings</a
+            >
+          </li>
+          <li class="nav-item">
+            <a
+              style="color: #2d2d2d"
+              class="nav-link"
+              href="http://127.0.0.1:8000/expenses"
+              >Expenses</a
+            >
+          </li>
+          <li class="nav-item">
+            <a
+              style="color: #2d2d2d"
+              class="nav-link"
+              href="http://127.0.0.1:8000/accountinfo"
+              >Account Information</a
+            >
+          </li>
+          <li class="nav-item">
+            <a
+              style="color: #2d2d2d"
+              class="nav-link"
+              href="http://127.0.0.1:8000/resources"
+              >Resources</a
+            >
+          </li>
+          <li class="nav-item">
+            <a
+              style="color: #2d2d2d"
+              class="nav-link"
+              href="http://127.0.0.1:8000/login/login"
+              >Login</a
+            >
+          </li>
         </ul>
       </div>
     </div>
-  </div>
+  </nav>
 
-  <div class="p-5 mt-3 ms-5">
-    <h3 class="mb-4 fw-bold">Future Value Calculator</h3>
-    <div class=" row">
-      <div class="col ms-5">
-        <form>
-          <label class="mb-5">Number of Periods</label>
-          <input type="number" value="10" />
-          <br />
-          <label class="mb-5">Starting Amount</label>
-          <input type="number" value="1000" />
-          <br />
-          <label class="mb-5">Interest Rate</label>
-          <input type="number" value="6" />
-          <br />
-          <label class="mb-5">Periodic Deposit</label>
-          <input type="number" value="100" />
-          <br />
-          <p>Time when you want to make it</p>
-          <label class="mb-5">Beginning</label>
-          <input type="radio" />
-          <br />
-          <label class="mb-5">End</label>
-          <input type="radio" />
-          <br />
-          <button>Calculate</button>
-        </form>
+  <body>
+    <div class="section1 row">
+      <div class="col-12 col-md-4 mb-5 ms-5">
+        <div class="mb-5"></div>
+        <div style="margin-left: 105px">
+          <canvas id="ProgressChart" width="200" height="100"></canvas>
+        </div>
+      </div>
+      <div class="col-12 ms-5 col-md-4 hello">
+        <h3 class="fw-bold heading" id="savingsHeading">
+          Savings Goals for Month
+        </h3>
+
+        <ul class="list-unstyled fs-4 text-white">
+          {% for goal in goals %}
+          <li>{{ goal.label }}: ${{ goal.amount }}</li>
+          {% endfor %}
+        </ul>
       </div>
       <div class="col">
-        <div class="line bg-secondary p-3">
-          <h4>Results: Please Put in a Calculation</h4>
+        <h5 class="mt-5 fw-bold text-white">Savings</h5>
+        <p class="d-inline-flex gap-1">
+          <button
+            type="button"
+            data-bs-toggle="collapse"
+            data-bs-target="#collapseExample3"
+            aria-expanded="false"
+            aria-controls="collapseExample3"
+          >
+            Press Here to edit your Savings
+          </button>
+        </p>
+        <div class="collapse" id="collapseExample3">
+          <div class="card card-body w-50">
+            <form method="post">
+              <label class="me-2">Saving Name:</label>
+              <input type="text" id="savingsname" />
+              <label class="me-2">How much did it cost:</label>
+              <input type="number" id="savingscost" />
+              <button
+                type="submit"
+                class="bg-light text-dark border btn-sm border-1 border-dark rounded-3"
+              >
+                Add
+              </button>
+            </form>
+          </div>
+        </div>
+        <h5 class="mt-3 fw-bold text-white">Saving Goals</h5>
+        <p class="d-inline-flex gap-1">
+          <button
+            type="button"
+            data-bs-toggle="collapse"
+            data-bs-target="#collapseExample4"
+            aria-expanded="false"
+            aria-controls="collapseExample4"
+          >
+            Press Here to add your Saving Goals
+          </button>
+        </p>
+        <div class="collapse" id="collapseExample4">
+          <div class="card card-body w-50">
+            <form action="{% url 'create_goal' %}" method="POST">
+              {% csrf_token %}
+              <label class="me-2">Saving Goal Name:</label>
+              <input type="text" id="label" />
+              <label class="me-2">How much does it cost:</label>
+              <input type="number" id="amount" />
+              <label class="me-2">How much do you have saved:</label>
+              <input type="number" id="initial" />
+              <button>Add</button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div style="padding: 3%; margin-bottom: 5%">
+      <div class="row mt-3 ms-5 fs-4">
+        <div class="col ms-5">
+          <img src="{% static 'savings/images/emergency.jpg' %}" alt="" />
+          <h4>Emergency Fund</h4>
+          <button>Press Here To See Your Emergency Fund</button>
+        </div>
+        <div class="col me-5">
+          <img src="{% static 'savings/images/loans.jpg' %}" alt="" />
+          <h4>Loans</h4>
+          <button>Press Here To See Your Loans</button>
+        </div>
+        <div class="col me-5">
+          <img src="{% static 'savings/images/budget.jpg' %}" alt="" />
+          <h4>Budget</h4>
+          <button>Press Here To See Your Budget</button>
+        </div>
+      </div>
+    </div>
+    <div class="section2">
+      <div class="row" style="margin-left: 13%">
+        <div class="col">
+          <div class="savingsimg"></div>
+        </div>
+        <div class="col">
+          <ul class="list-unstyled text-white p-4">
+            <li class="fs-4 m-5">Savings</li>
+            <li class="fs-4 m-5">Loans</li>
+            <li class="fs-4 m-5">Emergencey Fund</li>
+            <li class="fs-4 m-5">Budget</li>
+          </ul>
         </div>
       </div>
     </div>
 
-  </div>
-</body>
-
+    <div class="p-5 mt-3 ms-5">
+      <h3 class="mb-4 fw-bold">Future Value Calculator</h3>
+      <div class="row">
+        <div class="col ms-5">
+          <form>
+            <label class="mb-5">Number of Periods</label>
+            <input type="number" value="10" />
+            <br />
+            <label class="mb-5">Starting Amount</label>
+            <input type="number" value="1000" />
+            <br />
+            <label class="mb-5">Interest Rate</label>
+            <input type="number" value="6" />
+            <br />
+            <label class="mb-5">Periodic Deposit</label>
+            <input type="number" value="100" />
+            <br />
+            <p>Time when you want to make it</p>
+            <label class="mb-5">Beginning</label>
+            <input type="radio" />
+            <br />
+            <label class="mb-5">End</label>
+            <input type="radio" />
+            <br />
+            <button>Calculate</button>
+          </form>
+        </div>
+        <div class="col">
+          <div class="line bg-secondary p-3">
+            <h4>Results: Please Put in a Calculation</h4>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
 </html>
 
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
 <script>
-
   document.addEventListener("DOMContentLoaded", function () {
-
     // Initial chart setup with placeholder data
-    var ctx = document.getElementById('ProgressChart').getContext('2d');
+    var ctx = document.getElementById("ProgressChart").getContext("2d");
     var ProgressChart = new Chart(ctx, {
-      type: 'bar',
+      type: "bar",
       data: {
-        labels: ['Goal1', 'Goal2', 'Goal3'], // Empty labels initially
-        datasets: [{
-          data: [1, 0.2, 3], // Empty dataset initially
-          backgroundColor: [
-            'rgba(255, 99, 132, 0.2)',
-            'rgba(54, 162, 235, 0.2)',
-            'rgba(255, 206, 86, 0.2)',
-            'rgba(75, 192, 192, 0.2)',
-            'rgba(153, 102, 255, 0.2)',
-            'rgba(255, 159, 64, 0.2)'
-          ],
-          borderColor: [
-            'rgba(255, 99, 132, 1)',
-            'rgba(54, 162, 235, 1)',
-            'rgba(255, 206, 86, 1)',
-            'rgba(75, 192, 192, 1)',
-            'rgba(153, 102, 255, 1)',
-            'rgba(255, 159, 64, 1)'
-          ],
-          borderWidth: 1
-        }]
+        labels: ["Goal1", "Goal2", "Goal3"], // Empty labels initially
+        datasets: [
+          {
+            data: [1, 0.2, 3], // Empty dataset initially
+            backgroundColor: [
+              "rgba(255, 99, 132, 0.2)",
+              "rgba(54, 162, 235, 0.2)",
+              "rgba(255, 206, 86, 0.2)",
+              "rgba(75, 192, 192, 0.2)",
+              "rgba(153, 102, 255, 0.2)",
+              "rgba(255, 159, 64, 0.2)",
+            ],
+            borderColor: [
+              "rgba(255, 99, 132, 1)",
+              "rgba(54, 162, 235, 1)",
+              "rgba(255, 206, 86, 1)",
+              "rgba(75, 192, 192, 1)",
+              "rgba(153, 102, 255, 1)",
+              "rgba(255, 159, 64, 1)",
+            ],
+            borderWidth: 1,
+          },
+        ],
       },
       options: {
-        indexAxis: 'y', // Set indexAxis to 'y' to make the bars horizontal
+        indexAxis: "y", // Set indexAxis to 'y' to make the bars horizontal
         scales: {
           x: {
             beginAtZero: true, // Ensures x-axis starts from 0
@@ -227,39 +267,37 @@
             max: 100, // Set the maximum value for the x-axis
           },
           y: {
-            beginAtZero: true
-          }
+            beginAtZero: true,
+          },
         },
         plugins: {
           legend: {
-            display: false // This hides the legend completely
-          }
-        }
-      }
+            display: false, // This hides the legend completely
+          },
+        },
+      },
     });
 
-    console.log('success');
+    console.log("success");
 
     // Function to send GET request and update chart data
     function updateChartData(frequency) {
       fetch(`get_chart_data/?frequency=${frequency}`, {
-        method: 'GET'
+        method: "GET",
       })
-        .then(response => response.json())
-        .then(data => {
-
-          console.log('Raw response:', data.data);
+        .then((response) => response.json())
+        .then((data) => {
+          console.log("Raw response:", data.data);
 
           // Dynamically update chart with received data
           ProgressChart.data.labels = data.labels; // Update labels (tasks, months, etc.)
           ProgressChart.data.datasets[0].data = data.data; // Update dataset values
 
-          console.log(ProgressChart)
+          console.log(ProgressChart);
 
           ProgressChart.update(); // Update chart with new data
-
         })
-        .catch(error => console.error('Error fetching data:', error));
+        .catch((error) => console.error("Error fetching data:", error));
     }
 
     var frequencyField = document.getElementById("frequency");
@@ -276,8 +314,5 @@
 
     // Add event listener to toggle fields based on user selection
     frequencyField.addEventListener("change", toggleFields);
-
   });
-
-
 </script>

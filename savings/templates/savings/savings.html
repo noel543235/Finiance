@@ -113,17 +113,131 @@
       <div class="col ms-5">
         <img src="{% static 'savings/images/emergency.jpg' %}" alt="">
         <h4>Emergency Fund</h4>
-        <button>Press Here To See Your Emergency Fund</button>
+        <!-- Button trigger modal -->
+        <button type="button" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
+         Edit or View Emergencey fund
+        </button>
+
+        <!-- Modal -->
+        <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+          <div class="modal-dialog modal-dialog-scrollable">
+            <div class="modal-content">
+              <div class="modal-header" style="background-color: #3D0066;">
+                <h1 class="modal-title fs-5 text-white" id="staticBackdropLabel">Emergency Fund</h1>
+                <button type="button" class="btn-close bg-white" data-bs-dismiss="modal" aria-label="Close"></button>
+              </div>
+              <div class="modal-body">
+                <p>Current Emergencey Fund: $0</p>
+                <button type="button" data-bs-toggle="collapse" data-bs-target="#collapseExample5" aria-expanded="false"
+                  aria-controls="collapseExample5">
+                  Press Here to edit your Emergencey
+                </button>
+              </p>
+              <div class="collapse" id="collapseExample5">
+                <div class="card card-body w-100">
+                  <form>
+                    <label class="me-2">Emergencey Fund:</label>
+                    <input type="number" min="1" max="50000" id="savingsname"/>
+                    <button >Add</button>
+                  </form>
+                </div>
+              </div>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
       </div>
       <div class="col me-5">
         <img src="{% static 'savings/images/loans.jpg' %}" alt="">
-        <h4>Loans</h4>
-        <button>Press Here To See Your Loans</button>
+        <h4>Retirement savings</h4>
+        <!-- Button trigger modal -->
+        <button type="button" data-bs-toggle="modal" data-bs-target="#staticBackdrop2">
+          Edit or View Retirement Savings
+         </button>
+ 
+         <!-- Modal -->
+         <div class="modal fade" id="staticBackdrop2" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+           <div class="modal-dialog modal-dialog-scrollable">
+             <div class="modal-content">
+               <div class="modal-header" style="background-color: #3D0066;">
+                 <h1 class="modal-title fs-5 text-white" id="staticBackdropLabel">Retirement Savings</h1>
+                 <button type="button" class="btn-close bg-white" data-bs-dismiss="modal" aria-label="Close"></button>
+               </div>
+               <div class="modal-body">
+                 <p>Current Retirement Savings: 0</p>
+                 <button type="button" data-bs-toggle="collapse" data-bs-target="#collapseExample6" aria-expanded="false"
+                   aria-controls="collapseExample6">
+                   Press Here to edit your Retirement savings
+                 </button>
+               </p>
+               <div class="collapse" id="collapseExample6">
+                 <div class="card card-body w-100">
+                   <form>
+                     <label class="me-2">Loan:</label>
+                     <input type="number" min="1" max="50000" id="savingsname"/>
+                     <button >Add</button>
+                   </form>
+                 </div>
+               </div>
+               </div>
+               <div class="modal-footer">
+                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+               </div>
+             </div>
+           </div>
+         </div>
+ 
       </div>
       <div class="col me-5">
         <img src="{% static 'savings/images/budget.jpg' %}" alt="">
-        <h4>Budget</h4>
-        <button>Press Here To See Your Budget</button>
+        <h4>Savings Goals</h4>
+         <!-- Button trigger modal -->
+         <button type="button" data-bs-toggle="modal" data-bs-target="#staticBackdrop3">
+          Edit or View Saving Goals
+         </button>
+ 
+         <!-- Modal -->
+         <div class="modal fade" id="staticBackdrop3" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+           <div class="modal-dialog modal-dialog-scrollable">
+             <div class="modal-content">
+               <div class="modal-header" style="background-color: #3D0066;">
+                 <h1 class="modal-title fs-5 text-white" id="staticBackdropLabel">Saving Goals</h1>
+                 <button type="button" class="btn-close bg-white" data-bs-dismiss="modal" aria-label="Close"></button>
+               </div>
+               <div class="modal-body">
+                 <p>Add New Savings Goal</p>
+                 <button type="button" data-bs-toggle="collapse" data-bs-target="#collapseExample7" aria-expanded="false"
+                   aria-controls="collapseExample7">
+                   Press Here to add a Savings Goal
+                 </button>
+               </p>
+               <div class="collapse" id="collapseExample7">
+                 <div class="card card-body w-100">
+                   <form>
+                    <label>Name</label>
+                    <input type="text" required>
+                    <br/>
+                    <label>Description</label>
+                    <textarea name="description" id="description" style="height: 100px; width:400px;" placeholder="Enter description"></textarea>
+                     <label class="me-2">Amount:</label>
+                     <input type="number" min="1" max="50000" id="savingsname" required/>
+                     <br>
+                     <button >Add</button>
+                   </form>
+                 </div>
+               </div>
+               </div>
+               <div class="modal-footer">
+                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+               </div>
+             </div>
+           </div>
+         </div>
+ 
       </div>
     </div>
   </div>

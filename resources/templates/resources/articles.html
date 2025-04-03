@@ -8,7 +8,7 @@
   {% load bootstrap5 %}
   {% bootstrap_css %}
   {%bootstrap_javascript %}
-  <link rel="stylesheet" href="{% static 'savings/style.css' %}" />
+  <link rel="stylesheet" href="{% static 'resources/style.css' %}" />
 </head>
 <nav class="navbar navbar-expand-lg fixed-top bg-body-tertiary">
       <div class="container-fluid">
@@ -42,8 +42,35 @@
     </nav>
 
 
-<body>
- 
+<body style="margin-top: 3%;">
+  <div class="row headersub text-center">
+    <div class="col-5">
+      <h1>Article Resources</h1>
+    </div>
+    <div class="col-6">
+      <form action="">
+        <input type="text" placeholder="Search">
+      </form>
+    </div>
+  </div>
+
+  <div class="row ms-5 mt-5">
+    <h5>Articles</h5>
+    {% for articl in articleArray %}
+      <div class="col-sm-4 mb-sm-3" >
+        <div class="card cardtop w-75" style="height: 220px;">
+          <div class="card-body">
+            <h5 class="card-title">{{articl.name}}</h5>
+            <p class="card-text">{{articl.description}}</p>
+            <a href="{{articl.link}}" class="btn cardbutton mt-5" >Article Link!</a>
+          </div>
+        </div>
+      </div>
+
+    {%endfor%}
+  </div>
+
+
 </body>
 
 </html>

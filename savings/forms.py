@@ -1,11 +1,11 @@
 from django import forms
 from django.forms import Form, ModelForm
-from expenses.models import FREQUENCY_CHOICES
+from expenses.models import Recurring
 from .models import SavingsAccount, SavingsGoal
 
 class FrequencyForm(Form):
       
-    frequency = forms.ChoiceField(choices = FREQUENCY_CHOICES)
+    frequency = forms.ChoiceField(choices = Recurring.FREQUENCY_CHOICES)
 
 
 class SavingsAccountForm(ModelForm):

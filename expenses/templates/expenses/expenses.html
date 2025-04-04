@@ -1,102 +1,157 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Your Expenses</title>
-  {% load static %} 
-  {% load bootstrap5 %} 
-  {% bootstrap_css %} 
-  {%bootstrap_javascript %}
-  <link rel="stylesheet" href="{% static 'home/style.css' %}" />
-  <nav>
-    <div>
-      <ul>
-        <li>
-          <p>Finiance</p>
-        </li>
-        <li class="link"><a href="http://127.0.0.1:8000/">Home</a></li>
-        <li class="link">
-          <a href="http://127.0.0.1:8000/savings">Savings</a>
-        </li>
-        <li class="link">
-          <a href="http://127.0.0.1:8000/expenses">Expenses</a>
-        </li>
-        <li class="link">
-          <a href="http://127.0.0.1:8000/accountinfo">Account Info</a>
-        </li>
-        <li class="link">
-          <a href="http://127.0.0.1:8000/resources">Resources</a>
-      </li>
-        <li class="link">
-          <a href="http://127.0.0.1:8000/login/login">Log In</a>
-        </li>
-      </ul>
-    </div>
-  </nav>
-</head>
-<body>
-  <div class="container mt-5 py-4 text-center rounded-3 text-white" style="background-color: #3D0066; box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.5);">
-    <h2 class="text-warning">YOUR EXPENSES</h2>
-      <ul class="list-unstyled text-start ps-3 pe-3">
-        {% for expense in expenses %}
-          <li class="text-capitalize d-flex justify-content-between align-items-center mb-3">
-            <span class="text-capitalize ms-3"> {{ expense.label }} : ${{ expense.amount }} ({{ expense.date }})</span>
-          <form action="{% url 'delete_expense' expense.id %}" method="POST" style="display:inline;">
-            {% csrf_token %}
-            <button type="submit" class="btn btn-warning text-white fw-bold">Delete</button>
-          </form>
-        </li>
-        {% empty %}
-          <li>No expenses recorded yet.</li>
-        {% endfor %}
-      </ul>
-      <a href="{% url 'add_expense' %}" class="text-decoration-none text-white btn btn-warning mt-5 fw-bold" style="letter-spacing: 2px;">ADD NEW EXPENSE</a>
-      <br><br>
-      <div class="mt-5">
-        <div class="container border border-1 border-light rounded-3 pt-3 pb-5 ">
-          <div class="row">
-            <div class="col border border-2 border-warning rounded-2 me-3 ms-3">
-              <h4 class="fw-bold" style="letter-spacing: 2px;">Daily</h4>
-              <ul class="list-unstyled">
-                <li>Something for daily</li>
-                <li>Something for daily</li>
-                <li>Something for daily</li>
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Your Expenses</title>
+        {% load static %} {% load bootstrap5 %} {% bootstrap_css %}
+        {%bootstrap_javascript %}
+        <link rel="stylesheet" href="{% static 'home/style.css' %}" />
+        <nav>
+            <div>
+                <ul>
+                    <li>
+                        <p>Finiance</p>
+                    </li>
+                    <li class="link">
+                        <a href="http://127.0.0.1:8000/">Home</a>
+                    </li>
+                    <li class="link">
+                        <a href="http://127.0.0.1:8000/savings">Savings</a>
+                    </li>
+                    <li class="link">
+                        <a href="http://127.0.0.1:8000/expenses">Expenses</a>
+                    </li>
+                    <li class="link">
+                        <a href="http://127.0.0.1:8000/accountinfo"
+                            >Account Info</a
+                        >
+                    </li>
+                    <li class="link">
+                        <a href="http://127.0.0.1:8000/resources">Resources</a>
+                    </li>
+                    <li class="link">
+                        <a href="http://127.0.0.1:8000/login/login">Log In</a>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+    </head>
+    <body>
+        <div
+            class="container py-4 text-center rounded-3 text-white"
+            style="
+                background-color: #3d0066;
+                box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.5);
+                margin-top: 5%;
+            "
+        >
+            <h2 class="text-warning">YOUR EXPENSES</h2>
+            <ul class="list-unstyled text-start ps-3 pe-3">
+                {% for expense in onetime_expenses %}
+                <li
+                    class="text-capitalize d-flex justify-content-between align-items-center mb-3"
+                >
+                    <span class="text-capitalize ms-3">
+                        {{ expense.label }} : ${{ expense.amount }}
+                    </span>
+                    <form
+                        action="{% url 'delete_onetime_expense' expense.id %}"
+                        method="POST"
+                        style="display: inline"
+                    >
+                        {% csrf_token %}
+                        <button
+                            type="submit"
+                            class="btn btn-warning text-white fw-bold"
+                        >
+                            Delete
+                        </button>
+                    </form>
+                </li>
+                {% empty %}
+                <li>No onetime expenses recorded yet.</li>
+                {% endfor %} {% for expense in recurring_expenses %}
+                <li
+                    class="text-capitalize d-flex justify-content-between align-items-center mb-3"
+                >
+                    <span class="text-capitalize ms-3">
+                        {{ expense.label }} : ${{ expense.amount }}
+                    </span>
+                    <form
+                        action="{% url 'delete_recurring_expense' expense.id %}"
+                        method="POST"
+                        style="display: inline"
+                    >
+                        {% csrf_token %}
+                        <button
+                            type="submit"
+                            class="btn btn-warning text-white fw-bold"
+                        >
+                            Delete
+                        </button>
+                    </form>
+                </li>
+                {% empty %}
+                <li>No recurring expenses recorded yet.</li>
+                {% endfor %}
+            </ul>
+            <a
+                href="{% url 'add_expense' %}"
+                class="text-decoration-none text-white btn btn-warning mt-5 fw-bold"
+                style="letter-spacing: 2px"
+                >ADD NEW EXPENSE</a
+            >
+            <br /><br />
+            <div class="mt-5">
+                <div
+                    class="container border border-1 border-light rounded-3 pt-3 pb-5"
+                >
+                    <div class="row">
+                        <div
+                            class="col border border-2 border-warning rounded-2 me-3 ms-3"
+                        >
+                            <h4 class="fw-bold" style="letter-spacing: 2px">
+                                Daily
+                            </h4>
+                            <ul class="list-unstyled">
+                                <li>Something for daily</li>
+                                <li>Something for daily</li>
+                                <li>Something for daily</li>
+                            </ul>
+                        </div>
+                        <div
+                            class="col border border-2 border-warning rounded-2 me-3"
+                        >
+                            <h4 class="fw-bold" style="letter-spacing: 2px">
+                                Weekly
+                            </h4>
+                            <ul class="list-unstyled">
+                                <li>Something for weekly</li>
+                                <li>Something for weekly</li>
+                                <li>Something for weekly</li>
+                            </ul>
+                        </div>
+                        <div
+                            class="col border border-2 border-warning rounded-2 me-3"
+                        >
+                            <h4 class="fw-bold" style="letter-spacing: 2px">
+                                Yearly
+                            </h4>
+                            <ul class="list-unstyled">
+                                <li>Something for yearly</li>
+                                <li>Something for yearly</li>
+                                <li>Something for yearly</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!--Breakdown section-->
+            <!--will have a pie chart-->
 
-              </ul>
-            </div>
-            <div class="col border border-2 border-warning rounded-2 me-3">
-              <h4 class="fw-bold" style="letter-spacing: 2px;">Weekly</h4>
-              <ul class="list-unstyled">
-                <li>Something for weekly</li>
-                <li>Something for weekly</li>
-                <li>Something for weekly</li>
-              </ul>
-            </div>
-            <div class="col border border-2 border-warning rounded-2 me-3">
-              <h4 class="fw-bold" style="letter-spacing: 2px;">Yearly</h4>
-              <ul class="list-unstyled">
-                <li>Something for yearly</li>
-                <li>Something for yearly</li>
-                <li>Something for yearly</li>
-              </ul>
-            </div>
-          </div>
+            <!--alerts and history section-->
+            <!--import excel sheet-->
         </div>
-      </div>
-      <!--Breakdown section-->
-      <!--will have a pie chart-->
-
-
-
-
-      <!--alerts and history section-->
-      <!--import excel sheet-->
-
-  </div>
- 
-  
-
-  
-</body>
+    </body>
 </html>

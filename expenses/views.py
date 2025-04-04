@@ -2,6 +2,7 @@
 import io
 import json
 from datetime import datetime
+from itertools import chain
 
 # Third-Party Imports
 import polars as pl
@@ -11,70 +12,77 @@ from django.http import JsonResponse
 from django.shortcuts import render, redirect, get_object_or_404
 from django.template.loader import render_to_string
 from django.utils import timezone
+from django.forms.models import model_to_dict
 
 # Local Imports
 from .forms import *
 from .models import *
 
+
 def add_expense(request):
     """Handles adding a new expense for the logged-in user."""
 
+    # Redirects user to login page if they are not logged in
     if not request.user.is_authenticated:
         return redirect('/login/login')
 
-    expense_form = None
-    selected_expense_type = None
+    # Initialize general form allowing user to select one-time or recurring expense
+    form = ExpenseForm()
 
-    if request.method == "POST":
+    if request.method == 'POST':
         form = ExpenseForm(request.POST)
         if form.is_valid():
-            expense_type = form.cleaned_data["expense_type"]
-            selected_expense_type = expense_type
+            is_recurring = form.cleaned_data['is_recurring']
+            is_loan = form.cleaned_data['is_loan']
 
-            # Determine the correct form to use based on selected expense type
-            if expense_type == 'O':
-                expense_form = OneTimeForm(request.POST)
-            elif expense_type == 'S':
-                expense_form = SubscriptionForm(request.POST)
-            elif expense_type == 'L':
-                expense_form = LoanForm(request.POST)
-            
-            if expense_form and expense_form.is_valid():
-                expense = expense_form.save(commit=False)
-                expense.user = request.user  # Associate expense with the logged-in user
-                expense.save()
-                return redirect("expenses")
+            if not is_recurring:
+                # Handle one-time expense
+                one_time_expense = OneTime(
+                    user=request.user,
+                    label=form.cleaned_data['label'],
+                    amount=form.cleaned_data['amount'],
+                    description=form.cleaned_data['description'],
+                    category=form.cleaned_data['category'],
+                    date_created=datetime.now(),
+                    date_purchased=form.cleaned_data['date_purchased']
+                )
+                one_time_expense.save()
+            else:
+                if not is_loan:
+                    # Handle recurring expense
+                    recurring_expense = Recurring(
+                        user=request.user,
+                        label=form.cleaned_data['label'],
+                        amount=form.cleaned_data['amount'],
+                        description=form.cleaned_data['description'],
+                        category=form.cleaned_data['category'],
+                        date_created=datetime.now(),
+                        start_date=form.cleaned_data['start_date'],
+                        end_date=form.cleaned_data['end_date'],
+                        frequency=form.cleaned_data['frequency'],
+                    )
+                    recurring_expense.save()
 
-    else:  # Handle GET request
-        form = ExpenseForm()
-        selected_expense_type = request.GET.get('expense_type', None)
+                else:
+                    # Handle loan expense
+                    loan_expense = Loan(
+                        user=request.user,
+                        label=form.cleaned_data['label'],
+                        amount=form.cleaned_data['amount'],
+                        description=form.cleaned_data['description'],
+                        category=form.cleaned_data['category'],
+                        date_created=datetime.now(),
+                        start_date=form.cleaned_data['start_date'],
+                        end_date=form.cleaned_data['end_date'],
+                        frequency=form.cleaned_data['frequency'],
+                        principal=form.cleaned_data['principal'],
+                        apr=form.cleaned_data['apr'],
+                        term_amt=form.cleaned_data['term_amt']
+                    )
+                    loan_expense.save()
 
-    return render(request, "expenses/add_expense.html", {
-        "form": form,
-        "expense_form": expense_form,
-        "selected_expense_type": selected_expense_type
-    })
+    return render(request, "expenses/add_expense.html", {'form': form})
 
-def load_expense_form(request):
-    """Loads the specific form based on the selected expense type."""
-    expense_type = request.GET.get('expense_type')
-
-    # Handle form creation based on expense_type
-    if expense_type == 'O':
-        form = OneTimeForm()
-    elif expense_type == 'S':
-        form = SubscriptionForm()
-    elif expense_type == 'L':
-        form = LoanForm()
-    else:
-        form = None
-
-    # If form is valid, return the form HTML rendered as a string
-    if form:
-        form_html = form.as_p()
-        return JsonResponse({"form_html": form_html})
-    else:
-        return JsonResponse({"form_html": ""}, status=400)
 
 def expense_list(request):
     """Displays a list of expenses for the logged-in user, sorted by date."""
@@ -82,34 +90,58 @@ def expense_list(request):
     if not request.user.is_authenticated:
         return redirect('/login/login')
 
-    expenses = chain(
-        OneTime.objects.filter(user=request.user),
-        Subscription.objects.filter(user=request.user),
-        Loan.objects.filter(user=request.user)
-    )
-    
-    return render(request, "expenses/expenses.html", {"expenses": expenses})
+    onetime_expenses = OneTime.objects.filter(user=request.user)
+    recurring_expenses = Recurring.objects.filter(user=request.user)
 
-def delete_expense(request, expense_id):
+    return render(request, "expenses/expenses.html", {"onetime_expenses": onetime_expenses, "recurring_expenses": recurring_expenses})
+
+def delete_onetime_expense(request, expense_id):
     """Deletes an expense if it belongs to the logged-in user."""
 
     if not request.user.is_authenticated:
         return redirect('/login/login')
 
+    expense = get_object_or_404(OneTime, pk=expense_id)
+
     if request.method == "POST":
 
         # Retrieve the expense, ensuring it belongs to the current user
-        expense = get_object_or_404(Expense, id=expense_id, user=request.user) 
         expense.delete()
+
+        # expense.delete()
+
+
     return redirect('expenses')
+
+
+def delete_recurring_expense(request, expense_id):
+    """Deletes an expense if it belongs to the logged-in user."""
+
+    if not request.user.is_authenticated:
+        return redirect('/login/login')
+
+    expense = get_object_or_404(Recurring, pk=expense_id)
+
+    if request.method == "POST":
+
+        # Retrieve the expense, ensuring it belongs to the current user
+        expense.delete()
+
+        # expense.delete()
+
+
+    return redirect('expenses')
+
 
 def import_expenses(request):
     return render(request, 'expenses/import_expenses.html')
-    
+
+
 def clean_data(df: pl.DataFrame) -> dict:
 
     # Columns that might already be present
-    expected_cols = {"label", "amount", "category", "startdate", "frequency", "principal", "interestRate", "termLength"}    
+    expected_cols = {"label", "amount", "category", "startdate",
+                     "frequency", "principal", "interestRate", "termLength"}
 
     # Step 1: Find matching columns
 
@@ -131,7 +163,8 @@ def clean_data(df: pl.DataFrame) -> dict:
             df = df.rename({col_map[alias]: "startDate"})
 
     # See which columns match the expected name
-    matching = [col_df for col_df in df.columns if col_df.lower() in expected_cols]
+    matching = [col_df for col_df in df.columns if col_df.lower()
+                in expected_cols]
 
     # Create a new DataFrame with matching columns
     df_clean = df.select(matching)
@@ -142,14 +175,15 @@ def clean_data(df: pl.DataFrame) -> dict:
             df_clean = df_clean.with_columns(pl.lit(None).alias(col))
 
     # Check if some data was extracted
-    if (sum(df_clean.null_count().sum())==df_clean.shape[0] * df_clean.shape[1])[0]:
+    if (sum(df_clean.null_count().sum()) == df_clean.shape[0] * df_clean.shape[1])[0]:
         error = "Data could not be extracted. Please upload a valid file."
         raise ValueError(error)
 
     # Step 2: Find Recurring expenses
 
     # Ensure "startDate" is in date format
-    df_clean = df_clean.with_columns(pl.col("startDate").cast(pl.Date).alias("startDate"))
+    df_clean = df_clean.with_columns(
+        pl.col("startDate").cast(pl.Date).alias("startDate"))
 
     if df_clean['frequency'].is_null().all():
         # Group by label and check for duplicates
@@ -170,7 +204,7 @@ def clean_data(df: pl.DataFrame) -> dict:
 
         def set_frequency(row):
             """Assigns frequency based on date difference and occurrence count."""
-            
+
             count = row['count']
             date_diff = row['date_diff']
 
@@ -182,8 +216,12 @@ def clean_data(df: pl.DataFrame) -> dict:
                 return "Biweekly"
             elif date_diff.days >= 28 and date_diff.days <= 32:
                 return "Monthly"
-            elif date_diff.days >= 360 and date_diff.days <= 370:
+            elif date_diff.days >= 178 and date_diff.days <= 182:
+                return "Semiannually"
+            elif date_diff.days >= 363 and date_diff.days <= 367:
                 return "Annually"
+            elif date_diff.days >= 728 and date_diff.days <= 732:
+                return "Biannually"
             else:
                 return None  # Irregular or unknown frequency
 
@@ -192,20 +230,22 @@ def clean_data(df: pl.DataFrame) -> dict:
             pl.struct(["count", "date_diff"])
             .map_elements(lambda row: set_frequency(row), return_dtype=pl.Utf8)
             .alias("frequency")
-            )
+        )
 
         # Remove duplicate rows based on the label, keeping the first entry
-        df_final = df_final.sort("startDate").unique(subset=["Label"], keep="first")
+        df_final = df_final.sort("startDate").unique(
+            subset=["Label"], keep="first")
 
         # Select all columns except the three that were used for frequency
         df_final = df_final.select(df_final.columns[:-3])
 
         # Convert the date into a string that can be parsed by Python
-        df_final = df_final.with_columns(pl.col("startDate").map_elements(lambda x: str(x)))
-    
+        df_final = df_final.with_columns(pl.col("startDate").cast(pl.String))
+
         return df_final.to_dicts()
     else:
         return df_clean.to_dicts()
+
 
 def import_data(request):
     if request.method == "POST" and request.FILES["file"]:
@@ -218,10 +258,11 @@ def import_data(request):
                 file_like_object = io.BytesIO(uploaded_file.read())
 
                 # Read the CSV file using Polars
-                df = pl.read_csv(file_like_object,truncate_ragged_lines=True)
+                df = pl.read_csv(file_like_object, truncate_ragged_lines=True)
 
                 if request.POST.get('cleaned') == 'on':
-                    expected_cols = ["label", "amount", "category", "startDate", "frequency", "principal", "interestRate", "termLength"]
+                    expected_cols = ["label", "amount", "category", "startDate",
+                                     "frequency", "principal", "interestRate", "termLength"]
 
                     # Check for missing or extra columns
                     missing_cols = [col for col in expected_cols if col not in df.columns]
@@ -243,7 +284,7 @@ def import_data(request):
 
                 # Pass the data to the template
                 return render(request, 'expenses/upload_result.html', {'data': data})
-            
+
             except Exception as e:
                 return render(request, 'expenses/import_expenses.html', {'error': f"Error reading CSV file: {str(e)}"})
 
@@ -257,7 +298,8 @@ def import_data(request):
                 df = pl.read_json(file_like_object)
 
                 if request.POST.get('cleaned') == 'on':
-                    expected_cols = ["label", "amount", "category", "startDate", "frequency", "principal", "interestRate", "termLength"]
+                    expected_cols = ["label", "amount", "category", "startDate",
+                                     "frequency", "principal", "interestRate", "termLength"]
 
                     # Check for missing or extra columns
                     missing_cols = [col for col in expected_cols if col not in df.columns]
@@ -276,7 +318,7 @@ def import_data(request):
 
                 else:
                     data = clean_data(df)
-                
+
                 # Pass the data to the template
                 return render(request, 'expenses/upload_result.html', {'data': data})
 
@@ -285,13 +327,13 @@ def import_data(request):
 
         else:
             return render(request, 'expenses/import_expenses.html', {'error': "Invalid file type. Please upload a CSV or JSON file."})
-    
+
     return render(request, 'expenses/import_expenses.html')
+
 
 def import_result(request):
     if request.method == "POST":
         data = json.loads(request.body).get("data", [])
-        expenses = []
         for row in data:
             # Check and create category if it doesn't exist
             category_name = row.get("category")
@@ -306,39 +348,40 @@ def import_result(request):
                     date = timezone.now()
             except ValueError:
                 return JsonResponse({"error": "Error: Date could not be converted. Please use 'YYYY-MM-DD' (e.g., 2024-03-31)."}, status=400)
-            
-            frequency = {"None":"O", "Daily":"D", "Weekly":"W", "Biweekly":"BW","Monthly":"M","Annually":"A" }[row['frequency']]
 
-            # if frequency == "O":
-            #     expenses.append(OneTime(
-            #         user = request.user,
-            #         label = row['label'],
-            #         amount = row['amount'],
-            #         date = date,
-            #         description = "",
-            #         category = category 
-            #         ))
-            # elif row['principal'] == "None" or row['termLength'] == "None" or row['interestRate'] == "None":
-            #     expenses.append(Subscription(
-            #         user = request.user,
-            #         label = row['label'],
-            #         amount = row['amount'],
-            #         date = date,
-            #         description = "",
-            #         category = category,
-            #         frequency = frequency
-            #     ))
-            # else:
-            #     expenses.append(Loan(
-            #         user = request.user,
-            #         label = row['label'],
-            #         amount = row['amount'],
-            #         date = date,
-            #         description = "",
-            #         category = category,
-            #         frequency = frequency,
-            #         interest_rate = row['interestRate'],
-            #         term_amt = row['']
+            frequency = {"None": "O", "Daily": "D", "Weekly": "W", "Biweekly": "BW", "Monthly": "M",
+                         "Semiannually": "SA", "Annually": "A", "Biannually": "BA"}[row['frequency'].strip()]
 
-            #     ))
+            if frequency == "O":
+                OneTime.objects.create(
+                    user = request.user,
+                    label = row['label'],
+                    amount = row['amount'],
+                    date_purchased = date,
+                    description = "",
+                    category = category
+                    )
+            elif row['principal'] == "None" or row['termLength'] == "None" or row['interestRate'] == "None":
+                Recurring.objects.create(
+                    user = request.user,
+                    label = row['label'],
+                    amount = row['amount'],
+                    start_date = date,
+                    description = "",
+                    category = category,
+                    frequency = frequency
+                )
+            else:
+                Loan.objects.create(
+                    user = request.user,
+                    label = row['label'],
+                    amount = row['amount'],
+                    start_date = date,
+                    description = "",
+                    category = category,
+                    frequency = frequency,
+                    apr = row['interestRate'],
+                    term_amt = row['termLength'],
+                    principal = row['principal']
+                )
         return JsonResponse({"message": "Data received successfully!"})

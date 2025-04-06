@@ -23,39 +23,17 @@ class ExpenseForm(Form):
     principal = forms.DecimalField(max_digits=20, decimal_places=2, required=False, label='Loan principal')
     apr = forms.DecimalField(max_digits=10, decimal_places=2, required=False, label='Annual percentage rate')
     term_amt = forms.IntegerField(required=False, label='Term length (months)') 
-  
     
-'''
-class GeneralForm(Form):
-    
-    is_recurring = forms.BooleanField()
-    is_loan = forms.BooleanField()
 
-
-class OneTimeForm(ModelForm):
+class CategoryForm(Form):
+    name = forms.CharField(max_length=50)
     
-    class Meta:
-        model = OneTime
-        fields = ['label', 'amount', 'date_purchased', 'category', 'description']
+    def clean_name(self):
+        name = self.cleaned_data.get('name')
         
-
-class RecurringForm(ModelForm):
-    
-    class Meta:
-        model = Recurring
-        fields = ['label', 'amount', 'start_date', 'frequency', 'next_due_date', 'end_date', 'category']
+        category_set = Category.objects.values_list("name", flat=True)
         
-
-class LoanForm(ModelForm):
-    
-    class Meta:
-        model = Loan
-        fields = ['label', 'principal', 'amount', 'apr', 'term_amt', 'frequency', 'start_date', 'next_due_date', 'category']
+        if name in category_set:
+            raise forms.ValidationError("Category already exists. Please choose a different name.")
         
-        
-class LoanPaymentForm(ModelForm):
-    
-    class Meta:
-        model = LoanPayment
-        fields = ['loan', 'payment_date', 'amount']
-'''
+        return name

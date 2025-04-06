@@ -20,6 +20,13 @@ def index(request):
     if not request.user.is_authenticated:
         return redirect('/login/login')
     
+    # Create context object to send to template
+    context = index_context(request)
+    
+    return render(request, "expenses/expenses.html", context)
+
+
+def index_context(request):
     # Query all user expenses from database
     onetime_expenses = OneTime.objects.filter(user=request.user)
     recurring_expenses = Recurring.objects.filter(user=request.user)
@@ -27,10 +34,12 @@ def index(request):
     # Create context object to send to template
     context = {
         "onetime_expenses": onetime_expenses,
-        "recurring_expenses": recurring_expenses
+        "recurring_expenses": recurring_expenses,
+        "category_form": CategoryForm
     }
     
-    return render(request, "expenses/expenses.html", context)
+    return context
+    
 
 def add_expense(request):
     """Page where user creates expenses
@@ -110,12 +119,52 @@ def create_expense(request):
                 )
                 loan_expense.save()
                 
+    else:
+        # Form is invalid, return the form with errors
+        return render(request, 'expenses/add_expenses.html', {"form": form})
+                
 
     return redirect("expenses:index")
 
 
+def create_category(request):
+    """View to process form and create categories
+
+    Args:
+        request (HttpRequest): Form info
+
+    Returns:
+        HttpRedirect: Redirect to index page
+    """
+    form = CategoryForm(request.POST)
+    if form.is_valid():
+        # Helper variable for cleaned form data
+        f = form.cleaned_data
+        
+        category = Category(
+            name=f['name']
+        )
+        category.save()
+        
+    else:
+        # Form is invalid, return the form with errors
+        context = index_context(request)
+        context["category_form"] = form
+        return render(request, 'expenses/expenses.html', context)
+    
+    return redirect("expenses:index")
+        
+
 def delete_onetime_expense(request, expense_id):
-    """Deletes an expense if it belongs to the logged-in user."""
+    """Deletes a one-time expense
+
+    Args:
+        request (HttpRequest): User info
+        expense_id (int): PK identifying expense
+
+    Returns:
+        HttpRedirect: Redirect to index page
+    """
     
     if not request.user.is_authenticated:
         return redirect('/login/login')
@@ -132,7 +181,15 @@ def delete_onetime_expense(request, expense_id):
 
 
 def delete_recurring_expense(request, expense_id):
-    """Deletes an expense if it belongs to the logged-in user."""
+    """Deletes a recurring expense
+
+    Args:
+        request (HttpRequest): User info
+        expense_id (int): PK identifying expense
+
+    Returns:
+        HttpRedirect: Redirect to index page
+    """
     
     if not request.user.is_authenticated:
         return redirect('/login/login')
@@ -146,3 +203,4 @@ def delete_recurring_expense(request, expense_id):
             
             
     return redirect('expenses:index')
+    

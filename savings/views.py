@@ -113,8 +113,8 @@ def create_goal(request):
         payment.save()
         
     else:
-        print(form.errors)
-        print('-----------------------')
+        # Form is invalid, return the form with errors
+        return render(request, 'savings/savings.html', {'form': form})
         
     return redirect('savings:index')
     

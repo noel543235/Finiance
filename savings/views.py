@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.http import JsonResponse
 from itertools import chain
 from expenses.models import *
@@ -69,35 +69,54 @@ def getGoalPercentages(goals):
     for goal in goals:
         payments = getGoalPayments(goal) # Get all payments for specific goal
         total = sum(payment.amount for payment in payments) # Sum payments 
-        percent = max(0.01, total / goal.goal_amount) # Convert to percent (showing 0% as 0.1%)
+        percent = max(0.01, total / goal.amount) # Convert to percent (showing 0% as 0.1%)
         percentages.append(percent * 100)
         
     return percentages 
 
 
-def create_goal(request):    
+def create_goal(request): 
+    """View to process form and create goal
+
+    Args:
+        request (HttpRequest): Form info
+
+    Returns:
+        HttpRedirect: Redirect to index page
+    """
     form = SavingsGoalForm(request.POST)
     if form.is_valid():
+        # Helper variable for cleaned form
+        f = form.cleaned_data
+        
         # Handle one-time expense
         savings_goal = SavingsGoal(
             # Mandatory fields
             user=request.user,
-            label=form.cleaned_data['label'],
-            amount=form.cleaned_data['amount'],
-            description=form.cleaned_data['description'],
-            category=form.cleaned_data['category'],
-            date_created=datetime.now()
+            label=f['label'],
+            amount=f['amount'],
+            frequency=f['frequency'],
+            payment_amount=f['payment_amount'],
+            start_date=f['start_date'],
+            category=f['category'],
+            date_created=datetime.now(),
             )
         savings_goal.save()
         
         # Make initial payment towards goal
-        initial = form.cleaned_data['initial']
+        initial = f['initial']
         payment = GoalPayment(
             goal=savings_goal,
             payment_date=datetime.now(),
             amount=initial            
         )
         payment.save()
+        
+    else:
+        print(form.errors)
+        print('-----------------------')
+        
+    return redirect('savings:index')
     
     
     

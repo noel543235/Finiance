@@ -46,7 +46,7 @@
     <div class="bg-light">
         <div class="container  text-center bg-success text-white py-5 rounded-3 border-1 border-light" style="margin-top: 5%;">
             <h2 class="text-center">ADD AN EXPENSE</h2>
-            <form method="post" class="col-md-12">
+            <form action="{% url 'expenses:create_expense' %}" method="POST" class="col-md-12">
                 {% csrf_token %}
 
                 {{ form.label.label_tag }} {{ form.label }} <br />
@@ -85,7 +85,7 @@
             </form>
 
             <div class="mt-4">
-                <a href="{% url 'expenses' %}" class="text-decoration-none text-white">View All Expenses</a>
+                <a href="{% url 'expenses:index' %}" class="text-decoration-none text-white">View All Expenses</a>
             </div>
         </div>
     </div>

@@ -9,9 +9,9 @@ class SavingsGoal(Expense):
     class Meta:
         db_table = 'savings_goal_table'
         
+    payment_amount = models.DecimalField(max_digits=10, decimal_places=2)
+    frequency = models.CharField(max_length=2, choices=Recurring.FREQUENCY_CHOICES)
     start_date = models.DateField()
-    goal_amount = models.DecimalField(max_digits=10, decimal_places=2)
-    frequency = models.CharField(max_length=2, choices=Recurring.FREQUENCY_CHOICES)    
     
     def when_next_payment(self):
         '''Calculate the due date of the following payment in schedule'''

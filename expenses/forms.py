@@ -11,11 +11,11 @@ class ExpenseForm(Form):
     is_recurring = forms.BooleanField(required=False, label='Is the expense recurring?')
     
     # Dynamic fields for One Time Expense
-    date_purchased = forms.DateField(widget=forms.SelectDateWidget(), required=False, label='Date purchased')
+    date_purchased = forms.DateField(widget=forms.DateInput(attrs={'type': 'date'}), required=False, label='Date purchased')
     
     # Dynamic fields for Recurring Expense
-    start_date = forms.DateField(widget=forms.SelectDateWidget(), required=False, label='Start date')
-    end_date = forms.DateField(widget=forms.SelectDateWidget(), required=False, label='End date (optional)')
+    start_date = forms.DateField(widget=forms.DateInput(attrs={'type': 'date'}), required=False, label='Start date')
+    end_date = forms.DateField(widget=forms.DateInput(attrs={'type': 'date'}), required=False, label='End date (optional)')
     frequency = forms.ChoiceField(choices=Recurring.FREQUENCY_CHOICES, required=False, label='How often does the expense occur?')
     is_loan = forms.BooleanField(required=False, initial=False, label='Does the expense accrue interest?')
     

@@ -50,7 +50,7 @@
       {% for expense in onetime_expenses %}
       <li class="text-capitalize d-flex justify-content-between align-items-center mb-3">
         <span class="text-capitalize ms-3"> {{ expense.label }} : ${{ expense.amount }} </span>
-        <form action="{% url 'delete_onetime_expense' expense.id %}" method="POST" style="display:inline;">
+        <form action="{% url 'expenses:delete_onetime_expense' expense.id %}" method="POST" style="display:inline;">
           {% csrf_token %}
           <button type="submit" class="btn btn-warning text-white fw-bold">Delete</button>
         </form>
@@ -62,7 +62,7 @@
       {% for expense in recurring_expenses %}
       <li class="text-capitalize d-flex justify-content-between align-items-center mb-3">
         <span class="text-capitalize ms-3"> {{ expense.label }} : ${{ expense.amount }} </span>
-        <form action="{% url 'delete_recurring_expense' expense.id %}" method="POST" style="display:inline;">
+        <form action="{% url 'expenses:delete_recurring_expense' expense.id %}" method="POST" style="display:inline;">
           {% csrf_token %}
           <button type="submit" class="btn btn-warning text-white fw-bold">Delete</button>
         </form>
@@ -71,7 +71,7 @@
       <li>No recurring expenses recorded yet.</li>
       {% endfor %}
     </ul>
-    <a href="{% url 'add_expense' %}" class="text-decoration-none text-white btn btn-warning mt-5 fw-bold"
+    <a href="{% url 'expenses:add_expense' %}" class="text-decoration-none text-white btn btn-warning mt-5 fw-bold"
       style="letter-spacing: 2px;">ADD NEW EXPENSE</a>
     <br><br>
     <div class="mt-5">

@@ -40,6 +40,23 @@ class SavingsGoal(Saving):
         default = 'M'
     )
         
+
+class SavingsAccount(Saving):
+    
+    class Meta:
+        db_table = 'savings_account_table'
+    
+    COMPOUND_CHOICES = [
+        ('M', 'Months'),
+        ('Y', 'Years')
+    ]
+    
+    interest_rate = models.DecimalField(max_digits=10, decimal_places=2, default=0.0)
+    compound = models.CharField(
+        max_length = 1,
+        choices = COMPOUND_CHOICES,
+        default = 'M'
+    )
         
         
         

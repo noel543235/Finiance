@@ -1,7 +1,7 @@
 from django import forms
 from django.forms import Form, ModelForm
 from expenses.models import Recurring
-from .models import SavingsAccount, SavingsGoal
+from .models import *
 
 class FrequencyForm(Form):
       

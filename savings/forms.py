@@ -1,6 +1,19 @@
 from django import forms
 from django.forms import Form, ModelForm
-from .models import *      
+from expenses.models import Recurring
+from .models import SavingsAccount, SavingsGoal
+
+class FrequencyForm(Form):
+      
+    frequency = forms.ChoiceField(choices = Recurring.FREQUENCY_CHOICES)
+
+
+class SavingsAccountForm(ModelForm):
+    
+    class Meta:
+        model = SavingsAccount
+        fields = ['label', 'amount', 'category']
+        
 
 class SavingsGoalForm(ModelForm):
     

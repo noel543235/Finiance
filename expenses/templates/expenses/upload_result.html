@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Imported Data</title>
+        <style>
+            .editable {
+                cursor: pointer;
+                background-color: #f0f0f0;
+            }
+        </style>
+        <script>
+            document.addEventListener("DOMContentLoaded", function () {
+                document
+                    .getElementById("import-btn")
+                    .addEventListener("click", function () {
+                        let extractedData = getTableData();
+
+                        // Validate the frequency column values
+                        let validFrequencies = [
+                            "None",
+                            "Daily",
+                            "Weekly",
+                            "Biweekly",
+                            "Monthly",
+                            "Semiannually",
+                            "Annually",
+                            "Biannually",
+                        ];
+                        let invalidEntries = [];
+                        let missingPrincipalRows = [];
+
+                        extractedData.forEach((row, index) => {
+                            const frequency = row["frequency"];
+                            const principal = row["principal"];
+                            const interestRate = row["interestRate"];
+                            const termLength = row["termLength"];
+
+                            // Check for valid frequency values
+                            if (!validFrequencies.includes(frequency)) {
+                                invalidEntries.push(frequency);
+                            }
+
+                            // Normalize values for validation, treating "None" as false
+                            const isMissing = (value) =>
+                                !value || value === "None";
+
+                            // Validate principal, interest rate, and term length
+                            if (
+                                (isMissing(principal) &&
+                                    (!isMissing(interestRate) ||
+                                        !isMissing(termLength))) ||
+                                (!isMissing(principal) &&
+                                    (isMissing(interestRate) ||
+                                        isMissing(termLength)))
+                            ) {
+                                missingPrincipalRows.push(index + 1); // +1 to match row number
+                            }
+                        });
+
+                        // Display an error if there are invalid frequency entries
+                        if (invalidEntries.length > 0) {
+                            displayError(
+                                "Invalid frequency values found: " +
+                                    invalidEntries.join(", ") +
+                                    ". Please only use the following frequencies: " +
+                                    validFrequencies.join(", ")
+                            );
+                            return; // Stop further processing
+                        }
+
+                        // Display an error if principal, interest rate, and term length are mismatched
+                        if (missingPrincipalRows.length > 0) {
+                            displayError(
+                                "Row(s) " +
+                                    missingPrincipalRows.join(", ") +
+                                    " have missing or mismatched values for Principal, Interest Rate, and Term Length. Please ensure all three are filled out or none at all."
+                            );
+                            return; // Stop further processing
+                        }
+
+                        // If no errors, proceed with importing the data
+                        fetch("import_result/", {
+                            method: "POST",
+                            headers: {
+                                "Content-Type": "application/json",
+                                "X-CSRFToken": getCsrfToken(),
+                            },
+                            body: JSON.stringify({ data: extractedData }),
+                        })
+                            .then((response) => response.json())
+                            .then((data) => {
+                                if (data.error) {
+                                    displayError(data.error);
+                                } else {
+                                    console.log("Server response:", data);
+                                }
+                            })
+                            .catch((error) => console.error("Error:", error));
+                    });
+
+                const table = document.querySelector("table");
+                if (!table) return;
+
+                function displayError(message) {
+                    let errorDiv = document.getElementById("error-message");
+                    if (!errorDiv) {
+                        errorDiv = document.createElement("p");
+                        errorDiv.id = "error-message";
+                        errorDiv.style.color = "red";
+                        document.body.insertBefore(
+                            errorDiv,
+                            document.body.firstChild
+                        );
+                    }
+                    errorDiv.textContent = message;
+                }
+
+                function makeEditable(td) {
+                    // Prevent multiple input elements from being created
+                    if (td.querySelector("input")) return;
+
+                    // Store the original value in case the user cancels
+                    let originalValue = td.innerText.trim();
+
+                    // Create an input field
+                    let input = document.createElement("input");
+                    input.type = "text";
+                    input.value = originalValue;
+
+                    // Replace the cell content with the input field
+                    td.innerText = "";
+                    td.appendChild(input);
+                    input.focus();
+
+                    // Save the new value on Enter key
+                    input.addEventListener("keydown", function (event) {
+                        if (event.key === "Enter") {
+                            td.innerText = input.value.trim();
+                        } else if (event.key === "Escape") {
+                            td.innerText = originalValue;
+                        }
+                    });
+
+                    // Save the new value on losing focus
+                    input.addEventListener("blur", function () {
+                        td.innerText = input.value.trim();
+                    });
+                }
+
+                table.querySelectorAll("tbody td").forEach((td) => {
+                    td.addEventListener("click", function () {
+                        makeEditable(td);
+                    });
+                });
+            });
+
+            // Gathers data from the table
+            function getTableData() {
+                // Gets the table
+                let table = document.querySelector("table");
+
+                // Separates the headers from the cells
+                let headers = Array.from(
+                    table.querySelectorAll("thead th")
+                ).map((th) => th.innerText.trim());
+
+                let data = [];
+
+                // For each row in the table
+                table.querySelectorAll("tbody tr").forEach((row) => {
+                    let rowData = {};
+
+                    // Select all the cells
+                    let cells = row.querySelectorAll("td");
+
+                    // Save the data into a hashmap
+                    cells.forEach((cell, index) => {
+                        rowData[headers[index]] = cell.innerText.trim();
+                    });
+
+                    data.push(rowData);
+                });
+
+                return data;
+            }
+
+            // Gets the Csrf token for Django
+            function getCsrfToken() {
+                return (
+                    document.querySelector("[name=csrfmiddlewaretoken]")
+                        ?.value || ""
+                );
+            }
+        </script>
+    </head>
+    <body>
+        <h1>Imported Data</h1>
+
+        <!-- Placeholder for displaying errors -->
+        <p id="error-message" style="color: red"></p>
+
+        {% if error %}
+        <p style="color: red">{{ error }}</p>
+        {% endif %} {% if data %}
+        <h2>Data:</h2>
+        <table border="1">
+            <thead>
+                <tr>
+                    {% for key in data.0 %}
+                    <th>{{ key }}</th>
+                    {% endfor %}
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Make the rows -->
+                {% for row in data %}
+                <tr>
+                    <!-- Make the columns -->
+                    {% for key, value in row.items %}
+
+                    <!-- Make the cells -->
+                    <td class="editable">
+                        <!-- Populate the cells -->
+                        {{ value }}
+                    </td>
+                    {% endfor %}
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        {% endif %}
+
+        <!-- CSRF Token for JavaScript to use -->
+        <input
+            type="hidden"
+            name="csrfmiddlewaretoken"
+            value="{{ csrf_token }}"
+        />
+
+        <div>
+            <button id="import-btn" class="import-btn">Import</button>
+        </div>
+
+        <a href="{% url 'import_expenses' %}"
+            >Go back and upload another file</a
+        >
+    </body>
+</html>

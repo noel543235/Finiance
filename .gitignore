@@ -6,3 +6,6 @@
 *.pyc
 *.pyo
 *.pyd
+
+# Ignore the database
+*.sqlite3

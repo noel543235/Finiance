@@ -1,7 +1,11 @@
 # Ignore all __pycache__ directories
 **/__pycache__/
+**/migrations
 
 # Ignore compiled Python files
 *.pyc
 *.pyo
 *.pyd
+
+# Ignore the database
+*.sqlite3

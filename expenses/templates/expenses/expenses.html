@@ -152,6 +152,13 @@
 
             <!--alerts and history section-->
             <!--import excel sheet-->
+            <!-- Import Expenses Button -->
+            <div class="mt-5">
+                <form action="{% url 'import_expenses' %}" method="POST">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-success text-white fw-bold">Import Expenses</button>
+                </form>
+            </div>
         </div>
     </body>
 </html>

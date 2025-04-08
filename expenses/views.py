@@ -181,26 +181,30 @@ def clean_data(df: pl.DataFrame) -> dict:
 
     # Step 2: Find Recurring expenses
 
-    # Ensure "startDate" is in date format
-    df_clean = df_clean.with_columns(
-        pl.col("startDate").cast(pl.Date).alias("startDate"))
+    try:
+        # Ensure "startDate" is in date format
+        df_clean = df_clean.with_columns(
+            pl.col("startDate").cast(pl.Date).alias("startDate"))
+    except Exception as e:
+        # Raise a custom error message if casting fails
+        raise ValueError("Error casting date, please ensure date is in YYYY-MM-DD") from e
 
     if df_clean['frequency'].is_null().all():
         # Group by label and check for duplicates
-        df_grouped = df_clean.group_by("Label").agg([
+        df_grouped = df_clean.group_by(["Label", "Amount"]).agg([
 
             # Store the smallest startDate as min_startDate
             pl.col("startDate").min().alias("min_startDate"),
 
             # Calculate the smallest difference in start dates
-            pl.col("startDate").diff().min().alias("date_diff"),
+            pl.col("startDate").sort().diff().min().alias("date_diff"),
 
             # Counts how many times any one label appears
             pl.col("startDate").count().alias("count"),
         ])
 
         # Iterate through the groups and determine the frequency
-        df_final = df_clean.join(df_grouped, on="Label", how="left")
+        df_final = df_clean.join(df_grouped, on=["Label", "Amount"], how="left")
 
         def set_frequency(row):
             """Assigns frequency based on date difference and occurrence count."""
@@ -234,7 +238,7 @@ def clean_data(df: pl.DataFrame) -> dict:
 
         # Remove duplicate rows based on the label, keeping the first entry
         df_final = df_final.sort("startDate").unique(
-            subset=["Label"], keep="first")
+            subset=["Label","Amount"], keep="first")
 
         # Select all columns except the three that were used for frequency
         df_final = df_final.select(df_final.columns[:-3])
@@ -242,8 +246,20 @@ def clean_data(df: pl.DataFrame) -> dict:
         # Convert the date into a string that can be parsed by Python
         df_final = df_final.with_columns(pl.col("startDate").cast(pl.String))
 
+        # Order the columns
+        df_final = df_final.select(["Label", "Amount", "Category", "startDate", "frequency", "principal", "interestRate", "termLength"])
+
+        # Sort by start date
+        df_final = df_final.sort("startDate")
+
         return df_final.to_dicts()
     else:
+
+        # Order the columns
+        df_clean = df_clean.select(["Label", "Amount", "Category", "startDate", "frequency", "principal", "interestRate", "termLength"])
+
+        df_clean = df_clean.sort("startDate")
+
         return df_clean.to_dicts()
 
 

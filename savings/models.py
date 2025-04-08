@@ -7,7 +7,7 @@ from dateutil.relativedelta import relativedelta
   
   
 # Savings Goal Class
-class SavingsGoal(Expense):
+
 class SavingsGoal(Expense):
     
     class Meta:

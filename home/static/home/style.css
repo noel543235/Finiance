@@ -63,3 +63,27 @@ button{
 button a {
     color: #2D2D2D;
 }
+
+
+
+.piggy {
+    display: inline-block;
+    transition: transform 1s ease-out; /* Smooth transition */
+}
+
+/* Trigger the animation on hover */
+.piggy:hover {
+    transform: translateX(-500px); /* Moves the image off-screen */
+}
+.piggy:active{
+    animation: spin 1s ease-out forwards 1;
+}
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
+
+}

@@ -46,7 +46,7 @@ nav ul li {
 }
 
 .section2{
-    padding: 1.5%;
+    padding: 1%;
     background-color:  #C38CC3;
     text-align: center;
 }
@@ -74,5 +74,58 @@ nav ul li {
     padding-bottom: 4%;
     padding-left: 2%;
     padding-right: 2%;
-    background-color: #FCF5E5;
+    background-color: #C38CC3;
 }
+.cardtop{
+    background-color: #662d91; 
+    border: 1px solid #2D2D2D;
+    color: #F8F8FF;
+    transition: 0.5s;
+}
+.cardtop h5{
+    font-weight: bold;
+}
+.cardbutton{
+    background-color: #00308F; 
+    border: 1px solid #2D2D2D; 
+    color: white;
+    transition: 0.5s;
+}
+.cardbutton:hover{
+    background-color: #662d91;
+    color: #F8F8FF;
+    transition: 0.5s;
+}
+.cardtop:hover{
+    background-color:#6CB4EE;
+    color: #2D2D2D;
+    transition: 0.5s;
+}
+
+.atag {
+    text-decoration: none;
+    color: #2D2D2D;
+    display: inline-block; /* Ensures transform works properly */
+    transition: 1s;
+    font-size: large;
+}
+
+.atag:hover {
+    background-color: #3D0066;
+    text-decoration: none;
+    color: white;
+    border-radius: 5px;
+    scale: 1.5;
+    padding: 0.5%;
+    transition: 1s;
+    
+}
+
+.headersub{
+    background-color: #3D0066;
+    padding: 3%;
+    color: #F8F8FF;
+}
+
+
+

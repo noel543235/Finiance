@@ -43,10 +43,15 @@ nav ul li {
     
 }
 
+
+
+
+
 .heading{
     color: #FFD700;
     font-weight: bold;
 }
+
 .textblue{
     color: #F8F8F8;
 }
@@ -54,8 +59,13 @@ button{
     background-color: #D4AF37;
     color: #2D2D2D;
     font-weight: bold;
+    width: 30%;
+    border: 1px solid white;
+    border-radius: 3px;
 }
-
+button:hover{
+    background-color: #6CB4EE;
+}
 .cards{
     margin-left: 5%;
 }
@@ -66,6 +76,8 @@ button a {
 
 
 
+
+/*mascot animation*/
 .piggy {
     display: inline-block;
     transition: transform 1s ease-out; /* Smooth transition */
@@ -87,3 +99,8 @@ button a {
     }
 
 }
+
+
+
+
+

@@ -7,6 +7,7 @@ class LoanAdmin(admin.ModelAdmin):
     model = Loan
     fieldsets = (
         (None, {'fields': ('user', 'label', 'principal', 'amount', 'apr', 'term_amt', 'frequency', 'start_date', 'category')}),
+        (None, {'fields': ('user', 'label', 'principal', 'amount', 'apr', 'term_amt', 'frequency', 'start_date', 'category')}),
     )
 
 
@@ -21,6 +22,7 @@ class OneTimeAdmin(admin.ModelAdmin):
     model = OneTime
     fieldsets = (
         (None, {'fields': ('user', 'label', 'amount', 'date_purchased', 'category', 'description')}),
+        (None, {'fields': ('user', 'label', 'amount', 'date_purchased', 'category', 'description')}),
     )
 
 
@@ -29,7 +31,14 @@ class LoanPaymentAdmin(admin.ModelAdmin):
     fieldsets = (
         (None, {'fields': ('loan', 'payment_date', 'amount')}),
     )
-
+    
+    
+class CategoryAdmin(admin.ModelAdmin):
+    model = Category
+    fieldsets = (
+        (None, {'fields': ('name',)}),
+    )
+    
 
 class CategoryAdmin(admin.ModelAdmin):
     model = Category
@@ -42,4 +51,5 @@ admin.site.register(Loan, LoanAdmin)
 admin.site.register(Recurring, RecurringAdmin)
 admin.site.register(OneTime, OneTimeAdmin)
 admin.site.register(LoanPayment, LoanPaymentAdmin)
+admin.site.register(Category, CategoryAdmin)
 admin.site.register(Category, CategoryAdmin)

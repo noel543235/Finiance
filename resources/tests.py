@@ -1,5 +1,0 @@
-from django.test import TestCase
-from django.urls import reverse
-from .models  import Item
-
-# Create your tests here.

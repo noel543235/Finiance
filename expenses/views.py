@@ -4,7 +4,7 @@ from django.template.loader import render_to_string
 from itertools import chain
 from .forms import *
 from .models import *
-from datetime import datetime
+from datetime import datetime, timedelta
 
 def index(request):
     """Initial template when user visits expenses page
@@ -28,14 +28,14 @@ def index(request):
 
 def index_context(request):
     # Query all user expenses from database
-    onetime_expenses = OneTime.objects.filter(user=request.user)
-    recurring_expenses = Recurring.objects.filter(user=request.user)
+    recent_expenses = get_recent_expenses()
+    categories = Category.objects.all()
     
     # Create context object to send to template
     context = {
-        "onetime_expenses": onetime_expenses,
-        "recurring_expenses": recurring_expenses,
-        "category_form": CategoryForm
+        "recent_expenses": recent_expenses,
+        "category_form": CategoryForm,
+        "categories": categories
     }
     
     return context
@@ -52,11 +52,18 @@ def add_expense(request):
     """
     
     # Create context object containing expense form
+    context = add_expense_context(request)
+    
+    return render(request, "expenses/add_expense.html", context)
+
+
+def add_expense_context(request):
+    # Create context object to send to template
     context = {
         "form": ExpenseForm
     }
     
-    return render(request, "expenses/add_expense.html", context)
+    return context
 
 
 def create_expense(request):
@@ -121,7 +128,9 @@ def create_expense(request):
                 
     else:
         # Form is invalid, return the form with errors
-        return render(request, 'expenses/add_expenses.html', {"form": form})
+        context = add_expense_context(request)
+        context["form"] = form
+        return render(request, 'expenses/add_expenses.html', context)
                 
 
     return redirect("expenses:index")
@@ -203,4 +212,23 @@ def delete_recurring_expense(request, expense_id):
             
             
     return redirect('expenses:index')
+
+
+def get_recent_expenses():
+    today = datetime.today().date()
+    week_ago = today-timedelta(weeks=1)
+
+    onetime_expenses = OneTime.objects.filter(date_purchased__gte=week_ago)
+    recurring_expenses = list()
+    
+    for expense in Recurring.objects.all():
+        payment_date = expense.start_date
+        while payment_date <= today and ((expense.end_date is None) or expense.end_date >= today):
+            if payment_date > week_ago:
+                temp = expense
+                temp.start_date = payment_date
+                recurring_expenses.append(temp)
+            payment_date = expense.when_next_payment(payment_date)
+            
+    return recurring_expenses + list(onetime_expenses)
     

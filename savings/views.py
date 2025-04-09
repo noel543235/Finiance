@@ -17,6 +17,12 @@ def index(request):
     Returns:
         HttpResponse: Template to load with context (forms, goals, etc.)
     """
+    context = index_context(request)
+    
+    return render(request, "savings/savings.html", context)
+
+
+def index_context(request):
     # Query all user goals from the database
     goals = getUserGoals(request)
     
@@ -25,9 +31,10 @@ def index(request):
         'goals': goals,
         'goal_form': SavingsGoalForm,
         'payment_form': GoalPaymentForm
-    }         
+    }
     
-    return render(request, "savings/savings.html", context)
+    return context
+    
    
 
 def getUserGoals(request):
@@ -115,7 +122,9 @@ def create_goal(request):
         
     else:
         # Form is invalid, return the form with errors
-        return render(request, 'savings/savings.html', {'form': form})
+        context = index_context(request)
+        context['goal_form'] = form
+        return render(request, 'savings/savings.html', context)
         
     return redirect('savings:index')
     
@@ -158,13 +167,14 @@ def future_value_calculator(present_value, compounds, interest_rate, periodic_de
     # initialize 2D list: compound_rows and change the interest rate to decimal form
     compound_rows = []
     interest_rate = interest_rate/100
+    print("calculates!!!")
     # loop through the number of compounds
     for i in range(compounds):
         
         # calculate the future value for each compound and add the present value,
         # deposit amount, interest of present value, and the future value
         future_value = present_value * (1 + interest_rate) + periodic_deposit
-        compound_rows.append([str(i+1), "${:.2f}".format(present_value), "${:.2f}".format(periodic_deposit),
+        compound_rows.append([str(i+1), "${:.2f}".format(present_value), "${:.2f}   ".format(periodic_deposit),
                                 "${:.2f}".format(interest_rate*present_value), "${:.2f}".format(future_value)])
 
         # set the new present value for the next iteration
@@ -173,16 +183,18 @@ def future_value_calculator(present_value, compounds, interest_rate, periodic_de
     return compound_rows
 
 def calculate(request):
+    print("Calculate")
     if request.method == "POST":
         present_value = request.POST.get("present_value")
         compounds = request.POST.get("compounds")
         periodic_deposit = request.POST.get("periodic_deposit")
         interest_rate = request.POST.get("interest_rate")
+        print(f"present value = {present_value} compounds = {compounds} periodic deposit = {periodic_deposit} interest rate = {interest_rate}")
         
         table = future_value_calculator(float(present_value), int(compounds), float(interest_rate), float(periodic_deposit))
+        print(table)
         
         return render(request, "savings/savings.html", {"table": table})
     
+    
     return render(request, "savings/savings.html")
-
-

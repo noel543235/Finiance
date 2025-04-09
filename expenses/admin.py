@@ -29,14 +29,7 @@ class LoanPaymentAdmin(admin.ModelAdmin):
     fieldsets = (
         (None, {'fields': ('loan', 'payment_date', 'amount')}),
     )
-    
-    
-class CategoryAdmin(admin.ModelAdmin):
-    model = Category
-    fieldsets = (
-        (None, {'fields': ('name',)}),
-    )
-    
+
 
 class CategoryAdmin(admin.ModelAdmin):
     model = Category

@@ -89,6 +89,7 @@ class Recurring(Expense):
     def update_next_payment_date(self, new_date):
         '''Update the due date of the following payment in schedule'''
         self.start_date = new_date
+        self.start_date = new_date
         self.save()
 
     def __str__(self):

@@ -89,7 +89,7 @@
         <h3 class="fw-bold heading" id="savingsHeading">Savings Goals</h3>
         <ul class="list-unstyled fs-4 text-white">
           {% for goal in goals %}
-          <li>{{ expense.label }}: ${{ expense.amount }}</li>
+          <li>{{ goal.label }}: ${{ goal.payment_amount }}</li>
           {% endfor %}
         </ul>
       </div>

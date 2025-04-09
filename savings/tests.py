@@ -49,8 +49,9 @@ class FVCTest(TestCase):
         
         self.assertIn("table", response.context)
         self.assertIsInstance(response.context["table"], list)
+     
         
-        class SavingsGoalTest(TestCase):
+class SavingsGoalTest(TestCase):
     def setUp(self):
         # Create test user
         self.test_user = User.objects.create_user(

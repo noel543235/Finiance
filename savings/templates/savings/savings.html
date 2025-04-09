@@ -413,21 +413,25 @@
       <div class="row text-white" style="margin-left: 13%">
         <div class="col">
           <h5 class="heading">Categories</h5>
-          <ul class="list-unstyled text-white p-4">
-            <li class="fs-4 m-5">Savings</li>
-            <li class="fs-4 m-5">Loans</li>
-            <li class="fs-4 m-5">Emergencey Fund</li>
-            <li class="fs-4 m-5">Budget</li>
-          </ul>
+          {% for category in categories %}
+          <p>{{ category.name }}</p>
+          {% endfor %}
         </div>
+
         <div class="col">
-          <h5 class="header">Add New Category</h5>
-          <form>
-            <label>name</label>
-            <input type="text" />
-            <br />
-            <button class="btn buttonv2">Add</button>
-          </form>
+          <div>
+            <form action="{% url 'savings:create_category' %}" method="POST">
+              {% csrf_token %}
+
+              <label for="id_name">Category Name: </label>
+              {{ category_form.name }} 
+              {% for error in category_form.name.errors %}
+              <p>{{ error }}</p>
+              {% endfor %}
+
+              <button type="submit">Submit</button>
+            </form>
+          </div>
         </div>
       </div>
     </div>
@@ -438,7 +442,7 @@
         <div class="col ms-5">
           <form method="POST" action="{% url 'savings:calculate' %}">
             {% csrf_token %}
-            
+
             <label class="mb-5">Number of Periods</label>
             <input type="number" name="compounds" value="10" />
             <br />

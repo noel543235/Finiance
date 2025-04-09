@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect
 from django.http import JsonResponse
 from itertools import chain
 from expenses.models import *
+from expenses.forms import *
 from .forms import *
 from django.test import TestCase, SimpleTestCase
 import json
@@ -30,7 +31,9 @@ def index_context(request):
     context = {
         'goals': goals,
         'goal_form': SavingsGoalForm,
-        'payment_form': GoalPaymentForm
+        'payment_form': GoalPaymentForm,
+        "categories": Category.objects.all(),
+        "category_form": CategoryForm
     }
     
     return context
@@ -198,3 +201,31 @@ def calculate(request):
     
     
     return render(request, "savings/savings.html")
+
+
+def create_category(request):
+    """View to process form and create categories
+
+    Args:
+        request (HttpRequest): Form info
+
+    Returns:
+        HttpRedirect: Redirect to index page
+    """
+    form = CategoryForm(request.POST)
+    if form.is_valid():
+        # Helper variable for cleaned form data
+        f = form.cleaned_data
+        
+        category = Category(
+            name=f['name']
+        )
+        category.save()
+        
+    else:
+        # Form is invalid, return the form with errors
+        context = index_context(request)
+        context["category_form"] = form
+        return render(request, 'savings/savings.html', context)
+    
+    return redirect("savings:index")

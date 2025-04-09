@@ -72,15 +72,21 @@ class Recurring(Expense):
         '''Calculate the due date of the following payment in schedule'''
         if self.frequency == 'D':
             return self.start_date + relativedelta(days=1)
+            return self.start_date + relativedelta(days=1)
         elif self.frequency == 'W':
+            return self.start_date + relativedelta(weeks=1)
             return self.start_date + relativedelta(weeks=1)
         elif self.frequency == 'BW':
             return self.start_date + relativedelta(weeks=2)
+            return self.start_date + relativedelta(weeks=2)
         elif self.frequency == 'M':
+            return self.start_date + relativedelta(months=1)
             return self.start_date + relativedelta(months=1)
         elif self.frequency == 'SA':
             return self.start_date + relativedelta(months=6)
+            return self.start_date + relativedelta(months=6)
         elif self.frequency == 'A':
+            return self.start_date + relativedelta(years=1)
             return self.start_date + relativedelta(years=1)
         else:
             return self.start_date + relativedelta(years=2)
@@ -88,6 +94,7 @@ class Recurring(Expense):
 
     def update_next_payment_date(self, new_date):
         '''Update the due date of the following payment in schedule'''
+        self.start_date = new_date
         self.start_date = new_date
         self.save()
 

@@ -36,7 +36,7 @@ class FVCTest(TestCase):
             self.assertEqual(table[i][4], FV[i])
     
     def test_calculate_call(self):
-        url = reverse("calculate")
+        url = reverse("savings:calculate")
         
         form = {
             "present_value" : "1000",

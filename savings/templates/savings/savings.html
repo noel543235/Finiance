@@ -89,26 +89,15 @@
         <h3 class="fw-bold heading" id="savingsHeading">Savings Goals</h3>
         <ul class="list-unstyled fs-4 text-white">
           {% for goal in goals %}
-          <li>{{ expense.label }}: ${{ expense.amount }}</li>
+          <li>{{ goal.label }}: ${{ goal.amount }}</li>
           {% endfor %}
         </ul>
       </div>
       <div class="col mt-5">
         <h3 class="heading">Recent Charges</h3>
-    </div>
-  </div>
-  <!--emergency fun, retirement savings, and saving-->
-  <div style="padding: 3%; margin-bottom: 5%;">
-    <div class="row mt-3 ms-1 fs-4 text-center">
-      <div class="col-12 col-md-4 col-sm-12 mb-4">
-        <img src="{% static 'savings/images/emergency.jpg' %}" alt="" style="width:300px ; height: 150px; ">
-        <h4 >Emergency Fund</h4>
-        <!-- Button trigger modal -->
-        <button type="button" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
-         Edit or View Emergencey fund
-        </button>
       </div>
     </div>
+
     <div style="padding: 3%; margin-bottom: 5%">
       <div class="row mt-3 ms-5 fs-4">
         <div class="col ms-5">
@@ -318,44 +307,45 @@
 
                   <div class="collapse" id="collapseExample7">
                     <div class="card card-body w-100">
-                      <form>
-                        <label>Category</label>
-                        <select name="category" id="category">
-                          <option value="volvo">Car</option>
-                          <option value="saab">House</option>
-                          <option value="mercedes">Pet</option>
-                          <option value="audi">Budget</option>
-                        </select>
-                        <br />
-                        <label>Name</label>
-                        <input type="text" required />
-                        <br />
-                        <label>Description</label>
-                        <textarea
-                          name="description"
-                          id="description"
-                          style="height: 100px; width: 400px"
-                          placeholder="Enter description"
-                        ></textarea>
-                        <label class="me-2">Initial Amount:</label>
-                        <input
-                          type="number"
-                          min="1"
-                          max="50000"
-                          id="savingsname"
-                          required
-                        />
-                        <br />
-                        <label class="me-2">Total Amount:</label>
-                        <input
-                          type="number"
-                          min="1"
-                          max="50000"
-                          id="savingsname"
-                          required
-                        />
-                        <br />
-                        <button>Add</button>
+                      <form
+                        action="{% url 'savings:create_goal' %}"
+                        method="POST"
+                      >
+                        {% csrf_token %}
+
+                        <label for="id_label">Name</label>
+                        {{ goal_form.label }} <br />
+
+                        <label for="id_amount" class="me-2">Goal Amount:</label>
+                        {{ goal_form.amount }} <br />
+
+                        <label for="id_frequency" class="me-2"
+                          >How often will you contribute:</label
+                        >
+                        {{ goal_form.frequency }} <br />
+
+                        <label for="id_frequency" class="me-2"
+                          >How much is each contribution:</label
+                        >
+                        {{ goal_form.payment_amount }} <br />
+
+                        <label for="id_initial" class="me-2"
+                          >How much do you have saved:</label
+                        >
+                        {{ goal_form.initial }} <br />
+
+                        <label for="id_category">Category</label>
+                        {{ goal_form.category }} <br />
+
+                        <label for="id_description">Description</label>
+                        {{ goal_form.description }} <br />
+
+                        <label for="id_start_date" class="me-2"
+                          >Start Date:</label
+                        >
+                        {{ goal_form.start_date }} <br />
+
+                        <button type="submit">Add</button>
                       </form>
                     </div>
                   </div>
@@ -423,21 +413,25 @@
       <div class="row text-white" style="margin-left: 13%">
         <div class="col">
           <h5 class="heading">Categories</h5>
-          <ul class="list-unstyled text-white p-4">
-            <li class="fs-4 m-5">Savings</li>
-            <li class="fs-4 m-5">Loans</li>
-            <li class="fs-4 m-5">Emergencey Fund</li>
-            <li class="fs-4 m-5">Budget</li>
-          </ul>
+          {% for category in categories %}
+          <p>{{ category.name }}</p>
+          {% endfor %}
         </div>
+
         <div class="col">
-          <h5 class="header">Add New Category</h5>
-          <form>
-            <label>name</label>
-            <input type="text" />
-            <br />
-            <button class="btn buttonv2">Add</button>
-          </form>
+          <div>
+            <form action="{% url 'savings:create_category' %}" method="POST">
+              {% csrf_token %}
+
+              <label for="id_name">Category Name: </label>
+              {{ category_form.name }} 
+              {% for error in category_form.name.errors %}
+              <p>{{ error }}</p>
+              {% endfor %}
+
+              <button type="submit">Submit</button>
+            </form>
+          </div>
         </div>
       </div>
     </div>
@@ -446,32 +440,58 @@
       <h3 class="mb-4 fw-bold">Future Value Calculator</h3>
       <div class="row">
         <div class="col ms-5">
-          <form>
+          <form method="POST" action="{% url 'savings:calculate' %}">
+            {% csrf_token %}
+
             <label class="mb-5">Number of Periods</label>
-            <input type="number" value="10" />
+            <input type="number" name="compounds" value="10" />
             <br />
             <label class="mb-5">Starting Amount</label>
-            <input type="number" value="1000" />
+            <input type="number" name="present_value" value="1000" />
             <br />
             <label class="mb-5">Interest Rate</label>
-            <input type="number" value="6" />
+            <input type="number" name="interest_rate" value="6" />
             <br />
             <label class="mb-5">Periodic Deposit</label>
-            <input type="number" value="100" />
+            <input type="number" name="periodic_deposit" value="100" />
             <br />
             <p>Time when you want to make it</p>
             <label class="mb-5">Beginning</label>
-            <input type="radio" />
+            <input type="radio" name="timing" />
             <br />
             <label class="mb-5">End</label>
-            <input type="radio" />
+            <input type="radio" name="timing" />
             <br />
-            <button>Calculate</button>
+            <button type="submit">Calculate</button>
           </form>
         </div>
         <div class="col">
-          <div class="line bg-secondary p-3">
+          <div class="line bg-secondary p-3 text-white">
             <h4>Results: Please Put in a Calculation</h4>
+            <div>
+              {% if table %}
+              <table>
+                <tr>
+                  <th>Compound</th>
+                  <th>Start Balance</th>
+                  <th>Deposit</th>
+                  <th>Interest Rate</th>
+                  <th>End Balance</th>
+                </tr>
+                {% for i in table %}
+                <tr>
+                  <td>{{ i.0 }}</td>
+                  <td>{{ i.1 }}</td>
+                  <td>{{ i.2 }}</td>
+                  <td>{{ i.3 }}</td>
+                  <td>{{ i.4 }}</td>
+                </tr>
+                {% endfor %}
+              </table>
+              {% else %}
+              <p>please input savings</p>
+              {% endif %}
+            </div>
           </div>
         </div>
       </div>

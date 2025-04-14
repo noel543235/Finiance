@@ -439,7 +439,7 @@
       
       <div class="row">
         <div class="col ms-5 ">
-          <form method="POST" action="{% url 'savings:calculate' %}" class="border border-2 w-50 rounded-2">
+          <form method="POST" action="{% url 'savings:calculate' %}" class="border border-2 w-50 rounded-2 shadow">
             {% csrf_token %}
             <h3 class="mb-4 fw-bold bg-secondary p-2 text-white text-center">Future Value Calculator</h3>
             <label class="form-label ms-4">Number of Periods</label>
@@ -471,7 +471,7 @@
           </form>
         </div>
         <div class="col">
-          <div class="line bg-secondary p-5 text-white">
+          <div class="line bg-secondary p-5 text-white shadow">
             <h4>Results: Please Put in a Calculation</h4>
             <div>
               {% if table %}

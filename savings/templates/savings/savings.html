@@ -442,29 +442,35 @@
       
       <div class="row">
         <div class="col ms-5 ">
-          <form method="POST" action="{% url 'savings:calculate' %}" class="border border-2 w-50">
+          <form method="POST" action="{% url 'savings:calculate' %}" class="border border-2 w-50 rounded-2">
             {% csrf_token %}
-            <h3 class="mb-4 fw-bold bg-secondary p-2 text-white">Future Value Calculator</h3>
-            <label class="mb-5 ms-3">Number of Periods</label>
-            <input type="number" name="compounds" value="10" />
+            <h3 class="mb-4 fw-bold bg-secondary p-2 text-white text-center">Future Value Calculator</h3>
+            <label class="form-label ms-4">Number of Periods</label>
+            <br>
+            <input class="form-control w-75 mb-1 ms-4" type="number" name="compounds" value="10" />
             <br />
-            <label class="mb-5 ms-3">Starting Amount</label>
-            <input type="number" name="present_value" value="1000" />
+            <label class=" mb-1 ms-4">Starting Amount</label>
+            <br>
+            <input class="form-control w-75 mb-1 ms-4" type="number" name="present_value" value="1000" />
             <br />
-            <label class="mb-5 ms-3">Interest Rate</label>
-            <input type="number" name="interest_rate" value="6" />
+            <label class="mb-1 ms-4">Interest Rate</label>
+            <br>
+            <input class="form-control w-75 mb-1 ms-4" type="number" name="interest_rate" value="6" />
             <br />
-            <label class="mb-5 ms-3">Periodic Deposit</label>
-            <input type="number" name="periodic_deposit" value="100" />
+            <label class="mb-1 ms-4">Periodic Deposit</label>
+            <br>
+            <input class="form-control w-75 mb-3 ms-4" type="number" name="periodic_deposit" value="100" />
             <br />
-            <p class="ms-3">Time when you want to make it</p>
-            <label class="mb-5 ms-3">Beginning</label>
-            <input type="radio" name="timing" />
+            <p class="ms-4">Time when you want to make it:</p>
+            <label class="mb-1 ms-4">Beginning</label>
+            <br>
+            <input class="mb-1 ms-4" type="radio" name="timing" />
             <br />
-            <label class="mb-5 ms-3">End</label>
-            <input type="radio" name="timing" />
+            <label class="mb-1 ms-4">End</label>
+            <br>
+            <input class="mb-3 ms-4" type="radio" name="timing" />
             <br />
-            <button class="ms-3 mb-5" type="submit">Calculate</button>
+            <button class=" w-75 ms-4 mb-5" type="submit">Calculate</button>
           </form>
         </div>
         <div class="col">

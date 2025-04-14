@@ -64,14 +64,11 @@
               >Resources</a
             >
           </li>
-          <li class="nav-item">
-            <a
-              style="color: #2d2d2d"
-              class="nav-link"
-              href="http://127.0.0.1:8000/login/login"
-              >Login</a
-            >
-          </li>
+          {% if not user.is_authenticated %} 
+                <li class="nav-item">
+                    <a style="color: #2D2D2D;" class="nav-link" href="http://127.0.0.1:8000/login/login">Login</a>
+                </li>
+              {%endif%}
         </ul>
       </div>
     </div>

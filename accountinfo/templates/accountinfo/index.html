@@ -21,7 +21,11 @@
       <li class="link"><a href="http://127.0.0.1:8000/expenses">Expenses</a></li>
       <li class="link"><a href="http://127.0.0.1:8000/accountinfo">Account Info</a></li>
       <li class="link"><a href="http://127.0.0.1:8000/resources">Resources</a></li>
-      <li class="link"><a href="http://127.0.0.1:8000/login/login">Log In</a></li>
+      {% if not user.is_authenticated %} 
+        <li class="nav-item">
+            <a  class="link" href="http://127.0.0.1:8000/login/login">Login</a>
+        </li>
+      {%endif%}
     </ul>
   </div>
 </nav>
@@ -41,14 +45,12 @@
           <a class=" p-5 list-group-item list-group-item-action" style="background-color: #3D0066; color: white;"
             href="#list-item-3">Savings</a>
             <hr>
-          <a class=" p-5 list-group-item list-group-item-action" style="background-color: #3D0066; color: white;"
-            href="#list-item-4">Wishlist</a>
-            <hr>
+          
           <a class=" p-5 list-group-item list-group-item-action" style="background-color: #3D0066; color: white;"
             href="#list-item-5">Budget</a>
             <hr>
-          <a class=" p-5 list-group-item list-group-item-action" style="background-color: #3D0066; color: white;"
-            href="#list-item-6">Resources</a>
+            <a class=" p-5 list-group-item list-group-item-action" style="background-color: #3D0066; color: white;"
+            href="#list-item-4">Password</a>
             <hr>
         </div>
       </div>
@@ -96,24 +98,20 @@
           Here</button>
         <hr>
 
-        <h4 id="list-item-4" class="mt-5" style="text-decoration: underline;">Wishlist</h4>
-        <p style="margin-left: 10px;">Wish: Disney Vacation Cost: $3000</p>
-        <p style="margin-left: 10px;">Wish: Universal Vacation Cost: $3000</p>
-        <p style="margin-left: 10px;">Wish: Disney Vacation Cost: $3000</p>
-        <br>
-        <p>See Something Missing?</p>
-        <button class="rounded-3 p-2 text-white" style="background-color: #3D0066;">Please Click
-          Here</button>
-        <hr>
-
         <h4 id="list-item-5" class="mt-5" style="text-decoration: underline;">Budget</h4>
         <p>Current Budget: $300</p>
         <button class="rounded-3 p-2 text-white" style="background-color: #3D0066;">Need to Update your budget? Press
           Here</button>
         <hr>
 
-        <h4 id="list-item-6" class="mt-5" style="text-decoration: underline;">Resources</h4>
-        <p>Youtube Has A Lot of Resources!</p>
+        <h4 id="list-item-4">Password</h4>
+        <form>
+          <label>Change your Password</label>
+          <br>
+          <input class="mb-3" type="password"/>
+          <br>
+          <button class="text-white mb-5" style="background-color: #3D0066;">Change Password</button>
+        </form>
       </div>
     </div>
   </div>

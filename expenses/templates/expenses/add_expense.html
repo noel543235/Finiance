@@ -4,8 +4,10 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Your Expenses</title>
-    {% load static %} {% load bootstrap5 %} {% bootstrap_css %} {%
-    bootstrap_javascript %}
+    {% load static %} 
+    {% load bootstrap5 %} 
+    {% bootstrap_css %} 
+    {%bootstrap_javascript %}
     <link rel="stylesheet" href="{% static 'home/style.css' %}" />
     <nav class="navbar navbar-expand-lg fixed-top bg-body-tertiary">
       <div class="container-fluid">
@@ -64,14 +66,11 @@
                 >Resources</a
               >
             </li>
-            <li class="nav-item">
-              <a
-                style="color: #2d2d2d"
-                class="nav-link"
-                href="http://127.0.0.1:8000/login/login"
-                >Login</a
-              >
-            </li>
+            {% if not user.is_authenticated %} 
+                <li class="nav-item">
+                    <a style="color: #2D2D2D;" class="nav-link" href="http://127.0.0.1:8000/login/login">Login</a>
+                </li>
+              {%endif%}
           </ul>
         </div>
       </div>

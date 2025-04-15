@@ -114,7 +114,6 @@ class CleanDataTests(TestCase):
             # Utilities
             ("Electric Bill", 90.00, "Utilities", "2024-03-11"),
             ("Electric Bill", 90.00, "Utilities", "2024-04-11"),
-            ("Electric Bill", 92.00, "Utilities", "2024-05-11"),  # Slight variance
             ("Water Bill", 45.00, "Utilities", "2024-03-13"),
             ("Water Bill", 45.00, "Utilities", "2024-04-13"),
             ("Water Bill", 45.00, "Utilities", "2024-05-13"),
@@ -129,6 +128,9 @@ class CleanDataTests(TestCase):
             ("Leetcode Premium", 10.00, "Other", "2024-03-11"),
 
             # == Edge Cases ==
+
+            # Slight variance
+            ("Electric Bill", 92.00, "Utilities", "2024-05-11"),  
 
             # Future recurrence
             ("Twitch", 5.89, "Entertainment", "2025-03-01"),

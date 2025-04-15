@@ -45,19 +45,14 @@
 
 
 <body style="margin-top: 3%;">
-  <div class="row headersub text-center">
-    <div class="col-5">
+  <div class=" headersub text-center">
+    <div class="text-center">
       <h1>Video Resources</h1>
-    </div>
-    <div class="col-6">
-      <form action="">
-        <input type="text" placeholder="Search">
-      </form>
     </div>
   </div>
 
-  <div class="row ms-5 mt-5">
-    <h5>The Ramsey Show Highlights</h5>
+  <div class="row ms-5 mt-5 shadow p-3 me-5">
+    <h5 class="fw-bold p-2">The Ramsey Show Highlights</h5>
     {% for video in videoArray %}
       {%if video.channel == "The Ramsey Show Highlights"%}
       <div class="col-sm-4 mb-sm-3" >
@@ -73,8 +68,8 @@
     {%endfor%}
   </div>
 
-  <div class="row ms-5 mt-5">
-    <h5>Brenna Living Joyfully</h5>
+  <div class="row ms-5 mt-5 shadow p-3 me-5">
+    <h5 class="fw-bold p-2">Brenna Living Joyfully</h5>
     {% for video in videoArray %}
       {%if video.channel == "Brenna Living Joyfully"%}
       <div class="col-sm-4 mb-sm-3" >
@@ -90,8 +85,8 @@
     {%endfor%}
   </div>
 
-  <div class="row ms-5 mt-5">
-    <h5>Shay Budgets</h5>
+  <div class="row ms-5 mt-5 shadow p-3 me-5">
+    <h5 class="fw-bold p-2">Shay Budgets</h5>
     {% for video in videoArray %}
       {%if video.channel == "Shay Budgets"%}
       <div class="col-sm-4 mb-sm-3" >
@@ -106,8 +101,8 @@
       {%endif%}
     {%endfor%}
   </div>
-  <div class="row ms-5 mt-5">
-    <h5>Elena Taber</h5>
+  <div class="row ms-5 mt-5 shadow p-3 me-5">
+    <h5 class="fw-bold p-2">Elena Taber</h5>
     {% for video in videoArray %}
       {%if video.channel == "Elena Taber"%}
       <div class="col-sm-4 mb-sm-3" >
@@ -122,8 +117,8 @@
       {%endif%}
     {%endfor%}
   </div>
-  <div class="row ms-5 mt-5">
-    <h5>Work smarter not harder</h5>
+  <div class="row ms-5 mt-5 shadow p-3 me-5">
+    <h5 class="fw-bold p-2">Work smarter not harder</h5>
     {% for video in videoArray %}
       {%if video.channel == "Work smarter not harder"%}
       <div class="col-sm-4 mb-sm-3" >

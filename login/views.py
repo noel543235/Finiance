@@ -44,5 +44,10 @@ def signup_user(request):
         return redirect("home")
     else:
         return render(request, 'authentication/signup.html', {})
+    
+def logout_user(request):
+    logout(request)
+    messages.success(request, "User logged out successfully")
+    return redirect("home")
 
     

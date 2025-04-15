@@ -443,7 +443,7 @@
       
       <div class="row">
         <div class="col ms-5 ">
-          <form method="POST" action="{% url 'savings:calculate' %}" class="border border-2 w-50 rounded-2 shadow">
+          <form method="POST" action="{% url 'savings:index' %}" class="border border-2 w-50 rounded-2 shadow">
             {% csrf_token %}
             <h3 class="mb-4 fw-bold bg-secondary p-2 text-white text-center">Future Value Calculator</h3>
             <label class="form-label ms-4">Number of Periods</label>
@@ -471,7 +471,7 @@
             <br>
             <input class="mb-3 ms-4" type="radio" name="timing" />
             <br />
-            <button class=" w-75 ms-4 mb-5" type="submit">Calculate</button>
+            <button class=" w-75 ms-4 mb-5" name="form_type" value="calculate" type="submit">Calculate</button>
           </form>
         </div>
         <div class="col">

@@ -299,11 +299,10 @@ def clean_data(df: pl.DataFrame) -> dict:
         df_clean = df_clean.with_columns(
             pl.col("startDate").cast(pl.Date).alias("startDate"))
     except Exception as e:
-        # Raise a custom error message if casting fails
         raise ValueError("Error casting date, please ensure date is in YYYY-MM-DD") from e
 
     if df_clean['frequency'].is_null().all():
-        # Group by label and check for duplicates
+        # Group by label and amount and check for duplicates
         df_grouped = df_clean.group_by(["Label", "Amount"]).agg([
 
             # Store the smallest startDate as min_startDate

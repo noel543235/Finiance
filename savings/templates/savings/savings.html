@@ -64,14 +64,11 @@
               >Resources</a
             >
           </li>
-          <li class="nav-item">
-            <a
-              style="color: #2d2d2d"
-              class="nav-link"
-              href="http://127.0.0.1:8000/login/login"
-              >Login</a
-            >
-          </li>
+          {% if not user.is_authenticated %} 
+                <li class="nav-item">
+                    <a style="color: #2D2D2D;" class="nav-link" href="http://127.0.0.1:8000/login/login">Login</a>
+                </li>
+              {%endif%}
         </ul>
       </div>
     </div>
@@ -81,7 +78,7 @@
     <div class="section1 row">
       <div class="col-12 col-md-4 mb-5 ms-5">
         <div class="mb-5"></div>
-        <div style="margin-left: 105px">
+        <div style="margin-right: 200px">
           <canvas id="ProgressChart" width="200" height="100"></canvas>
         </div>
       </div>
@@ -94,7 +91,9 @@
         </ul>
       </div>
       <div class="col mt-5">
-        <h3 class="heading">Recent Charges</h3>
+        <h3 class="heading"> Current Retirement Savings: </h3>
+        <h3 class="heading mt-5"> Current Emergencey Fund: </h3>
+
       </div>
     </div>
 
@@ -349,7 +348,7 @@
                       </form>
                     </div>
                   </div>
-                  <p>Add New Savings Goal</p>
+                  <p>Update Savings Goal</p>
                   <button
                     type="button"
                     data-bs-toggle="collapse"
@@ -437,40 +436,46 @@
     </div>
 
     <div class="p-5 mt-3 ms-5">
-      <h3 class="mb-4 fw-bold">Future Value Calculator</h3>
+      
       <div class="row">
-        <div class="col ms-5">
-          <form method="POST" action="{% url 'savings:calculate' %}">
+        <div class="col ms-5 ">
+          <form method="POST" action="{% url 'savings:calculate' %}" class="border border-2 w-50 rounded-2 shadow">
             {% csrf_token %}
-
-            <label class="mb-5">Number of Periods</label>
-            <input type="number" name="compounds" value="10" />
+            <h3 class="mb-4 fw-bold bg-secondary p-2 text-white text-center">Future Value Calculator</h3>
+            <label class="form-label ms-4">Number of Periods</label>
+            <br>
+            <input class="form-control w-75 mb-1 ms-4" type="number" name="compounds" value="10" />
             <br />
-            <label class="mb-5">Starting Amount</label>
-            <input type="number" name="present_value" value="1000" />
+            <label class=" mb-1 ms-4">Starting Amount</label>
+            <br>
+            <input class="form-control w-75 mb-1 ms-4" type="number" name="present_value" value="1000" />
             <br />
-            <label class="mb-5">Interest Rate</label>
-            <input type="number" name="interest_rate" value="6" />
+            <label class="mb-1 ms-4">Interest Rate</label>
+            <br>
+            <input class="form-control w-75 mb-1 ms-4" type="number" name="interest_rate" value="6" />
             <br />
-            <label class="mb-5">Periodic Deposit</label>
-            <input type="number" name="periodic_deposit" value="100" />
+            <label class="mb-1 ms-4">Periodic Deposit</label>
+            <br>
+            <input class="form-control w-75 mb-3 ms-4" type="number" name="periodic_deposit" value="100" />
             <br />
-            <p>Time when you want to make it</p>
-            <label class="mb-5">Beginning</label>
-            <input type="radio" name="timing" />
+            <p class="ms-4">Time when you want to make it:</p>
+            <label class="mb-1 ms-4">Beginning</label>
+            <br>
+            <input class="mb-1 ms-4" type="radio" name="timing" />
             <br />
-            <label class="mb-5">End</label>
-            <input type="radio" name="timing" />
+            <label class="mb-1 ms-4">End</label>
+            <br>
+            <input class="mb-3 ms-4" type="radio" name="timing" />
             <br />
-            <button type="submit">Calculate</button>
+            <button class=" w-75 ms-4 mb-5" type="submit">Calculate</button>
           </form>
         </div>
         <div class="col">
-          <div class="line bg-secondary p-3 text-white">
+          <div class="line bg-secondary p-5 text-white shadow">
             <h4>Results: Please Put in a Calculation</h4>
             <div>
               {% if table %}
-              <table>
+              <table class="table table-striped-columns text-white">
                 <tr>
                   <th>Compound</th>
                   <th>Start Balance</th>

@@ -129,3 +129,13 @@ nav ul li {
 
 
 
+.resimg{
+    width: 500px; 
+    height: 300px;
+    transition: 1s;
+ 
+}
+.resimg:hover{
+    scale: 1.5;
+    margin-left: 10px;
+}

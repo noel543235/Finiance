@@ -66,10 +66,7 @@ ol {
 .section2{
     padding: 5%;
 }
-.line{
-    width: 500px;
-    height: 500px;
-}
+
 
 .heading{
     color: #D4AF37;
@@ -92,4 +89,7 @@ button{
     height: 400px;
     background-color: #002A22;
     border-radius: 50%;
+}
+.buttonv2{
+    background-color: #D4AF37;
 }

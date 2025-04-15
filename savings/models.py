@@ -2,8 +2,12 @@ from django.db import models
 from expenses.models import Expense, Recurring
 from dateutil.relativedelta import relativedelta
   
+from expenses.models import Expense, Recurring
+from dateutil.relativedelta import relativedelta
+  
   
 # Savings Goal Class
+
 class SavingsGoal(Expense):
     
     class Meta:
@@ -37,7 +41,7 @@ class SavingsGoal(Expense):
         self.save()
         
     def __str__(self):
-        return f'{self.label} - ${self.amount} - {self.frequency}'
+        return f'{self.label} - ${self.amount}'
     
 
 # Savings Goal Payment Class

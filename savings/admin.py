@@ -6,7 +6,7 @@ from .models import *
 class SavingsGoalAdmin(admin.ModelAdmin):
     model = SavingsGoal
     fieldsets = (
-        (None, {'fields': ('user', 'label', 'amount', 'start_date', 'frequency', 'next_due_date', 'end_date', 'category')}),
+        (None, {'fields': ('user', 'label', 'amount', 'payment_amount', 'start_date', 'frequency', 'category')}),
     )
    
     

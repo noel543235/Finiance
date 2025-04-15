@@ -9,4 +9,4 @@
 
 # Ignore the database
 *.sqlite3
-savings/migrations/0002_rename_goal_amount_savingsgoal_payment_amount.py
+

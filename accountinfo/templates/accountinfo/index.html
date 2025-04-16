@@ -25,6 +25,8 @@
         <li class="nav-item">
             <a  class="link" href="http://127.0.0.1:8000/login/login">Login</a>
         </li>
+      {% else %}
+        <a style="color: #2D2D2D;" class="nav-link" href="http://127.0.0.1:8000/login/logout">Logout</a>
       {%endif%}
     </ul>
   </div>

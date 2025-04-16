@@ -3,7 +3,9 @@
   <head>
     <meta charset="utf-8" />
     <title>My test page</title>
-    {% load static %} {% load bootstrap5 %} {% bootstrap_css %}
+    {% load static %} 
+    {% load bootstrap5 %}
+     {% bootstrap_css %}
     {%bootstrap_javascript %}
     <link rel="stylesheet" href="{% static 'savings/style.css' %}" />
   </head>
@@ -64,10 +66,12 @@
               >Resources</a
             >
           </li>
-          {% if not user.is_authenticated %} 
+            {% if not user.is_authenticated %} 
                 <li class="nav-item">
                     <a style="color: #2D2D2D;" class="nav-link" href="http://127.0.0.1:8000/login/login">Login</a>
                 </li>
+              {% else %}
+                <a style="color: #2D2D2D;" class="nav-link" href="http://127.0.0.1:8000/login/logout">Logout</a>
               {%endif%}
         </ul>
       </div>

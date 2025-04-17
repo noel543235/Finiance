@@ -1,7 +1,9 @@
 nav{
-   background-color: white;
-   top:0%;
+    
+    background-color: #3D0066;
+    top:0;
    width:100%;
+   color: hsl(0, 0%, 18%);
 }
 nav p{
     display: inline;

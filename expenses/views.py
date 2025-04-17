@@ -41,14 +41,20 @@ def index(request):
 
 def index_context(request):
     # Query all user expenses from database
-    recent_expenses = get_recent_expenses()
+    recent_expenses = get_recent_expenses(request)
     categories = Category.objects.all()
+    
+    recurring = Recurring.objects.filter(user=request.user)
+    final = [rec for rec in recurring if rec.label not in Loan.objects.values_list('label', flat=True)]
     
     # Create context object to send to template
     context = {
         "recent_expenses": recent_expenses,
         "category_form": CategoryForm,
-        "categories": categories
+        "categories": categories,
+        "onetimes": OneTime.objects.filter(user=request.user),
+        "recurring": final,
+        "loans": Loan.objects.filter(user=request.user)
     }
     
     return context
@@ -227,11 +233,11 @@ def delete_recurring_expense(request, expense_id):
     return redirect('expenses:index')
 
 
-def get_recent_expenses():
+def get_recent_expenses(request):
     today = datetime.today().date()
     week_ago = today-timedelta(weeks=1)
 
-    onetime_expenses = OneTime.objects.filter(date_purchased__gte=week_ago)
+    onetime_expenses = OneTime.objects.filter(user=request.user, date_purchased__gte=week_ago)
     recurring_expenses = list()
     
     for expense in Recurring.objects.all():
@@ -299,11 +305,10 @@ def clean_data(df: pl.DataFrame) -> dict:
         df_clean = df_clean.with_columns(
             pl.col("startDate").cast(pl.Date).alias("startDate"))
     except Exception as e:
-        # Raise a custom error message if casting fails
         raise ValueError("Error casting date, please ensure date is in YYYY-MM-DD") from e
 
     if df_clean['frequency'].is_null().all():
-        # Group by label and check for duplicates
+        # Group by label and amount and check for duplicates
         df_grouped = df_clean.group_by(["Label", "Amount"]).agg([
 
             # Store the smallest startDate as min_startDate

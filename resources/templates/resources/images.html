@@ -51,12 +51,12 @@
     </div>
   </div>
 </body>
-<div class="p-5">
-  <h5 class="fw-bold">Images</h5>
-    <div class="row">
+<div class="shadow p-3 m-5">
+  <h5 class="fw-bold ms-3 p-2">Images</h5>
+    <div class="row  p-3">
       {% for image in imageArray %}
         <div class="col-sm-4 mb-sm-5" >
-          <img src="{{image.link}}" style="width: 500px; height: 300px;"/>
+          <img class="resimg" src="{{image.link}}"/>
         </div>
       {%endfor%}
     </div>

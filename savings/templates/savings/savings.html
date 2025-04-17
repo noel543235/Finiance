@@ -91,8 +91,8 @@
         </ul>
       </div>
       <div class="col mt-5">
-        <h3 class="heading"> Current Retirement Savings: </h3>
-        <h3 class="heading mt-5"> Current Emergencey Fund: </h3>
+        <h3 class="heading"> Current Retirement Savings: $0</h3>
+        <h3 class="heading mt-5"> Current Emergencey Fund: $0</h3>
 
       </div>
     </div>
@@ -409,7 +409,7 @@
       </div>
     </div>
     <div class="section2">
-      <div class="row text-white" style="margin-left: 13%">
+      <div class="row text-white ms-5 p-5">
         <div class="col">
           <h5 class="heading">Categories</h5>
           {% for category in categories %}
@@ -417,7 +417,7 @@
           {% endfor %}
         </div>
 
-        <div class="col">
+        <div class="col me-5">
           <div>
             <form action="{% url 'savings:create_category' %}" method="POST">
               {% csrf_token %}
@@ -432,6 +432,10 @@
             </form>
           </div>
         </div>
+        <div class="col ps-5 ms-5">
+          <h5 class="heading">Recent Payment</h5>
+          <p>Emergencey Fund: $200. 4/15/2025</p>
+        </div>
       </div>
     </div>
 
@@ -439,7 +443,7 @@
       
       <div class="row">
         <div class="col ms-5 ">
-          <form method="POST" action="{% url 'savings:calculate' %}" class="border border-2 w-50 rounded-2 shadow">
+          <form method="POST" action="{% url 'savings:index' %}" class="border border-2 w-50 rounded-2 shadow">
             {% csrf_token %}
             <h3 class="mb-4 fw-bold bg-secondary p-2 text-white text-center">Future Value Calculator</h3>
             <label class="form-label ms-4">Number of Periods</label>
@@ -467,7 +471,7 @@
             <br>
             <input class="mb-3 ms-4" type="radio" name="timing" />
             <br />
-            <button class=" w-75 ms-4 mb-5" type="submit">Calculate</button>
+            <button class=" w-75 ms-4 mb-5" name="form_type" value="calculate" type="submit">Calculate</button>
           </form>
         </div>
         <div class="col">

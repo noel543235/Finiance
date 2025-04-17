@@ -20,6 +20,10 @@ def index(request):
     """
     context = index_context(request)
     
+    # Check if FVC was submitted
+    if request.method == 'POST' and request.POST.get('form_type') == 'calculate':
+        context["table"] = calculate(request)
+    
     return render(request, "savings/savings.html", context)
 
 
@@ -33,7 +37,8 @@ def index_context(request):
         'goal_form': SavingsGoalForm,
         'payment_form': GoalPaymentForm,
         "categories": Category.objects.all(),
-        "category_form": CategoryForm
+        "category_form": CategoryForm,
+        "table": None
     }
     
     return context
@@ -186,21 +191,16 @@ def future_value_calculator(present_value, compounds, interest_rate, periodic_de
     return compound_rows
 
 def calculate(request):
-    # print("Calculate")
-    if request.method == "POST":
-        present_value = request.POST.get("present_value")
-        compounds = request.POST.get("compounds")
-        periodic_deposit = request.POST.get("periodic_deposit")
-        interest_rate = request.POST.get("interest_rate")
-        # print(f"present value = {present_value} compounds = {compounds} periodic deposit = {periodic_deposit} interest rate = {interest_rate}")
-        
-        table = future_value_calculator(float(present_value), int(compounds), float(interest_rate), float(periodic_deposit))
-        # print(table)
-        
-        return render(request, "savings/savings.html", {"table": table})
+    present_value = request.POST.get("present_value")
+    compounds = request.POST.get("compounds")
+    periodic_deposit = request.POST.get("periodic_deposit")
+    interest_rate = request.POST.get("interest_rate")
+    print(f"present value = {present_value} compounds = {compounds} periodic deposit = {periodic_deposit} interest rate = {interest_rate}")
     
+    table = future_value_calculator(float(present_value), int(compounds), float(interest_rate), float(periodic_deposit))
+    print(table)
     
-    return render(request, "savings/savings.html")
+    return table
 
 
 def create_category(request):

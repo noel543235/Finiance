@@ -1,28 +1,79 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <title>Upload CSV/JSON File</title>
+    {% load static %}
+    {% load bootstrap5 %}
+    {% bootstrap_css %}
+    {%bootstrap_javascript %}
+    <link rel="stylesheet" href="{% static 'home/style.css' %}" />
+    <nav class="navbar navbar-expand-lg fixed-top bg-body-tertiary">
+        <div class="container-fluid">
+            <a style="color: #2d2d2d" class="navbar-brand" href="#">Finiance</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a style="color: #2d2d2d" class="nav-link active" aria-current="page"
+                            href="http://127.0.0.1:8000/">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a style="color: #2d2d2d" class="nav-link" href="http://127.0.0.1:8000/savings">Savings</a>
+                    </li>
+                    <li class="nav-item">
+                        <a style="color: #2d2d2d" class="nav-link" href="http://127.0.0.1:8000/expenses">Expenses</a>
+                    </li>
+                    <li class="nav-item">
+                        <a style="color: #2d2d2d" class="nav-link" href="http://127.0.0.1:8000/accountinfo">Account
+                            Information</a>
+                    </li>
+                    <li class="nav-item">
+                        <a style="color: #2d2d2d" class="nav-link" href="http://127.0.0.1:8000/resources">Resources</a>
+                    </li>
+                    {% if not user.is_authenticated %}
+                    <li class="nav-item">
+                        <a style="color: #2D2D2D;" class="nav-link" href="http://127.0.0.1:8000/login/login">Login</a>
+                    </li>
+                    {%endif%}
+                </ul>
+            </div>
+        </div>
+    </nav>
 </head>
+
 <body>
-    <h1>Upload a CSV or JSON File</h1>
+    <div class="bg-light">
+        <div class="container text-center mt-5 py-5 text-white rounded-3 border-1 border-light" style="margin-top: 5%; background-color: #3D0066;">
+            <!--upload a csv or json file-->
+            <h1 style="color: goldenrod;">Upload a CSV or JSON File</h1>
 
-    <!-- Form for uploading CSV or JSON file -->
-    <form action="{% url 'expenses:import_data' %}" method="POST" enctype="multipart/form-data">
-        {% csrf_token %}
+            <!-- Form for uploading CSV or JSON file -->
+            <form action="{% url 'expenses:import_data' %}" method="POST" enctype="multipart/form-data">
+                {% csrf_token %}
 
-        <label for="file">Choose a file:</label>
-        <input type="file" id="file" name="file" accept=".csv, .json" required><br><br>
+                <label for="file">Choose a file:</label>
+                <input type="file" id="file" name="file" accept=".csv, .json" required><br><br>
 
-        <!-- Checkbox to indicate if the data is cleaned -->
-        <label for="cleaned">✅ Data is cleaned and in the correct format</label>
-        <input type="checkbox" id="cleaned" name="cleaned"><br><br>
+                <!-- Checkbox to indicate if the data is cleaned -->
+                <label for="cleaned">✅ Data is cleaned and in the correct format</label>
+                <input type="checkbox" id="cleaned" name="cleaned"><br><br>
 
-        <button type="submit">Upload</button>
-    </form>
+                <button type="submit" style="color: white; width: 20%; letter-spacing: 1px;">Upload</button>
+            </form>
 
-    {% if error %}
-    <p style="color: red;">{{ error }}</p>
-    {% endif %}
+            {% if error %}
+            <p style="color: red;">{{ error }}</p>
+            {% endif %}
+
+
+        </div>
+    </div>
+
 </body>
+
 </html>

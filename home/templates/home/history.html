@@ -3,146 +3,188 @@
     <head>
         <meta charset="utf-8" />
         <title>My test page</title>
-        {% load static %} 
-        {% load bootstrap5 %} 
-        {% bootstrap_css %} 
+        {% load static %} {% load bootstrap5 %} {% bootstrap_css %}
         {%bootstrap_javascript %}
         <link rel="stylesheet" href="{% static 'home/style.css' %}" />
-        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
-
+        <link
+            rel="stylesheet"
+            href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css"
+        />
     </head>
     <nav class="navbar navbar-expand-lg fixed-top bg-body-tertiary">
-      <div class="container-fluid">
-        <a style="color: #2D2D2D;" class="navbar-brand" href="#"><i class="bi bi-piggy-bank-fill"></i>Finiance</a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-          <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarNav">
-          <ul class="navbar-nav">
-            <li class="nav-item">
-              <a style="color: #2D2D2D;" class="nav-link active" aria-current="page" href="http://127.0.0.1:8000/"> <i class="bi bi-house"></i><span class="ms-1 mt-2">Home</span></a>
-            </li>
-            <li class="nav-item">
-              <a style="color: #2D2D2D;" class="nav-link" href="http://127.0.0.1:8000/savings"> <i class="bi bi-coin"></i> <span class="ms-1">Savings</span></a>
-            </li>
-            <li class="nav-item">
-              <a style="color: #2D2D2D;" class="nav-link" href="http://127.0.0.1:8000/expenses"> <i class="bi bi-cash-stack"></i><span class="ms-1">Expenses</span></a>
-            </li>
-            <li class="nav-item">
-              <a style="color: #2D2D2D;" class="nav-link" href="http://127.0.0.1:8000/accountinfo"><i class="bi bi-person-circle"></i><span class="ms-1">Account Information</span></a>
-            </li>
-            <li class="nav-item">
-              <a style="color: #2D2D2D;" class="nav-link" href="http://127.0.0.1:8000/resources"> <i class="bi bi-info-lg"></i> <span class="ms-1">Resources</span></a>
-            </li>
-            {% if not user.is_authenticated %} 
-              <li class="nav-item">
-                  <a style="color: #2D2D2D;" class="nav-link" href="http://127.0.0.1:8000/login/login">Login</a>
-              </li>
-            {% else %}
-              <li>
-                <a style="color: #2D2D2D;" class="nav-link" href="http://127.0.0.1:8000/login/logout">Logout</a>
-              </li>
-            {%endif%}
-          </ul>
+        <div class="container-fluid">
+            <a style="color: #2d2d2d" class="navbar-brand" href="#"
+                ><i class="bi bi-piggy-bank-fill"></i>Finiance</a
+            >
+            <button
+                class="navbar-toggler"
+                type="button"
+                data-bs-toggle="collapse"
+                data-bs-target="#navbarNav"
+                aria-controls="navbarNav"
+                aria-expanded="false"
+                aria-label="Toggle navigation"
+            >
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a
+                            style="color: #2d2d2d"
+                            class="nav-link active"
+                            aria-current="page"
+                            href="http://127.0.0.1:8000/"
+                        >
+                            <i class="bi bi-house"></i
+                            ><span class="ms-1 mt-2">Home</span></a
+                        >
+                    </li>
+                    <li class="nav-item">
+                        <a
+                            style="color: #2d2d2d"
+                            class="nav-link"
+                            href="http://127.0.0.1:8000/savings"
+                        >
+                            <i class="bi bi-coin"></i>
+                            <span class="ms-1">Savings</span></a
+                        >
+                    </li>
+                    <li class="nav-item">
+                        <a
+                            style="color: #2d2d2d"
+                            class="nav-link"
+                            href="http://127.0.0.1:8000/expenses"
+                        >
+                            <i class="bi bi-cash-stack"></i
+                            ><span class="ms-1">Expenses</span></a
+                        >
+                    </li>
+                    <li class="nav-item">
+                        <a
+                            style="color: #2d2d2d"
+                            class="nav-link"
+                            href="http://127.0.0.1:8000/accountinfo"
+                            ><i class="bi bi-person-circle"></i
+                            ><span class="ms-1">Account Information</span></a
+                        >
+                    </li>
+                    <li class="nav-item">
+                        <a
+                            style="color: #2d2d2d"
+                            class="nav-link"
+                            href="http://127.0.0.1:8000/resources"
+                        >
+                            <i class="bi bi-info-lg"></i>
+                            <span class="ms-1">Resources</span></a
+                        >
+                    </li>
+                    {% if not user.is_authenticated %}
+                    <li class="nav-item">
+                        <a
+                            style="color: #2d2d2d"
+                            class="nav-link"
+                            href="http://127.0.0.1:8000/login/login"
+                            >Login</a
+                        >
+                    </li>
+                    {% else %}
+                    <li>
+                        <a
+                            style="color: #2d2d2d"
+                            class="nav-link"
+                            href="http://127.0.0.1:8000/login/logout"
+                            >Logout</a
+                        >
+                    </li>
+                    {%endif%}
+                </ul>
+            </div>
         </div>
-      </div>
     </nav>
-    <body  style="background-color: #3D0066;">
-      <div class="p-5">
-       <div class="mt-5 p-5 rounded shadow" style="background-color: #FAF9F6;">
-        <h2 class="fw-bold text-secondary text-center" style="text-shadow: 3px 3px 3px #CCCCFF;">History</h2>
-        <div class="container rounded shadow" style="border: 1px solid #0096FF;">
-            <h4 class=" p-2" style="color: #0096FF;">Savings</h4>
-            <table class="table table-bordered table-striped text-white text-center rounded" style="border-color: #0096FF;">
-
-                <tr>
-                  <th style="color: #0096FF; font-weight: bolder;">Category</th>
-                  <th style="color: #0096FF; font-weight: bolder;">Ammount Saved</th>
-                  <th style="color: #0096FF; font-weight: bolder;">Date</th>
-                </tr>
-                <tr>
-                  <td style="color: #0096FF;">Home Down Payment</td>
-                  <td style="color: #0096FF;">$3000</td>
-                  <td style="color: #0096FF;">2/02/25</td>
-                </tr>
-                <tr>
-                  <td style="color: #0096FF;">Car Fund</td>
-                  <td style="color: #0096FF;">$2000</td>
-                  <td style="color: #0096FF;">1/02/25</td>
-                </tr>
-                <tr>
-                  <td style="color: #0096FF;">Emergency Fund</td>
-                  <td style="color: #0096FF;">$1500</td>
-                  <td style="color: #0096FF;">12/26/24</td>
-                </tr>
-                <tr>
-                  <td style="color: #0096FF;">Vacation Fund</td>
-                  <td style="color: #0096FF;">$1000</td>
-                  <td style="color: #0096FF;">6/26/24</td>
-                </tr>
-                <tr>
-                  <td style="color: #0096FF;">Education Savings</td>
-                  <td style="color: #0096FF;">$500</td>
-                  <td style="color: #0096FF;">08/06/24</td>
-                </tr>
-                <tr>
-                  <td style="color: #0096FF;">Tech Upgrade</td>
-                  <td style="color: #0096FF;">$500</td>
-                  <td style="color: #0096FF;">3/10/25</td>
-                </tr>
-              </table>
-
+    <body style="background-color: #3d0066">
+        <div class="p-5">
+            <div
+                class="mt-5 p-5 rounded shadow"
+                style="background-color: #faf9f6"
+            >
+                <h2
+                    class="fw-bold text-secondary text-center"
+                    style="text-shadow: 3px 3px 3px #ccccff"
+                >
+                    History
+                </h2>
+                <div
+                    class="container rounded shadow"
+                    style="border: 1px solid #0096ff"
+                >
+                    <h4 class="p-2" style="color: #0096ff">Savings</h4>
+                    <table
+                        class="table table-bordered table-striped text-white text-center rounded"
+                        style="border-color: #0096ff"
+                    >
+                        <tr>
+                            <th style="color: #0096ff; font-weight: bolder">
+                                Category
+                            </th>
+                            <th style="color: #0096ff; font-weight: bolder">
+                                Amount Saved
+                            </th>
+                            <th style="color: #0096ff; font-weight: bolder">
+                                Date
+                            </th>
+                        </tr>
+                        {% for row in savings_data %}
+                        <tr>
+                            <th style="color: #0096ff; font-weight: bolder">{{row.category}}</th>
+                            <th style="color: #0096ff; font-weight: bolder">{{row.payment_amount}}</th>
+                            <th style="color: #0096ff; font-weight: bolder">{{row.start_date}}</th>
+                        </tr>
+                      {% empty %}
+                        <tr><td colspan='5'>No expenses data found.</td></tr>
+                      {% endfor %}
+                    </table>
+                </div>
+                <div
+                    class="container mt-5 rounded shadow"
+                    style="border: 1px solid #c41e3a"
+                >
+                    <h4 class="p-2" style="color: #c41e3a">Expenses</h4>
+                    <table
+                        class="table table-bordered table-striped text-white text-center rounded"
+                        style="border-color: #c41e3a"
+                    >
+                        <tr>
+                            <th style="color: #c41e3a; font-weight: bolder">
+                                Label
+                            </th>
+                            <th style="color: #c41e3a; font-weight: bolder">
+                                Category
+                            </th>
+                            <th style="color: #c41e3a; font-weight: bolder">
+                                Amount
+                            </th>
+                            <th style="color: #c41e3a; font-weight: bolder">
+                                Type
+                            </th>
+                            <th style="color: #c41e3a; font-weight: bolder">
+                                Date
+                            </th>
+                        </tr>
+                        {% for row in expenses_data %}
+                          <tr>
+                              <th style="color: #c41e3a; font-weight: bolder">{{row.label}}</th>
+                              <th style="color: #c41e3a; font-weight: bolder">{{row.category}}</th>
+                              <th style="color: #c41e3a; font-weight: bolder">{{row.display_amount}}</th>
+                              <th style="color: #c41e3a; font-weight: bolder">{{row.type}}</th>
+                              <th style="color: #c41e3a; font-weight: bolder">{{row.display_date}}</th>
+                          </tr>
+                        {% empty %}
+                          <tr><td colspan='5'>No expenses data found.</td></tr>
+                        {% endfor %}
+                    </table>
+                </div>
+            </div>
         </div>
-        <div class="container mt-5 rounded shadow" style="border: 1px solid #C41E3A;">
-            <h4 class="p-2" style="color: #C41E3A;">Expenses</h4>
-            <table class="table table-bordered table-striped text-white text-center rounded" style="border-color: #C41E3A;">
-
-                <tr>
-                  <th style="color: #C41E3A; font-weight: bolder;">Category</th>
-                  <th style="color: #C41E3A; font-weight: bolder;">Ammount</th>
-                  <th style="color: #C41E3A; font-weight: bolder;">Type</th>
-                  <th style="color: #C41E3A; font-weight: bolder;">Date</th>
-                </tr>
-                <tr>
-                  <td style="color: #C41E3A;">Mortgage</td>
-                  <td style="color: #C41E3A;">$1000</td>
-                  <td style="color: #C41E3A;">Yearly</td>
-                  <td style="color: #C41E3A;">2/02/25</td>
-                </tr>
-                <tr>
-                  <td style="color: #C41E3A;">Car loan</td>
-                  <td style="color: #C41E3A;">$2000</td>
-                  <td style="color: #C41E3A;">Monthly</td>
-                  <td style="color: #C41E3A;">1/02/25</td>
-                </tr>
-                <tr>
-                  <td style="color: #C41E3A;">Emergency Fund</td>
-                  <td style="color: #C41E3A;">$1500</td>
-                  <td style="color: #C41E3A;">Weekly</td>
-                  <td style="color: #C41E3A;">12/26/24</td>
-                </tr>
-                <tr>
-                  <td style="color: #C41E3A;">Netflix</td>
-                  <td style="color: #C41E3A;">$15</td>
-                  <td style="color: #C41E3A;">Monthly</td>
-                  <td style="color: #C41E3A;">6/26/24</td>
-                </tr>
-                <tr>
-                  <td style="color: #C41E3A;">Hulu</td>
-                  <td style="color: #C41E3A;">$100</td>
-                  <td style="color: #C41E3A;">Monthly</td>
-                  <td style="color: #C41E3A;">08/06/24</td>
-                </tr>
-                <tr>
-                  <td style="color: #C41E3A;">Car Insurance</td>
-                  <td style="color: #C41E3A;">$300</td>
-                  <td style="color: #C41E3A;">Yearly</td>
-                  <td style="color: #C41E3A;">3/10/25</td>
-                </tr>
-              </table>
-
-        </div>
-       </div>
-      </div>
     </body>
 </html>

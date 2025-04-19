@@ -5,35 +5,39 @@
     {% bootstrap_css %}
     {% bootstrap_javascript %}
     <link rel="stylesheet" href="{% static 'login/signup.css' %}">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+
 </head>
 <body>
 
     <nav class="navbar navbar-expand-lg fixed-top bg-body-tertiary">
         <div class="container-fluid">
-          <a style="color: #2D2D2D;" class="navbar-brand" href="#">Finiance</a>
+          <a style="color: #2D2D2D;" class="navbar-brand" href="#"><i class="bi bi-piggy-bank-fill"></i>Finiance</a>
           <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
           </button>
           <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav">
               <li class="nav-item">
-                <a style="color: #2D2D2D;" class="nav-link active" aria-current="page" href="http://127.0.0.1:8000/">Home</a>
+                <a style="color: #2D2D2D;" class="nav-link active" aria-current="page" href="http://127.0.0.1:8000/"> <i class="bi bi-house"></i><span class="ms-1 mt-2">Home</span></a>
               </li>
               <li class="nav-item">
-                <a style="color: #2D2D2D;" class="nav-link" href="http://127.0.0.1:8000/savings">Savings</a>
+                <a style="color: #2D2D2D;" class="nav-link" href="http://127.0.0.1:8000/savings"> <i class="bi bi-coin"></i> <span class="ms-1">Savings</span></a>
               </li>
               <li class="nav-item">
-                <a style="color: #2D2D2D;" class="nav-link" href="http://127.0.0.1:8000/expenses">Expenses</a>
+                <a style="color: #2D2D2D;" class="nav-link" href="http://127.0.0.1:8000/expenses"> <i class="bi bi-cash-stack"></i><span class="ms-1">Expenses</span></a>
               </li>
               <li class="nav-item">
-                <a style="color: #2D2D2D;" class="nav-link" href="http://127.0.0.1:8000/accountinfo">Account Information</a>
+                <a style="color: #2D2D2D;" class="nav-link" href="http://127.0.0.1:8000/accountinfo"><i class="bi bi-person-circle"></i><span class="ms-1">Account Information</span></a>
               </li>
               <li class="nav-item">
-                <a style="color: #2D2D2D;" class="nav-link" href="http://127.0.0.1:8000/resources">Resources</a>
+                <a style="color: #2D2D2D;" class="nav-link" href="http://127.0.0.1:8000/resources"> <i class="bi bi-info-lg"></i> <span class="ms-1">Resources</span></a>
               </li>
-              <li class="nav-item">
-                <a style="color: #2D2D2D;" class="nav-link" href="http://127.0.0.1:8000/login/login">Login</a>
-              </li>
+              
+                <li class="nav-item">
+                    <a style="color: #2D2D2D;" class="nav-link" href="http://127.0.0.1:8000/login/login">Login</a>
+                </li>
+           
             </ul>
           </div>
         </div>

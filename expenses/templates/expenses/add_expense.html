@@ -1,196 +1,182 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Your Expenses</title>
-    {% load static %} 
-    {% load bootstrap5 %} 
-    {% bootstrap_css %} 
-    {%bootstrap_javascript %}
-    <link rel="stylesheet" href="{% static 'home/style.css' %}" />
-    <nav class="navbar navbar-expand-lg fixed-top bg-body-tertiary">
-      <div class="container-fluid">
-        <a style="color: #2d2d2d" class="navbar-brand" href="#">Finiance</a>
-        <button
-          class="navbar-toggler"
-          type="button"
-          data-bs-toggle="collapse"
-          data-bs-target="#navbarNav"
-          aria-controls="navbarNav"
-          aria-expanded="false"
-          aria-label="Toggle navigation"
-        >
-          <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarNav">
-          <ul class="navbar-nav">
-            <li class="nav-item">
-              <a
-                style="color: #2d2d2d"
-                class="nav-link active"
-                aria-current="page"
-                href="http://127.0.0.1:8000/"
-                >Home</a
-              >
-            </li>
-            <li class="nav-item">
-              <a
-                style="color: #2d2d2d"
-                class="nav-link"
-                href="http://127.0.0.1:8000/savings"
-                >Savings</a
-              >
-            </li>
-            <li class="nav-item">
-              <a
-                style="color: #2d2d2d"
-                class="nav-link"
-                href="http://127.0.0.1:8000/expenses"
-                >Expenses</a
-              >
-            </li>
-            <li class="nav-item">
-              <a
-                style="color: #2d2d2d"
-                class="nav-link"
-                href="http://127.0.0.1:8000/accountinfo"
-                >Account Information</a
-              >
-            </li>
-            <li class="nav-item">
-              <a
-                style="color: #2d2d2d"
-                class="nav-link"
-                href="http://127.0.0.1:8000/resources"
-                >Resources</a
-              >
-            </li>
-            {% if not user.is_authenticated %} 
-                <li class="nav-item">
-                    <a style="color: #2D2D2D;" class="nav-link" href="http://127.0.0.1:8000/login/login">Login</a>
-                </li>
-              {%endif%}
-          </ul>
-        </div>
-      </div>
-    </nav>
-  </head>
 
-  <body>
-    <div class="bg-light">
-      <div
-        class="container text-center bg-success text-white py-5 rounded-3 border-1 border-light"
-        style="margin-top: 5%"
-      >
-        <h2 class="text-center">ADD AN EXPENSE</h2>
-        <form
-          action="{% url 'expenses:create_expense' %}"
-          method="POST"
-          class="col-md-12"
-        >
-          {% csrf_token %}
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Your Expenses</title>
+  {% load static %}
+  {% load bootstrap5 %}
+  {% bootstrap_css %}
+  {%bootstrap_javascript %}
+  <link rel="stylesheet" href="{% static 'home/style.css' %}" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
 
-          <label for="id_label">Expense Name:</label>
-          {{ form.label }} <br>
-
-          <label for="id_amount">Amount:</label>
-          {{ form.amount }} <br>
-
-          <label for="id_amount">Description:</label>
-          {{ form.description }} <br>
-
-          <label for="id_category">Category:</label>
-          {{ form.category }} <br>
-
-          <label for="id_is_recurring">Is the expense recurring:</label>
-          {{ form.is_recurring }} <br>
-
-          <div id="one-time-fields" style="display: none">
-            <label for="id_date_purchased">Date purchased:</label>
-            {{ form.date_purchased }} <br>
-          </div>
-
-          <div id="recurring-fields" style="display: none">
-            <label for="id_start_date">Start Date:</label>
-            {{ form.start_date }} <br>
-
-            <label for="id_end_date">End Date (Optional):</label>
-            {{ form.end_date }} <br>
-
-            <label for="id_frequency">Frequency:</label>
-            {{ form.frequency }} <br>
-
-            <label for="id_is_loan">Is the expense a loan:</label>
-            {{ form.is_loan }} <br>
-          </div>
-
-          <div id="loan-fields" style="display: none">
-            <label for="id_principal">Principal:</label>
-            {{ form.principal }} <br>
-
-            <label for="id_apr">Annual Interest Rate:</label>
-            {{ form.apr }} <br>
-
-            <label for="id_term_amt">Term Amount:</label>
-            {{ form.term_amt }} <br>
-          </div>
-
-          <button
-            type="submit"
-            class="bg-light text-dark border btn-sm border-1 border-dark rounded-3"
-          >
-            Save Expense
-          </button>
-        </form>
-
-        <div class="mt-4">
-          <a
-            href="{% url 'expenses:index' %}"
-            class="text-decoration-none text-white"
-            >View All Expenses</a
-          >
-        </div>
+  <nav class="navbar navbar-expand-lg fixed-top bg-body-tertiary">
+    <div class="container-fluid">
+      <a style="color: #2d2d2d" class="navbar-brand" href="#"><i class="bi bi-piggy-bank-fill"></i>Finiance</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+        aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav">
+          <li class="nav-item">
+            <a style="color: #2D2D2D;" class="nav-link active" aria-current="page" href="http://127.0.0.1:8000/"> <i
+                class="bi bi-house"></i><span class="ms-1 mt-2">Home</span></a>
+          </li>
+          <li class="nav-item">
+            <a style="color: #2D2D2D;" class="nav-link" href="http://127.0.0.1:8000/savings"><i class="bi bi-coin"></i>
+              <span class="ms-1">Savings</span></a>
+          </li>
+          <li class="nav-item">
+            <a style="color: #2D2D2D;" class="nav-link" href="http://127.0.0.1:8000/expenses"> <i
+                class="bi bi-cash-stack"></i><span class="ms-1">Expenses</span></a>
+          </li>
+          <li class="nav-item">
+            <a style="color: #2D2D2D;" class="nav-link" href="http://127.0.0.1:8000/accountinfo"><i
+                class="bi bi-person-circle"></i><span class="ms-1">Account Information</span></a>
+          </li>
+          <li class="nav-item">
+            <a style="color: #2D2D2D;" class="nav-link" href="http://127.0.0.1:8000/resources"> <i
+                class="bi bi-info-lg"></i> <span class="ms-1">Resources</span></a>
+          </li>
+          {% if not user.is_authenticated %}
+          <li class="nav-item">
+            <a style="color: #2D2D2D;" class="nav-link" href="http://127.0.0.1:8000/login/login">Login</a>
+          </li>
+          {% else %}
+          <li>
+            <a style="color: #2D2D2D;" class="nav-link" href="http://127.0.0.1:8000/login/logout">Logout</a>
+          </li>
+          {%endif%}
+        </ul>
       </div>
     </div>
+  </nav>
+</head>
 
-    <script>
-      document.addEventListener("DOMContentLoaded", function () {
-        console.log("Hey #{{ form.is_recurring.id_for_label }}");
-        const isRecurringField = document.querySelector(
-          "#{{ form.is_recurring.id_for_label }}"
-        );
-        const isLoanField = document.querySelector(
-          "#{{ form.is_loan.id_for_label }}"
-        );
-        const oneTimeFields = document.getElementById("one-time-fields");
-        const recurringFields = document.getElementById("recurring-fields");
-        const loanFields = document.getElementById("loan-fields");
+<body>
+  <div class="bg-light">
+    <div class="container text-center text-white py-5 rounded-3 border-1 border-light"
+      style="margin-top: 5%; background-color: #3D0066;">
+      <h2 class="text-center mb-5">ADD AN EXPENSE</h2>
+      <form action="{% url 'expenses:create_expense' %}" method="POST" class="">
+        {% csrf_token %}
 
-        function toggleFields() {
-          if (isRecurringField.checked === true) {
-            recurringFields.style.display = "block";
-            oneTimeFields.style.display = "none";
-            if (isLoanField.checked === true) {
-              loanFields.style.display = "block";
-            } else {
-              loanFields.style.display = "none";
-            }
+        <div class="row mb-4 ms-5">
+          <div class="col text-start">
+            <label for="id_label">Expense Name:</label>
+            {{ form.label }}
+          </div>
+          <div class="col">
+            <label for="id_amount">Amount:</label>
+            {{ form.amount }} <br>
+          </div>
+
+        </div>
+        <div class="row mb-4 ms-5">
+          <div class="col text-start">
+            <label for="id_category">Category:</label>
+            {{ form.category }} <br>
+            
+            <label for="id_is_recurring" class="mt-4 mb-4">Is the expense recurring:</label>
+            {{ form.is_recurring }} 
+            <div id="one-time-fields" style="display: none">
+              <label for="id_date_purchased">Date purchased:</label>
+              {{ form.date_purchased }} <br>
+            </div>
+  
+            <div id="recurring-fields"  style="display: none">
+              <label for="id_start_date" class="mb-3">Start Date:</label>
+              {{ form.start_date }} <br>
+              <label for="id_end_date" class="mb-3">End Date (Optional):</label>
+              {{ form.end_date }} <br>
+              <label for="id_frequency" class="mb-3">Frequency:</label>
+              {{ form.frequency }} <br>
+              <label for="id_is_loan" class="mb-3">Is the expense a loan:</label>
+              {{ form.is_loan }} <br>
+            </div>
+            <div id="loan-fields" style="display: none">
+              <label for="id_principal" class="mb-3">Principal:</label>
+              {{ form.principal }} <br>
+    
+              <label for="id_apr" class="mb-3">Annual Interest Rate:</label>
+              {{ form.apr }} <br>
+    
+              <label for="id_term_amt" class="mb-3">Term Amount:</label>
+              {{ form.term_amt }} <br>
+            </div>
+    
+          </div>
+
+          <div class="col form-label">
+            <label for="id_amount">Description:</label>
+            {{ form.description }}
+
+          </div>
+        </div>
+
+
+        <div class="row">
+          <div class="col">
+
+          </div>
+        </div>
+
+     
+
+
+        
+        <button type="submit" class="border btn-sm border-1 border-dark rounded-3" style="background-color: goldenrod; color: white; width: 20%; letter-spacing: 2px;" >
+          Save Expense
+        </button>
+      </form>
+
+      <div class="mt-4">
+        <a href="{% url 'expenses:index' %}" class="text-decoration-none text-white">View All Expenses</a>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      console.log("Hey #{{ form.is_recurring.id_for_label }}");
+      const isRecurringField = document.querySelector(
+        "#{{ form.is_recurring.id_for_label }}"
+      );
+      const isLoanField = document.querySelector(
+        "#{{ form.is_loan.id_for_label }}"
+      );
+      const oneTimeFields = document.getElementById("one-time-fields");
+      const recurringFields = document.getElementById("recurring-fields");
+      const loanFields = document.getElementById("loan-fields");
+
+      function toggleFields() {
+        if (isRecurringField.checked === true) {
+          recurringFields.style.display = "block";
+          oneTimeFields.style.display = "none";
+          if (isLoanField.checked === true) {
+            loanFields.style.display = "block";
           } else {
-            recurringFields.style.display = "none";
-            oneTimeFields.style.display = "block";
             loanFields.style.display = "none";
-            console.log("Test");
           }
+        } else {
+          recurringFields.style.display = "none";
+          oneTimeFields.style.display = "block";
+          loanFields.style.display = "none";
+          console.log("Test");
         }
+      }
 
-        // Call on page load to set initial visibility
-        toggleFields();
+      // Call on page load to set initial visibility
+      toggleFields();
 
-        // Add event listener to toggle fields based on user selection
-        isRecurringField.addEventListener("change", toggleFields);
-        isLoanField.addEventListener("change", toggleFields);
-      });
-    </script>
-  </body>
+      // Add event listener to toggle fields based on user selection
+      isRecurringField.addEventListener("change", toggleFields);
+      isLoanField.addEventListener("change", toggleFields);
+    });
+  </script>
+</body>
+
 </html>

@@ -7,9 +7,11 @@
     {% load static %} {% load bootstrap5 %} {% bootstrap_css %}
     {%bootstrap_javascript %}
     <link rel="stylesheet" href="{% static 'home/style.css' %}" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+
     <nav class="navbar navbar-expand-lg fixed-top bg-body-tertiary">
       <div class="container-fluid">
-        <a style="color: #2d2d2d" class="navbar-brand" href="#">Finiance</a>
+        <a style="color: #2d2d2d" class="navbar-brand" href="#"><i class="bi bi-piggy-bank-fill"></i>Finiance</a>
         <button
           class="navbar-toggler"
           type="button"
@@ -24,51 +26,29 @@
         <div class="collapse navbar-collapse" id="navbarNav">
           <ul class="navbar-nav">
             <li class="nav-item">
-              <a
-                style="color: #2d2d2d"
-                class="nav-link active"
-                aria-current="page"
-                href="http://127.0.0.1:8000/"
-                >Home</a
-              >
+              <a style="color: #2D2D2D;" class="nav-link active" aria-current="page" href="http://127.0.0.1:8000/"> <i class="bi bi-house"></i><span class="ms-1 mt-2">Home</span></a>
             </li>
             <li class="nav-item">
-              <a
-                style="color: #2d2d2d"
-                class="nav-link"
-                href="http://127.0.0.1:8000/savings"
-                >Savings</a
-              >
+              <a style="color: #2D2D2D;" class="nav-link" href="http://127.0.0.1:8000/savings"> <i class="bi bi-coin"></i> <span class="ms-1">Savings</span></a>
             </li>
             <li class="nav-item">
-              <a
-                style="color: #2d2d2d"
-                class="nav-link"
-                href="http://127.0.0.1:8000/expenses"
-                >Expenses</a
-              >
+              <a style="color: #2D2D2D;" class="nav-link" href="http://127.0.0.1:8000/expenses"> <i class="bi bi-cash-stack"></i><span class="ms-1">Expenses</span></a>
             </li>
             <li class="nav-item">
-              <a
-                style="color: #2d2d2d"
-                class="nav-link"
-                href="http://127.0.0.1:8000/accountinfo"
-                >Account Information</a
-              >
+              <a style="color: #2D2D2D;" class="nav-link" href="http://127.0.0.1:8000/accountinfo"><i class="bi bi-person-circle"></i><span class="ms-1">Account Information</span></a>
             </li>
             <li class="nav-item">
-              <a
-                style="color: #2d2d2d"
-                class="nav-link"
-                href="http://127.0.0.1:8000/resources"
-                >Resources</a
-              >
+              <a style="color: #2D2D2D;" class="nav-link" href="http://127.0.0.1:8000/resources"> <i class="bi bi-info-lg"></i> <span class="ms-1">Resources</span></a>
             </li>
             {% if not user.is_authenticated %} 
-                <li class="nav-item">
-                    <a style="color: #2D2D2D;" class="nav-link" href="http://127.0.0.1:8000/login/login">Login</a>
-                </li>
-              {%endif%}
+              <li class="nav-item">
+                  <a style="color: #2D2D2D;" class="nav-link" href="http://127.0.0.1:8000/login/login">Login</a>
+              </li>
+            {% else %}
+              <li>
+                <a style="color: #2D2D2D;" class="nav-link" href="http://127.0.0.1:8000/login/logout">Logout</a>
+              </li>
+            {%endif%}
           </ul>
         </div>
       </div>
@@ -99,7 +79,7 @@
             style="display: inline"
           >
             {% csrf_token %}
-            <button type="submit" class="btn btn-warning text-white fw-bold">
+            <button type="submit" class="btn text-white fw-bold" style="background-color:goldenrod; width: 100%;">
               Delete
             </button>
           </form>
@@ -110,13 +90,13 @@
       </ul>
       <a
         href="{% url 'expenses:add_expense' %}"
-        class="text-decoration-none text-white btn btn-warning mt-5 fw-bold"
-        style="letter-spacing: 2px"
+        class="text-decoration-none text-white btn mt-5 "
+        style="letter-spacing: 2px; background-color: goldenrod;"
         >ADD NEW EXPENSE</a
       >
       <br /><br />
       <div class="mt-5">
-        <div class="container border border-1 border-light rounded-3 pt-3 pb-5">
+        <div class="container pt-3 pb-5 mb-2">
           <div class="row">
             <div class="col border border-2 border-warning rounded-2 me-3 ms-3">
               <h4 class="fw-bold" style="letter-spacing: 2px">One-Time</h4>
@@ -159,7 +139,7 @@
             <p>{{ error }}</p>
             {% endfor %}
 
-            <button type="submit">Submit</button>
+            <button type="submit" style="width: 10%; color: white; letter-spacing: 1px; background-color: goldenrod;" >Submit</button>
           </form>
 
           {% for category in categories %}
@@ -176,7 +156,7 @@
             <div class="mt-5">
                 <form action="{% url 'expenses:import_expenses' %}" method="POST">
                     {% csrf_token %}
-                    <button type="submit" class="btn btn-success text-white fw-bold">Import Expenses</button>
+                    <button type="submit" class="btn text-white " style="background-color: goldenrod; width: 20%;">Import Expenses</button>
                 </form>
             </div>
         </div>

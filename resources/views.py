@@ -85,6 +85,34 @@ def getVids():
     video10.name = "Excel Budget Teplate | Autommate your budget in 15 minutes"
     video10.description = "Video talking about how to set up a budget excel template"
     videoArray.append(video10)
+
+    video11 = videoObect()
+    video11.channel = "Shay Budgets"
+    video11.link = "https://www.youtube.com/watch?v=IT1ntAOHZx4"
+    video11.name = "Life changing budgeting process | how to budget your money"
+    video11.description = "Video talking about how to set up a budget"
+    videoArray.append(video11)
+
+    video12 = videoObect()
+    video12.channel = "Shay Budgets"
+    video12.link = "https://www.youtube.com/watch?v=3pslPbfpnzk"
+    video12.name = "How to Create a Monthly Budget That Actually Works!"
+    video12.description = "Video talking about how to set up a monthly Budget"
+    videoArray.append(video12)
+
+    video8 = videoObect()
+    video8.channel = "Elena Taber"
+    video8.link = "https://www.youtube.com/watch?v=a-vmZpnpze0"
+    video8.name = "How To Budget And Save in Your 20's | Tips and Tricks"
+    video8.description = "Video talking about how to save money"
+    videoArray.append(video8)
+
+    video8 = videoObect()
+    video8.channel = "Elena Taber"
+    video8.link = "https://www.youtube.com/watch?v=ab6HcPa-RFE"
+    video8.name = "8 Places Your Money Needs to Go (How to Save)"
+    video8.description = "Video talking about where your money should go"
+    videoArray.append(video8)
     return videoArray
 
 def getArt():

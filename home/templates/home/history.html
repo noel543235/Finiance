@@ -139,10 +139,10 @@
                         </tr>
                         {% for row in savings_data %}
                         <tr>
-                            <th style="color: #0096ff; font-weight: bolder">{{row.category}}</th>
-                            <th style="color: #0096ff; font-weight: bolder">{{row.label}}</th>
-                            <th style="color: #0096ff; font-weight: bolder">${{row.payment_amount}}</th>
-                            <th style="color: #0096ff; font-weight: bolder">{{row.start_date}}</th>
+                            <th style="color: #0096ff; font-weight: bolder">{{row.goal.category}}</th>
+                            <th style="color: #0096ff; font-weight: bolder">{{row.goal.label}}</th>
+                            <th style="color: #0096ff; font-weight: bolder">${{row.amount}}</th>
+                            <th style="color: #0096ff; font-weight: bolder">{{row.payment_date}}</th>
                         </tr>
                       {% empty %}
                         <tr><td colspan='5'>No expenses data found.</td></tr>

@@ -72,56 +72,39 @@
         <h4 id="list-item-1 fw-bold" style="text-decoration: underline;">Profile</h4>
         <div class="d-flex align-items-center">
           <h6 class="me-2">Username:</h6>
-          <p class="mb-1">Noel</p>
+          <p class="mb-1">{{ user.username }}</p>
         </div>
         <div class="d-flex align-items-center">
           <h6 class="me-2">Email:</h6>
-          <p class="mb-2">test@test.com</p>
+          <p class="mb-2">{{ user.email }}</p>
         </div>
-        <p class="mb-5 ">See Something Wrong? <br> If you would like to change anything &nbsp;<button
-            class="rounded-3 ps-1 pe-1 text-white" style="background-color: #3D0066;"> Press Here</button></p>
         <hr>
 
         <h4 id="list-item-2" style="text-decoration: underline;">Expenses</h4>
-        <p>Expense: Netflix Price: $15.00</p>
-        <p>Expense: Mortgage Price: $1000.00</p>
-        <p>Expense: Hulu Price: $20.00</p>
-        <p>Expense: water bill Price: $100.00</p>
+        {% for expense in recurring_expenses %}
+          {{ expense.label }} for ${{ expense.amount }} recurring {{ expense.frequency }} <br>
+        {% empty %}
+          No recurring expenses recorded yet.
+        {% endfor %}
         <br>
-        <p>Are You Missing an Expense?</p>
-        <button class="rounded-3 p-2 text-white mb-5 " style="background-color: #3D0066;">Please Click Here</button>
         <hr>
 
         <h4 id="list-item-3" style="text-decoration: underline;">Savings</h4>
-        <h6>Goals</h6>
-        <p style="margin-left: 10px;">Goal: New Car - Current Ammount saved: $2000 out of: $30000</p>
-        <p style="margin-left: 10px;">Goal: New Home - Current Ammount saved: $3000 out of: $130000</p>
-        <p style="margin-left: 10px;">Goal: Vacation - Current Ammount saved: $5000 out of: $13000</p>
-        <h6>Budgeting/Emergency fund</h6>
-        <p style="margin-left: 10px;">Emergencey Fund: $20000</p>
-        <p style="margin-left: 10px;">Current Budget: $300 a week</p>
-        <h6>Expected Savings</h6>
-        <p style="margin-left: 10px;">Estimated to save $900</p>
+        <h6>Savings Goals</h6>
+        {% for savings in savings_goals %}
+          {{ savings.label }} for ${{ savings.amount }} <br>
+        {% empty %}
+          No savings goals recorded yet.
+        {% endfor %}
         <br>
-        <p>See Something Missing?</p>
-        <button class="rounded-3 p-2 text-white" style="background-color: #3D0066;">Please Click
-          Here</button>
+        <h6>Goal Payments</h6>
+        {% for payment in payments %}
+          Payment of ${{ payment.amount }} towards {{ payment.goal.label }} on {{ payment.payment_date }} <br>
+        {% empty %}
+          No payments recorded yet.
+        {% endfor %}
+        <br>
         <hr>
-
-        <h4 id="list-item-5" class="mt-5" style="text-decoration: underline;">Budget</h4>
-        <p>Current Budget: $300</p>
-        <button class="rounded-3 p-2 text-white" style="background-color: #3D0066;">Need to Update your budget? Press
-          Here</button>
-        <hr>
-
-        <h4 id="list-item-4">Password</h4>
-        <form>
-          <label>Change your Password</label>
-          <br>
-          <input class="mb-3" type="password"/>
-          <br>
-          <button class="text-white mb-5" style="background-color: #3D0066;">Change Password</button>
-        </form>
       </div>
     </div>
   </div>

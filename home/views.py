@@ -4,13 +4,14 @@ from savings.models import *
 from itertools import chain
 from datetime import datetime, timedelta
 from dateutil.relativedelta import relativedelta
+from savings.views import get_payments
 
 
 def index(request): 
     return render(request, "home/homepage.html", {})
 
 def history(request): 
-    savings_data = SavingsGoal.objects.filter(user=request.user)
+    savings_data = get_payments(request, SavingsGoal.objects.filter(user=request.user))
     
     # Change differently named date fields to 'display_date'
     def annotate(qs, date_field, type_name, amount_field='amount'):

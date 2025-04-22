@@ -14,7 +14,7 @@ class SavingsGoal(Expense):
         db_table = 'savings_goal_table'
         
     payment_amount = models.DecimalField(max_digits=10, decimal_places=2)
-    frequency = models.CharField(max_length=2, choices=Recurring.FREQUENCY_CHOICES)
+    frequency = models.CharField(max_length=12, choices=Recurring.FREQUENCY_CHOICES)
     start_date = models.DateField()
     
     def when_next_payment(self):

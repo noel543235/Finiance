@@ -55,18 +55,18 @@ class Recurring(Expense):
 
     # Choices for how often an expense recurs
     FREQUENCY_CHOICES = [
-            ('D', 'Daily'),
-            ('W', 'Weekly'),
-            ('BW', 'Biweekly'),
-            ('M', 'Monthly'),
-            ('SA', 'Semiannually'),
-            ('A', 'Annually'),
-            ('BA', 'Biannually')
+            ('Daily', 'Daily'),
+            ('Weekly', 'Weekly'),
+            ('Biweekly', 'Biweekly'),
+            ('Monthly', 'Monthly'),
+            ('Semiannually', 'Semiannually'),
+            ('Annually', 'Annually'),
+            ('Biannually', 'Biannually')
         ]  
 
     start_date = models.DateField()
     end_date = models.DateField(blank=True, null=True)
-    frequency = models.CharField(max_length=2, choices=FREQUENCY_CHOICES)    
+    frequency = models.CharField(max_length=12, choices=FREQUENCY_CHOICES)    
     
     def when_next_payment(self, start_date):
         '''Calculate the due date of the following payment in schedule'''

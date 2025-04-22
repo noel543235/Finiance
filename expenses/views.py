@@ -54,7 +54,10 @@ def index_context(request):
         "categories": categories,
         "onetimes": OneTime.objects.filter(user=request.user),
         "recurring": final,
-        "loans": Loan.objects.filter(user=request.user)
+        "loans": Loan.objects.filter(user=request.user),
+        "today": datetime.today().date(),
+        "week_ago": datetime.today().date()-timedelta(weeks=1),
+        "total": sum([e.amount for e in recent_expenses])
     }
     
     return context
@@ -108,7 +111,7 @@ def create_expense(request):
                 description=form.cleaned_data['description'],
                 category=form.cleaned_data['category'],
                 date_created=datetime.now(),
-                date_purchased=form.cleaned_data['date_purchased']
+                start_date=form.cleaned_data['date_purchased']
             )
             one_time_expense.save()
         else:
@@ -183,8 +186,8 @@ def create_category(request):
     return redirect("expenses:index")
         
 
-def delete_onetime_expense(request, expense_id):
-    """Deletes a one-time expense
+def delete_expense(request, expense_id):
+    """Deletes an expense
 
     Args:
         request (HttpRequest): User info
@@ -196,36 +199,24 @@ def delete_onetime_expense(request, expense_id):
     
     if not request.user.is_authenticated:
         return redirect('/login/login')
-
-    expense = get_object_or_404(OneTime, pk=expense_id)
-
-    if request.method == "POST":
-
-        # Retrieve the expense, ensuring it belongs to the current user
-        expense.delete()
-            
-            
-    return redirect('expenses:index')
-
-
-def delete_recurring_expense(request, expense_id):
-    """Deletes a recurring expense
-
-    Args:
-        request (HttpRequest): User info
-        expense_id (int): PK identifying expense
-
-    Returns:
-        HttpRedirect: Redirect to index page
-    """
     
-    if not request.user.is_authenticated:
-        return redirect('/login/login')
-
-    expense = get_object_or_404(Recurring, pk=expense_id)
+    # Initialize expense
+    expense = None
+    
+    # Check if expense is OneTime
+    try:
+        expense = OneTime.objects.get(id=expense_id)
+    except OneTime.DoesNotExist:
+        pass
+    
+    # Check if expense is Recurring
+    try:
+        expense = Recurring.objects.get(id=expense_id)
+    except Recurring.DoesNotExist:
+        pass
 
     if request.method == "POST":
-            
+
         # Retrieve the expense, ensuring it belongs to the current user
         expense.delete()
             
@@ -237,19 +228,27 @@ def get_recent_expenses(request):
     today = datetime.today().date()
     week_ago = today-timedelta(weeks=1)
 
-    onetime_expenses = OneTime.objects.filter(user=request.user, date_purchased__gte=week_ago)
+    onetime_expenses = OneTime.objects.filter(user=request.user, start_date__gte=week_ago)
     recurring_expenses = list()
     
-    for expense in Recurring.objects.all():
+    for expense in Recurring.objects.filter(user=request.user):
         payment_date = expense.start_date
         while payment_date <= today and ((expense.end_date is None) or expense.end_date >= today):
-            if payment_date > week_ago:
-                temp = expense
-                temp.start_date = payment_date
-                recurring_expenses.append(temp)
-            payment_date = expense.when_next_payment(payment_date)
-            
-    return recurring_expenses + list(onetime_expenses)
+            if payment_date >= week_ago:
+                recurring_expenses.append(copy_expense(expense, payment_date))
+            payment_date = expense.when_next_payment(payment_date)  
+                
+    return sorted(recurring_expenses + list(onetime_expenses), key=lambda x: x.start_date, reverse=True)
+
+
+def copy_expense(orig, day):
+    new = Recurring()
+    for field in orig._meta.fields:
+        setattr(new, field.name, getattr(orig, field.name))
+        
+    new.start_date = day
+        
+    return new
 
 
 def import_expenses(request):
@@ -491,7 +490,7 @@ def import_result(request):
                     user = request.user,
                     label = row['label'],
                     amount = row['amount'],
-                    date_purchased = date,
+                    start_date = date,
                     description = "",
                     category = category
                     )

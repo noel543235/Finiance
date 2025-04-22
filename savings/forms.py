@@ -13,8 +13,26 @@ class SavingsGoalForm(Form):
     category = forms.ModelChoiceField(queryset=Category.objects.all(), required=False)
     description = forms.CharField(widget=forms.Textarea, required=False)
     
+    
+class UpdateSavingsForm(Form):
+    label = forms.ModelChoiceField(queryset=SavingsGoal.objects.none())
+    category = forms.ModelChoiceField(queryset=Category.objects.all(), required=False)
+    amount = forms.DecimalField(max_digits=10, decimal_places=2, required=False)
+    payment_amount = forms.DecimalField(max_digits=10, decimal_places=2)
+    
+    def __init__(self, user, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        # Only update the queryset for the specific field
+        self.fields['label'].queryset = SavingsGoal.objects.filter(user=user)
         
 class GoalPaymentForm(Form):
     goal = forms.ModelChoiceField(queryset=SavingsGoal.objects.all())
     payment_date = forms.DateField()
+    amount = forms.DecimalField(max_digits=10, decimal_places=2)
+    
+    
+class UpdateRetirement(Form):
+    amount = forms.DecimalField(max_digits=10, decimal_places=2)
+    
+class UpdateEmergency(Form):
     amount = forms.DecimalField(max_digits=10, decimal_places=2)

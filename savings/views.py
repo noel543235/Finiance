@@ -18,6 +18,10 @@ def index(request):
     Returns:
         HttpResponse: Template to load with context (forms, goals, etc.)
     """
+    # Redirects user to login page if they are not logged in
+    if not request.user.is_authenticated:
+        return redirect('/login/login')
+    
     context = index_context(request)
     
     # Check if FVC was submitted
@@ -38,10 +42,25 @@ def index_context(request):
         'payment_form': GoalPaymentForm,
         "categories": Category.objects.all(),
         "category_form": CategoryForm,
-        "table": None
+        "table": None,
+        "update_form": UpdateSavingsForm(user=request.user),
+        "recent_payments": get_payments(request, goals),
+        "emergency_form": UpdateEmergency,
+        "retirement_form": UpdateRetirement,
+        "emergency": get_emergency(request),
+        "retirement": get_retirement(request),
     }
     
     return context
+
+
+def get_payments(request, goals):
+    """Return all payments for all goals of user"""
+    res = list()
+    for goal in goals:
+        res.extend(goal.goalpayment_set.all())
+    return sorted(res, key=lambda x: x.payment_date, reverse=True)
+    
     
    
 
@@ -137,6 +156,47 @@ def create_goal(request):
     return redirect('savings:index')
     
     
+def update_goal(request): 
+    """View to process form and update goal
+
+    Args:
+        request (HttpRequest): Form info
+
+    Returns:
+        HttpRedirect: Redirect to index page
+    """
+    if request.method == 'POST':
+        form = UpdateSavingsForm(request.user, request.POST)
+        if form.is_valid():
+            # Helper variable for cleaned form
+            f = form.cleaned_data
+            
+            # Fetch goal from database
+            goal = SavingsGoal.objects.get(label=f['label'], user=request.user)
+            
+            # Update goal
+            goal.category = f['category']
+            if f['amount']:
+                goal.amount = f['amount']
+            goal.save()
+            
+            # Make payment towards goal
+            payment = GoalPayment(
+                goal=goal,
+                payment_date=datetime.now(),
+                amount=f['payment_amount']           
+            )
+            payment.save()
+            
+        else:
+            # Form is invalid, return the form with errors
+            context = index_context(request)
+            context['update_form'] = form
+            return render(request, 'savings/savings.html', context)
+        
+        return redirect('savings:index')
+    
+    
     
 def get_chart_data(request):
     """Get up-to-date goal info for goals bar chart
@@ -175,7 +235,6 @@ def future_value_calculator(present_value, compounds, interest_rate, periodic_de
     # initialize 2D list: compound_rows and change the interest rate to decimal form
     compound_rows = []
     interest_rate = interest_rate/100
-    print("calculates!!!")
     # loop through the number of compounds
     for i in range(compounds):
         
@@ -195,10 +254,8 @@ def calculate(request):
     compounds = request.POST.get("compounds")
     periodic_deposit = request.POST.get("periodic_deposit")
     interest_rate = request.POST.get("interest_rate")
-    print(f"present value = {present_value} compounds = {compounds} periodic deposit = {periodic_deposit} interest rate = {interest_rate}")
     
     table = future_value_calculator(float(present_value), int(compounds), float(interest_rate), float(periodic_deposit))
-    print(table)
     
     return table
 
@@ -229,3 +286,85 @@ def create_category(request):
         return render(request, 'savings/savings.html', context)
     
     return redirect("savings:index")
+
+
+def update_retirement(request): 
+    """View to process form and update retirement goal
+
+    Args:
+        request (HttpRequest): Form info
+
+    Returns:
+        HttpRedirect: Redirect to index page
+    """
+    if request.method == 'POST':
+        form = UpdateRetirement(request.POST)
+        if form.is_valid():
+            # Helper variable for cleaned form
+            f = form.cleaned_data
+            
+            # Fetch goal from database
+            goal = SavingsGoal.objects.get(label='Retirement', user=request.user)
+            
+            # Make payment towards goal
+            payment = GoalPayment(
+                goal=goal,
+                payment_date=datetime.now(),
+                amount=f['amount']           
+            )
+            payment.save()
+            
+        else:
+            # Form is invalid, return the form with errors
+            context = index_context(request)
+            context['retirement_form'] = form
+            return render(request, 'savings/savings.html', context)
+        
+        return redirect('savings:index')
+    
+    
+def update_emergency(request): 
+    """View to process form and update retirement goal
+
+    Args:
+        request (HttpRequest): Form info
+
+    Returns:
+        HttpRedirect: Redirect to index page
+    """
+    if request.method == 'POST':
+        form = UpdateEmergency(request.POST)
+        if form.is_valid():
+            # Helper variable for cleaned form
+            f = form.cleaned_data
+            
+            # Fetch goal from database
+            goal = SavingsGoal.objects.get(label='Emergency Fund', user=request.user)
+            
+            # Make payment towards goal
+            payment = GoalPayment(
+                goal=goal,
+                payment_date=datetime.now(),
+                amount=f['amount']           
+            )
+            payment.save()
+            
+        else:
+            # Form is invalid, return the form with errors
+            context = index_context(request)
+            context['emergency_form'] = form
+            return render(request, 'savings/savings.html', context)
+        
+        return redirect('savings:index')
+    
+    
+def get_emergency(request):
+    goal = SavingsGoal.objects.get(label='Emergency Fund', user=request.user)
+    payments = goal.goalpayment_set.all()
+    return sum(payment.amount for payment in payments)
+
+
+def get_retirement(request):
+    goal = SavingsGoal.objects.get(label='Retirement', user=request.user)
+    payments = goal.goalpayment_set.all()
+    return sum(payment.amount for payment in payments)

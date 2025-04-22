@@ -231,8 +231,7 @@ def get_recent_expenses(request):
     onetime_expenses = OneTime.objects.filter(user=request.user, start_date__gte=week_ago)
     recurring_expenses = list()
     
-    for expense in Recurring.objects.all():
-        print(expense)
+    for expense in Recurring.objects.filter(user=request.user):
         payment_date = expense.start_date
         while payment_date <= today and ((expense.end_date is None) or expense.end_date >= today):
             if payment_date >= week_ago:

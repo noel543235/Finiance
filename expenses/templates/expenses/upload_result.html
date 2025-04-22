@@ -30,10 +30,10 @@
                         let missingPrincipalRows = [];
 
                         extractedData.forEach((row, index) => {
-                            const frequency = row["frequency"];
-                            const principal = row["principal"];
-                            const interestRate = row["interestRate"];
-                            const termLength = row["termLength"];
+                            const frequency = row["Frequency"];
+                            const principal = row["Principal"];
+                            const interestRate = row["InterestRate"];
+                            const termLength = row["TermLength"];
 
                             // Check for valid frequency values
                             if (!validFrequencies.includes(frequency)) {
@@ -93,6 +93,8 @@
                                     displayError(data.error);
                                 } else {
                                     console.log("Server response:", data);
+                                    var successPageUrl = "{% url 'expenses:index' %}";
+                                    window.location.href = successPageUrl;
                                 }
                             })
                             .catch((error) => console.error("Error:", error));
@@ -207,7 +209,7 @@
             <thead>
                 <tr>
                     {% for key in data.0 %}
-                    <th>{{ key }}</th>
+                    <th>{{ key|capfirst }}</th>
                     {% endfor %}
                 </tr>
             </thead>
@@ -241,7 +243,7 @@
             <button id="import-btn" class="import-btn">Import</button>
         </div>
 
-        <a href="{% url 'import_expenses' %}"
+        <a href="{% url 'expenses:import_expenses' %}"
             >Go back and upload another file</a
         >
     </body>

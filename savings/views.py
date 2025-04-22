@@ -171,15 +171,13 @@ def update_goal(request):
             # Helper variable for cleaned form
             f = form.cleaned_data
             
-            print(f['label'])
-            print('--------------------------------')
-            
             # Fetch goal from database
             goal = SavingsGoal.objects.get(label=f['label'], user=request.user)
             
             # Update goal
             goal.category = f['category']
-            goal.amount = f['amount']
+            if f['amount']:
+                goal.amount = f['amount']
             goal.save()
             
             # Make payment towards goal

@@ -17,13 +17,13 @@ class SavingsGoalForm(Form):
 class UpdateSavingsForm(Form):
     label = forms.ModelChoiceField(queryset=SavingsGoal.objects.none())
     category = forms.ModelChoiceField(queryset=Category.objects.all(), required=False)
-    amount = forms.DecimalField(max_digits=10, decimal_places=2)
+    amount = forms.DecimalField(max_digits=10, decimal_places=2, required=False)
     payment_amount = forms.DecimalField(max_digits=10, decimal_places=2)
     
     def __init__(self, user, *args, **kwargs):
         super().__init__(*args, **kwargs)
         # Only update the queryset for the specific field
-        self.fields['label'].queryset = SavingsGoal.objects.filter(user=user).values_list('label', flat=True)   
+        self.fields['label'].queryset = SavingsGoal.objects.filter(user=user)
         
 class GoalPaymentForm(Form):
     goal = forms.ModelChoiceField(queryset=SavingsGoal.objects.all())

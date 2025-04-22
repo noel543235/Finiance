@@ -41,7 +41,7 @@ class SavingsGoal(Expense):
         self.save()
         
     def __str__(self):
-        return f'{self.label} - ${self.amount}'
+        return self.label
     
 
 # Savings Goal Payment Class

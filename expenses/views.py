@@ -414,7 +414,7 @@ def import_data(request):
 
                 else:
                     data = clean_data(df)
-
+                
                 # Pass the data to the template
                 return render(request, 'expenses/upload_result.html', {'data': data})
 
@@ -469,36 +469,36 @@ def import_result(request):
         data = json.loads(request.body).get("data", [])
         for row in data:
             # Check and create category if it doesn't exist
-            category_name = row.get("category")
+            category_name = row.get("CSategory")
             category = None
             if category_name:
                 # Get or create the category
                 category, created = Category.objects.get_or_create(name=category_name)
             try:
-                if row['startDate']:
-                    date = timezone.make_aware(datetime.strptime(row['startDate'], "%Y-%m-%d"), timezone.get_current_timezone())
+                if row['StartDate']:
+                    date = timezone.make_aware(datetime.strptime(row['StartDate'], "%Y-%m-%d"), timezone.get_current_timezone())
                 else:
                     date = timezone.now()
             except ValueError:
                 return JsonResponse({"error": "Error: Date could not be converted. Please use 'YYYY-MM-DD' (e.g., 2024-03-31)."}, status=400)
 
             frequency = {"None": "O", "Daily": "D", "Weekly": "W", "Biweekly": "BW", "Monthly": "M",
-                         "Semiannually": "SA", "Annually": "A", "Biannually": "BA"}[row['frequency'].strip()]
+                         "Semiannually": "SA", "Annually": "A", "Biannually": "BA"}[row['Frequency'].strip()]
 
             if frequency == "O":
                 OneTime.objects.create(
                     user = request.user,
-                    label = row['label'],
-                    amount = row['amount'],
+                    label = row['Label'],
+                    amount = row['Amount'],
                     start_date = date,
                     description = "",
                     category = category
                     )
-            elif row['principal'] == "None" or row['termLength'] == "None" or row['interestRate'] == "None":
+            elif row['Principal'] == "None" or row['TermLength'] == "None" or row['InterestRate'] == "None":
                 Recurring.objects.create(
                     user = request.user,
-                    label = row['label'],
-                    amount = row['amount'],
+                    label = row['Label'],
+                    amount = row['Amount'],
                     start_date = date,
                     description = "",
                     category = category,
@@ -507,15 +507,15 @@ def import_result(request):
             else:
                 Loan.objects.create(
                     user = request.user,
-                    label = row['label'],
-                    amount = row['amount'],
+                    label = row['Label'],
+                    amount = row['Amount'],
                     start_date = date,
                     description = "",
                     category = category,
                     frequency = frequency,
-                    apr = row['interestRate'],
-                    term_amt = row['termLength'],
-                    principal = row['principal']
+                    apr = row['InterestRate'],
+                    term_amt = row['TermLength'],
+                    principal = row['Principal']
                 )
         return JsonResponse({"message": "Data received successfully!"})
     

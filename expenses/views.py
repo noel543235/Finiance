@@ -1,23 +1,19 @@
 # Standard Library Imports
 import io
 import json
-from datetime import datetime
-from itertools import chain
+from datetime import datetime, timedelta
 
 # Third-Party Imports
 import polars as pl
 
 # Django Imports
 from django.http import JsonResponse
-from django.shortcuts import render, redirect, get_object_or_404
-from django.template.loader import render_to_string
+from django.shortcuts import render, redirect
 from django.utils import timezone
-from django.forms.models import model_to_dict
 
 # Local Imports
 from .forms import *
 from .models import *
-from datetime import datetime, timedelta
 
 def index(request):
     """Initial template when user visits expenses page

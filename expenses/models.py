@@ -40,7 +40,7 @@ class OneTime(Expense):
     class Meta:
         db_table = 'one_time_table'
 
-    date_purchased = models.DateField(default = now)
+    start_date = models.DateField(default = now)
 
     def __str__(self):
         return f'{self.label} - ${self.amount}'
@@ -89,11 +89,10 @@ class Recurring(Expense):
     def update_next_payment_date(self, new_date):
         '''Update the due date of the following payment in schedule'''
         self.start_date = new_date
-        self.start_date = new_date
         self.save()
 
     def __str__(self):
-        return f'{self.label} - ${self.amount} - {self.frequency}'
+        return f'{self.label} - ${self.amount} - {self.start_date}'
 
 
 # Loan Model - Inherits from Recurring Expense Model

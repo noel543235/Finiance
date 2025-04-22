@@ -20,7 +20,7 @@ class RecurringAdmin(admin.ModelAdmin):
 class OneTimeAdmin(admin.ModelAdmin):
     model = OneTime
     fieldsets = (
-        (None, {'fields': ('user', 'label', 'amount', 'date_purchased', 'category', 'description')}),
+        (None, {'fields': ('user', 'label', 'amount', 'start_date', 'category', 'description')}),
     )
 
 

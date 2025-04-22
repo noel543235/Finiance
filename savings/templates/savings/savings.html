@@ -91,8 +91,8 @@
         </ul>
       </div>
       <div class="col mt-5">
-        <h3 class="heading"> Current Retirement Savings: $0</h3>
-        <h3 class="heading mt-5"> Current Emergencey Fund: $0</h3>
+        <h3 class="heading"> Current Retirement Savings: ${{ retirement }}</h3>
+        <h3 class="heading mt-5"> Current Emergency Savings: ${{ emergency }}</h3>
 
       </div>
     </div>
@@ -138,7 +138,7 @@
                   ></button>
                 </div>
                 <div class="modal-body">
-                  <p>Current Emergencey Fund: $0</p>
+                  <p>Current Emergencey Fund: ${{ emergency }}</p>
                   <button
                     type="button"
                     data-bs-toggle="collapse"
@@ -150,15 +150,16 @@
                   </button>
                   <div class="collapse" id="collapseExample5">
                     <div class="card card-body w-100">
-                      <form>
-                        <label class="me-2">Emergencey Fund:</label>
-                        <input
-                          type="number"
-                          min="1"
-                          max="50000"
-                          id="savingsname"
-                        />
-                        <button>Add</button>
+                      <form
+                        action="{% url 'savings:update_emergency' %}"
+                        method="POST"
+                      >
+                        {% csrf_token %}
+
+                        <label for="id_label">Payment Amount:</label>
+                        {{ emergency_form.amount }} <br />
+
+                        <button type="submit">Add</button>
                       </form>
                     </div>
                   </div>
@@ -215,7 +216,7 @@
                   ></button>
                 </div>
                 <div class="modal-body">
-                  <p>Current Retirement Savings: 0</p>
+                  <p>Current Retirement Savings: ${{ retirement }}</p>
                   <button
                     type="button"
                     data-bs-toggle="collapse"
@@ -228,15 +229,16 @@
 
                   <div class="collapse" id="collapseExample6">
                     <div class="card card-body w-100">
-                      <form>
-                        <label class="me-2">Retirement Savings:</label>
-                        <input
-                          type="number"
-                          min="1"
-                          max="50000"
-                          id="savingsname"
-                        />
-                        <button>Add</button>
+                      <form
+                        action="{% url 'savings:update_retirement' %}"
+                        method="POST"
+                      >
+                        {% csrf_token %}
+
+                        <label for="id_label">Payment Amount:</label>
+                        {{ retirement_form.amount }} <br />
+
+                        <button type="submit">Add</button>
                       </form>
                     </div>
                   </div>
@@ -361,34 +363,22 @@
 
                   <div class="collapse" id="collapseExample8">
                     <div class="card card-body w-100">
-                      <form>
-                        <label>Category</label>
-                        <select name="category" id="category">
-                          <option value="volvo">Car</option>
-                          <option value="saab">House</option>
-                          <option value="mercedes">Pet</option>
-                          <option value="audi">Budget</option>
-                        </select>
-                        <br />
-                        <label>Name</label>
-                        <select name="category" id="category">
-                          <option value="volvo">new car</option>
-                          <option value="saab">Weather tech</option>
-                          <option value="mercedes">drone</option>
-                          <option value="audi">dash cam</option>
-                        </select>
-                        <br />
+                      <form action="{% url 'savings:update_goal' %}" method="POST">
+                        {% csrf_token %}
 
-                        <label class="me-2">Total Amount:</label>
-                        <input
-                          type="number"
-                          min="1"
-                          max="50000"
-                          id="savingsname"
-                          required
-                        />
-                        <br />
-                        <button>Add</button>
+                        <label for="id_label">Name:</label>
+                        {{ update_form.label }} <br />
+
+                        <label for="id_amount" class="me-2">New Amount:</label>
+                        {{ update_form.amount }} <br />
+
+                        <label for="id_payment_amount">Payment Amount:</label>
+                        {{ update_form.payment_amount }} <br />
+
+                        <label for="id_category" class="me-2">Category:</label>
+                        {{ update_form.category }} <br />
+
+                        <button>Update</button>
                       </form>
                     </div>
                   </div>
@@ -434,7 +424,11 @@
         </div>
         <div class="col ps-5 ms-5">
           <h5 class="heading">Recent Payment</h5>
-          <p>Emergencey Fund: $200. 4/15/2025</p>
+          {% for payment in recent_payments %}
+            <p>{{ payment }}</p>
+          {% empty %}
+            <p>No payments recorded.</p>
+          {% endfor %}
         </div>
       </div>
     </div>

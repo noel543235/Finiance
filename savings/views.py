@@ -275,7 +275,8 @@ def create_category(request):
         f = form.cleaned_data
         
         category = Category(
-            name=f['name']
+            name=f['name'],
+            user=request.user,
         )
         category.save()
         

@@ -38,7 +38,7 @@ def index(request):
 def index_context(request):
     # Query all user expenses from database
     recent_expenses = get_recent_expenses(request)
-    categories = Category.objects.all()
+    categories = Category.objects.filter(user=request.user)
     
     recurring = Recurring.objects.filter(user=request.user)
     final = [rec for rec in recurring if rec.label not in Loan.objects.values_list('label', flat=True)]
@@ -169,7 +169,8 @@ def create_category(request):
         f = form.cleaned_data
         
         category = Category(
-            name=f['name']
+            name=f['name'],
+            user=request.user,
         )
         category.save()
         
@@ -226,10 +227,13 @@ def get_recent_expenses(request):
 
     onetime_expenses = OneTime.objects.filter(user=request.user, start_date__gte=week_ago)
     recurring_expenses = list()
-    
+        
     for expense in Recurring.objects.filter(user=request.user):
         payment_date = expense.start_date
         while payment_date <= today and ((expense.end_date is None) or expense.end_date >= today):
+            print('test -------------------')
+            print(payment_date)
+            print(expense.when_next_payment(payment_date))
             if payment_date >= week_ago:
                 recurring_expenses.append(copy_expense(expense, payment_date))
             payment_date = expense.when_next_payment(payment_date)  

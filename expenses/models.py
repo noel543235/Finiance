@@ -9,7 +9,8 @@ class Category(models.Model):
     class Meta:
         db_table = 'categories_table'
 
-    name = models.CharField(max_length=50, unique=True, primary_key=True)
+    name = models.CharField(max_length=50)
+    user = models.ForeignKey(User, on_delete=models.CASCADE, default=1)
 
     def __str__(self):
         return f'{self.name}'
@@ -70,17 +71,17 @@ class Recurring(Expense):
     
     def when_next_payment(self, start_date):
         '''Calculate the due date of the following payment in schedule'''
-        if self.frequency == 'D':
+        if self.frequency == 'Daily':
             return start_date + relativedelta(days=1)
-        elif self.frequency == 'W':
+        elif self.frequency == 'Weekly':
             return start_date + relativedelta(weeks=1)
-        elif self.frequency == 'BW':
+        elif self.frequency == 'Biweekly':
             return start_date + relativedelta(weeks=2)
-        elif self.frequency == 'M':
+        elif self.frequency == 'Monthly':
             return start_date + relativedelta(months=1)
-        elif self.frequency == 'SA':
+        elif self.frequency == 'Semiannually':
             return start_date + relativedelta(months=6)
-        elif self.frequency == 'A':
+        elif self.frequency == 'Annually':
             return start_date + relativedelta(years=1)
         else:
             return start_date + relativedelta(years=2)

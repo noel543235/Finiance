@@ -40,7 +40,7 @@ def index_context(request):
         'goals': goals,
         'goal_form': SavingsGoalForm,
         'payment_form': GoalPaymentForm,
-        "categories": Category.objects.all(),
+        "categories": Category.objects.filter(user=request.user),
         "category_form": CategoryForm,
         "table": None,
         "update_form": UpdateSavingsForm(user=request.user),

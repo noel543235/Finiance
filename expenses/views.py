@@ -478,8 +478,8 @@ def import_result(request):
             except ValueError:
                 return JsonResponse({"error": "Error: Date could not be converted. Please use 'YYYY-MM-DD' (e.g., 2024-03-31)."}, status=400)
 
-            frequency = {"None": "O", "Daily": "D", "Weekly": "W", "Biweekly": "BW", "Monthly": "M",
-                         "Semiannually": "SA", "Annually": "A", "Biannually": "BA"}[row['Frequency'].strip()]
+            frequency = {"None": "O", "Daily": "Daily", "Weekly": "Weekly", "Biweekly": "Biweekly", "Monthly": "Monthly",
+                         "Semiannually": "Semiannually", "Annually": "Annually", "Biannually": "Biannually"}[row['Frequency'].strip()]
 
             if frequency == "O":
                 OneTime.objects.create(

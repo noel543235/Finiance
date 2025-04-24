@@ -222,7 +222,7 @@ def get_chart_data(request):
     return JsonResponse({'labels': labels, 'data': proportions})
 
 
-def future_value_calculator(present_value, compounds, interest_rate, periodic_deposit):
+def future_value_calculator(present_value, compounds, interest_rate, periodic_deposit, timing="end"):
     '''
     Parameters: float: present_value, int: compounds, int: interest rate,
         float: periodic deposit
@@ -240,8 +240,16 @@ def future_value_calculator(present_value, compounds, interest_rate, periodic_de
         
         # calculate the future value for each compound and add the present value,
         # deposit amount, interest of present value, and the future value
-        future_value = present_value * (1 + interest_rate) + periodic_deposit
-        compound_rows.append([str(i+1), "${:.2f}".format(present_value), "${:.2f}   ".format(periodic_deposit),
+        
+        
+        if timing == "beginning":
+            present_value += periodic_deposit
+            future_value = present_value * (1 + interest_rate) 
+        else:
+            future_value = present_value * (1 + interest_rate) + periodic_deposit
+
+            
+        compound_rows.append([str(i+1), "${:.2f}".format(present_value), "${:.2f}".format(periodic_deposit),
                                 "${:.2f}".format(interest_rate*present_value), "${:.2f}".format(future_value)])
 
         # set the new present value for the next iteration
@@ -254,8 +262,9 @@ def calculate(request):
     compounds = request.POST.get("compounds")
     periodic_deposit = request.POST.get("periodic_deposit")
     interest_rate = request.POST.get("interest_rate")
+    timing = request.POST.get("timing")
     
-    table = future_value_calculator(float(present_value), int(compounds), float(interest_rate), float(periodic_deposit))
+    table = future_value_calculator(float(present_value), int(compounds), float(interest_rate), float(periodic_deposit), timing)
     
     return table
 
